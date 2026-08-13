@@ -4,6 +4,23 @@ function gt_theme_support() {
 	add_theme_support('post-thumbnails');
 	add_theme_support('title-tag');
 	add_theme_support('html5', array('search-form', 'navigation-widgets'));
+
+	// Ecosystem card: 413 x 402 in the design, plus a 2x version. Both share the
+	// aspect ratio, which is what lets WordPress build a srcset from them.
+	add_image_size('gt-card', 826, 804, true);
+	add_image_size('gt-card-sm', 413, 402, true);
+
+	// Guide card: 347 x 402 in the design, plus a 2x version.
+	add_image_size('gt-guide', 694, 804, true);
+	add_image_size('gt-guide-sm', 347, 402, true);
+
+	// Split band: half the 1440 frame, plus a 2x version.
+	add_image_size('gt-split', 1440, 1120, true);
+	add_image_size('gt-split-sm', 720, 560, true);
+
+	// Feature band: 1440 x 660 full-bleed, plus a 1x-ish step for the srcset.
+	add_image_size('gt-band', 2160, 990, true);
+	add_image_size('gt-band-sm', 1080, 495, true);
 }
 add_action('after_setup_theme', 'gt_theme_support');
 

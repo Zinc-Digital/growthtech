@@ -1,0 +1,113 @@
+{
+    "key": "group_gt_block_split_band",
+    "title": "Block: Split Band",
+    "fields": [
+        {
+            "key": "field_gt_sb_heading",
+            "label": "Heading",
+            "name": "heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Renders as a level 2 heading.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Bring the science home.",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_gt_sb_text",
+            "label": "Text",
+            "name": "text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 5,
+            "placeholder": "",
+            "new_lines": "br"
+        },
+        {
+            "key": "field_gt_sb_image",
+            "label": "Image",
+            "name": "image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Sits alongside the text. Set the alt text on the image itself in the Media Library.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "return_format": "id",
+            "library": "all",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_gt_sb_side",
+            "label": "Image side",
+            "name": "image_side",
+            "aria-label": "",
+            "type": "button_group",
+            "instructions": "Which side the image sits on at desktop.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "choices": { "right": "Right", "left": "Left" },
+            "default_value": "right",
+            "return_format": "value",
+            "allow_null": 0
+        },
+        {
+            "key": "field_gt_sb_cta_text",
+            "label": "CTA text",
+            "name": "cta_text",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Leave empty to hide the button.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Find your local stockist",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_gt_sb_cta_link",
+            "label": "CTA link",
+            "name": "cta_link",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "The label above is used, not the link's own title.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "return_format": "array"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "acf/split-band"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0
+}

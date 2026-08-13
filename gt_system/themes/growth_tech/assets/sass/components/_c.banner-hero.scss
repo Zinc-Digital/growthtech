@@ -21,7 +21,12 @@
     position: relative;
     display: flex;
     align-items: center;
-    min-height: 863px;
+    // A fixed height with a variable width means the `cover` crop tightens as
+    // the screen widens, so the photo's composition creeps upward. Holding the
+    // design's 1440 x 863 ratio above that width keeps the crop identical at
+    // every size (863 / 1440 = 59.93vw). The 100vh cap stops the banner growing
+    // taller than the screen on very large monitors.
+    min-height: min(max(863px, 59.93vw), 100vh);
     padding: 173px 0 0; // clears the overlay header, then centres what is left
   }
 

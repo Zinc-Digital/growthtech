@@ -45,6 +45,18 @@
     background-color: rgba(255, 255, 255, 0.85);
     color: #000;
   }
+
+  // Secondary variant — Figma 165:1885. Black ground, white label.
+  &--dark {
+    background-color: #000;
+    color: color(white);
+
+    &:hover,
+    &:focus-visible {
+      background-color: color(white);
+      color: #000;
+    }
+  }
 }
 
 @media (max-width: $md - 1px) {

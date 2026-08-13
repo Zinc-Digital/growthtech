@@ -1,0 +1,203 @@
+// ---------------------------------------------------------------------------
+// Block: Feature Band — Figma "Rectangle 1" (165:2298) + "Frame 18" (165:2300)
+//
+// Geometry on the 1440 frame:
+//   band     1440 x 660, image with a left-to-right black gradient to 58.2%
+//   content  575 wide at x=100, y=206 within the band, gap 40
+//   tags     black chips pinned by percentage, e.g. 61.9% / 20.2%
+// ---------------------------------------------------------------------------
+
+.b-feature-band {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 660px; // Figma 165:2298
+  overflow: hidden;
+  background-color: #000; // shows through while the image loads
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  // Darkens the left half so the white copy stays legible (Figma 165:2298).
+  &__scrim {
+    position: absolute;
+    inset: 0;
+    mix-blend-mode: multiply;
+    background: linear-gradient(to right, #000 0%, rgba(35, 31, 32, 0) 58.246%);
+  }
+
+  &__inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 100px; // Figma gutter for this section
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px; // Figma 165:2300
+    max-width: 575px;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 60px; // Figma 165:2301
+    font-weight: $font-700;
+    line-height: 65px;
+    letter-spacing: -1.2px;
+    color: color(white);
+  }
+
+  &__text {
+    max-width: 539px; // Figma 165:2302
+    margin: 0;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 16px;
+    font-weight: $font-400;
+    line-height: normal;
+    color: color(white);
+  }
+
+  // -- tags ------------------------------------------------------------------
+  &__tags {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    // The chips are pinned, so the list itself must not swallow pointer events.
+    pointer-events: none;
+  }
+
+  &__tag {
+    position: absolute;
+    top: var(--tag-y, 40%);
+    left: var(--tag-x, 60%);
+    display: flex;
+    align-items: center;
+    gap: 10px; // Figma 165:2308
+    margin: 0;
+    padding: 14px 16px 14px 14px;
+    background-color: #000;
+    color: color(white);
+
+    &-icon {
+      display: block;
+      flex: 0 0 auto;
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+    }
+
+    &-label {
+      font-family: "DM Sans", #{$primary_font};
+      font-size: 14px;
+      font-weight: $font-400;
+      line-height: normal;
+      color: color(white);
+      white-space: nowrap;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Tablet — narrower gutters, tags shrink to stay on the image
+// ---------------------------------------------------------------------------
+@media (max-width: $xl - 1px) {
+  .b-feature-band {
+    min-height: 560px;
+
+    &__inner {
+      padding: 0 50px;
+    }
+
+    &__title {
+      font-size: clamp(34px, 4.6vw, 60px);
+      line-height: 1.1;
+      letter-spacing: -0.8px;
+    }
+
+    &__content {
+      gap: 30px;
+      max-width: 60%;
+    }
+
+    &__tag {
+      padding: 10px 12px;
+
+      &-icon {
+        width: 24px;
+        height: 24px;
+      }
+
+      &-label {
+        font-size: 13px;
+      }
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Mobile — copy stacks over the image and the tags drop into flow beneath it,
+// where percentage pinning would otherwise overlap the text.
+// ---------------------------------------------------------------------------
+@media (max-width: $md - 1px) {
+  .b-feature-band {
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 0;
+    padding: 60px 0 40px;
+
+    &__scrim {
+      // Straight down rather than across, so the copy sits on the darkest part.
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55) 0%, #000 88%);
+    }
+
+    &__inner {
+      padding: 0 25px;
+    }
+
+    &__content {
+      gap: 25px;
+      max-width: 100%;
+    }
+
+    &__title {
+      font-size: 32px;
+      line-height: 1.15;
+      letter-spacing: -0.6px;
+    }
+
+    &__text {
+      font-size: 14px;
+    }
+
+    &__tags {
+      position: static;
+      z-index: 2;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 30px 25px 0;
+      pointer-events: auto;
+    }
+
+    &__tag {
+      position: static;
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+  }
+}

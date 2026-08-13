@@ -1,0 +1,75 @@
+// ---------------------------------------------------------------------------
+// Editor-only styles. Compiled to assets/css/admin.css and loaded in the block
+// editor, never on the front end.
+// ---------------------------------------------------------------------------
+
+.gt-tag-map {
+  margin: 0 0 12px;
+
+  &__hint {
+    margin: 0 0 8px;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #50575e;
+  }
+
+  &__stage {
+    position: relative;
+    width: 100%;
+    // Matches the band's 1440 x 660 so positions read true while editing.
+    aspect-ratio: 1440 / 660;
+    overflow: hidden;
+    background-color: #f0f0f1;
+    border: 1px solid #c3c4c7;
+    border-radius: 3px;
+    // Stops the browser panning the page while dragging on touch devices.
+    touch-action: none;
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__empty {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    font-size: 12px;
+    text-align: center;
+    color: #646970;
+  }
+
+  &__chip {
+    position: absolute;
+    z-index: 2;
+    max-width: 60%;
+    padding: 5px 8px;
+    overflow: hidden;
+    background-color: #000;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 2px;
+    font-size: 11px;
+    line-height: 1.2;
+    color: #fff;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: grab;
+    touch-action: none;
+
+    &:focus-visible {
+      outline: 2px solid #2271b1;
+      outline-offset: 2px;
+    }
+
+    &.is-dragging {
+      cursor: grabbing;
+      opacity: 0.85;
+    }
+  }
+}
