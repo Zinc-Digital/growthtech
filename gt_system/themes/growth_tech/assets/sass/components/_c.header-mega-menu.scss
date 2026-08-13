@@ -1,0 +1,126 @@
+	.c-mega-menu {
+	  background-color: color(white);
+	  padding: 30px 0 60px;
+	  opacity: 0;
+	  visibility: hidden;
+	  position: absolute;
+	  width: 100%;
+	  left: 0;
+	  right: 0;
+	  border-bottom-left-radius: 10px;
+	  border-bottom-right-radius: 10px;
+
+	  .btn {
+	    max-width: 300px;
+	    margin: 20px auto;
+	  }
+
+	  .container {
+	    border-top: 1px solid color(black, light);
+			padding-top: 30px;
+	  }
+
+	  @keyframes close {
+	    0% {
+	      opacity: 1;
+	      visibility: visible;
+	    }
+
+	    100% {
+	      opacity: 0;
+	      visibility: hidden;
+	    }
+	  }
+
+	  @keyframes open {
+	    0% {
+	      opacity: 0;
+	      visibility: hidden;
+	    }
+
+	    1% {
+	      visibility: visible;
+	    }
+
+	    100% {
+	      opacity: 1;
+	      visibility: visible;
+	    }
+	  }
+
+	  &.open {
+	    animation: open;
+	    animation-duration: 0.2s;
+	    animation-fill-mode: forwards;
+	  }
+
+	  &.closing {
+	    animation: close;
+	    animation-duration: 0.2s;
+	    animation-fill-mode: forwards;
+	  }
+
+	  .close_menu {
+	    display: flex;
+	    justify-content: flex-end;
+	    position: relative;
+	    z-index: 2;
+	    padding-right: 25px;
+	    left: 10px;
+	    font-family: $primary_font;
+	    top: -15px;
+
+	    &:before {
+	      font-size: 20px;
+	      font-family: "Font Awesome 5 Pro";
+	      content: '\f057';
+	      display: flex;
+	      align-items: center;
+	      justify-content: center;
+	      position: absolute;
+	      height: 20px;
+	      width: 20px;
+	      right: 0;
+	    }
+
+	    &:hover {
+	      color: color(black);
+	    }
+
+	    // span {
+	    // 	display: none;
+	    // }
+	  }
+
+	  .menu {
+	    .inner {
+	      background-color: color(black, light);
+	      min-height: 210px;
+	      display: flex;
+	      flex-direction: column;
+	      height: 100%;
+	      padding: 20px 0;
+				border-radius: 8px;
+
+	      .icon {
+	        margin: 0 auto;
+	        padding: 10px 0;
+					height: 145px;
+	      }
+
+	      p {
+					padding: 10px 0;
+					text-align: center;
+					margin: 0;
+	        a {
+	          color: color(black);
+	          font-weight: $font-600;
+
+	          &:hover {
+	            color: color(black);
+	          }
+	        }
+	      }
+	    }
+	  }
+	}

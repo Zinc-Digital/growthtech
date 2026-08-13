@@ -1,0 +1,81 @@
+// Define Grid
+
+$grid-size: 12;
+$grid-padding: 15px;
+
+$xs: 599px;
+$sm: 768px;
+$md: 1024px;
+$lg: 1100px;
+$xl: 1266px;
+
+//container widths
+
+$breakpoints: (xs: $xs,
+  sm: $sm,
+  md: $md,
+  lg: $lg,
+  xl: $xl);
+$breakpoints-spacing: (xs: $grid-padding,
+  sm: $grid-padding,
+  md: $grid-padding,
+  lg: $grid-padding,
+  xl: $grid-padding);
+
+.container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+
+  @each $key,
+  $bp in $breakpoints {
+    @if $key==xs {
+      @media (max-width: $bp) {
+        max-width: 100%;
+        padding-left: 25px;
+        padding-right: 25px;
+      }
+    }
+
+    @else if $key==sm {
+      @media (min-width: $bp) {
+        max-width: 100%;
+        padding-left: 25px;
+        padding-right: 25px;
+      }
+    }
+
+    @else if $key==md {
+      @media (min-width: $bp) {
+        max-width: 100%;
+        padding-left: 25px;
+        padding-right: 25px;
+      }
+    }
+
+    @else {
+      @media (min-width: $bp) {
+        max-width: $bp;
+        padding-left: map-get($breakpoints-spacing, $key);
+        padding-right: map-get($breakpoints-spacing, $key);
+      }
+    }
+  }
+}
+
+.container-fluid {
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+
+  >.row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+// @media (max-width: $md - 1px) {
+//   .container {
+//     max-width: 715px;
+//   }
+// }

@@ -1,0 +1,67 @@
+.main-slide {
+  .slide {
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    min-height: 900px;
+
+    @media (max-width: $sm - 1px) {
+      background-position: 26%;
+      background-size: contain;
+      min-height: 370px;
+    }
+
+    @media (max-width: $md - 1px) {
+      background-position: 26%;
+      background-size: contain;
+      min-height: 415px;
+    }
+
+    .inner {
+
+      @media (max-width: $md - 1px) {
+        max-width: 100%;
+      }
+
+      h1,
+      h2,
+      span {
+        visibility: hidden;
+
+      }
+
+      p {
+        color: color(white);
+        font-size: 22px;
+        line-height: 28px;
+
+        @media (max-width: $sm - 1px) {
+          margin-bottom: 50px;
+        }
+
+      }
+    }
+  }
+}
+
+.slick-prev,
+.slick-next {
+  background-image: url('../images/icons/arrow.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 50%;
+  width: 47px;
+  height: 47px;
+  text-indent: -9999px;
+  z-index: 2;
+}
+
+.slick-next {
+  right: 2%;
+  transform: rotate(180deg);
+}
+
+.slick-prev {
+  left: 2%;
+}

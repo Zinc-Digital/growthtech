@@ -1,0 +1,71 @@
+//Fonts
+$global-font-size: 16px;
+$browser-context: 16;
+
+$primary_font: "museo-sans", sans-serif;
+
+
+$font-400: 400;
+$font-500: 500;
+$font-600: 600;
+$font-700: 700;
+$font-800: 800;
+$font-900: 900;
+
+//Colours
+$colors: (
+  white: (base: #ffffff),
+  black: (base: #0E0E0E),
+  red:  (base: #D8162A)
+);
+
+// Color Function
+@function color($color, $tone: 'base') {
+  @return map-get(map-get($colors, $color), $tone);
+}
+
+body {
+  height: 100vh;
+}
+
+// Border radius
+
+.br-15 {
+  border-radius: 15px;
+}
+
+// Overlays
+
+.blue-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(5, 66, 110, 0.7);
+}
+
+// Shadow
+
+.shadow {
+  -moz-box-shadow: 0px 3px 11px 0px rgba(0, 0, 0, 0.10);
+  -webkit-box-shadow: 0px 3px 11px 0px rgba(0, 0, 0, 0.10);
+  box-shadow: 0px 3px 11px 0px rgba(0, 0, 0, 0.10);
+}
+
+// Spacers
+
+.spacer {
+  margin-top: 90px;
+  margin-bottom: 90px;
+
+  .container {
+    border-top: 1px solid #D8D8D8;
+  }
+
+  max-width: 1136px;
+  margin-left: auto;
+  margin-right: auto;
+}

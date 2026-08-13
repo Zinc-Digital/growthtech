@@ -1,0 +1,132 @@
+@function rem($value) {
+    $remValue: ($value / 16) + rem; 
+    @return $remValue;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $primary_font;
+  font-weight: 700;
+  font-style: normal;
+  transition: 1s ease-out 0.3s;
+}
+
+h1 {
+  font-weight: $font-700;
+  margin-bottom: 30px;
+}
+
+h2 {
+  font-weight: $font-500;
+  margin-bottom: 20px;
+}
+
+h3 {
+  margin-bottom: 10px;
+}
+
+h4 {
+  margin-bottom: 10px;
+}
+
+h5 {
+  margin-bottom: 10px;
+}
+
+h6 {
+  margin-bottom: 10px;
+}
+
+/* paragraph text */
+p,
+li {
+  font-size: rem(16);
+  line-height: rem(22);
+  margin-bottom: 15px;
+  font-family: $primary_font;
+  font-weight: $font-400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+li,
+span,
+button,
+label {
+  font-size: rem(16);
+  line-height: rem(22);
+  font-weight: $font-400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: $primary_font; 
+}
+
+a:hover {
+  color: color(black);
+}
+
+ol,
+ul {
+  padding-left: 0;
+  margin-bottom: 20px;
+
+  li {
+    list-style-position: inside;
+  }
+}
+
+td,
+th {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Generic */
+
+/* weights */
+
+.standard-text {
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.light {
+  font-weight: 100;
+}
+
+.book {
+  font-weight: 300;
+}
+
+.medium {
+  font-weight: 500;
+}
+
+.semi-bold,
+.semi-bold p {
+  font-weight: 600;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+/* classes */
+
+ul.no-bullets,
+ul.no-bullets li,
+ul.list-none {
+  list-style: none;
+}
+
+.capitals {
+  text-transform: uppercase;
+}
+
+.center {
+  text-align: center;
+}

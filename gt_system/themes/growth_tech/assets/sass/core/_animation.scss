@@ -1,0 +1,14 @@
+.fade-in {
+	opacity: 0;
+	transition: 1s ease-out 0.3s;
+}
+.fade-in.animate {
+	opacity: 1;
+}
+.fade-in-fast {
+	opacity: 0;
+	transition: 0.75s ease-out;
+}
+.fade-in-fast.animate {
+	opacity: 1;
+}
