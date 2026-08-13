@@ -1,0 +1,345 @@
+// ---------------------------------------------------------------------------
+// Site footer — Figma "Frame 33" (165:2319) and "Frame 40" (165:2324)
+//
+// Geometry on the 1440 frame: 100px gutters, 1240 content.
+//   club band   1240 x 209, bottom rule, 75px padding under the text
+//   club photo  1440 x 402 behind it, fading to black at 82%
+//   columns     400 / 250 / 250 / 250, space-between, starting 72px below
+// ---------------------------------------------------------------------------
+
+$footer-gutter: 100px;
+
+.site-footer {
+  background-color: #000;
+  color: color(white);
+
+  &__inner {
+    width: 100%;
+    max-width: 1440px; // 1240 content + 2 x 100 gutter
+    margin: 0 auto;
+    padding: 0 $footer-gutter;
+  }
+
+  // -- Join the growth club --------------------------------------------------
+  &__club {
+    position: relative;
+    padding-top: 193px; // photo runs 193px above the text (Figma 165:2262)
+    overflow: hidden;
+
+    &-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+    }
+
+    // Fades the photo into the black footer below it.
+    &-scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #000 82.049%);
+    }
+
+    &-row {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 40px;
+      padding-bottom: 75px; // Figma 165:2319
+      border-bottom: 1px solid color(white);
+    }
+
+    &-text {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      max-width: 575px;
+    }
+
+    &-heading {
+      margin: 0;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 60px; // Figma 165:2321
+      font-weight: $font-700;
+      line-height: 65px;
+      letter-spacing: -1.2px;
+      color: color(white);
+    }
+
+    &-intro {
+      max-width: 539px; // Figma 165:2322
+      margin: 0;
+      font-family: "DM Sans", #{$primary_font};
+      font-size: 16px;
+      font-weight: $font-400;
+      line-height: normal;
+      color: color(white);
+    }
+  }
+
+  // -- columns ---------------------------------------------------------------
+  &__main {
+    padding: 72px 0 80px; // 4359 - 4287 = 72 above the columns
+  }
+
+  &__cols {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 30px;
+  }
+
+  &__col {
+    display: flex;
+    flex: 0 1 250px;
+    flex-direction: column;
+    gap: 40px;
+
+    &--contact {
+      flex-basis: 400px;
+    }
+
+    // The last column stacks two blocks 60px apart (Figma 165:2356).
+    &--end {
+      gap: 60px;
+    }
+  }
+
+  // Column headings and the standalone links share one type style.
+  &__heading,
+  &__major a {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 24px;
+    font-weight: $font-700;
+    line-height: 1.3;
+    letter-spacing: -0.48px;
+    color: color(white);
+  }
+
+  &__heading {
+    margin: 0;
+  }
+
+  // -- contact block ---------------------------------------------------------
+  &__contact {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+  }
+
+  &__address,
+  &__reach {
+    margin: 0;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 14px;
+    font-weight: $font-400;
+    font-style: normal;
+    line-height: 25px;
+    color: color(white);
+  }
+
+  &__reach a {
+    color: inherit;
+    text-decoration: none;
+    text-underline-offset: 3px;
+
+    &:hover,
+    &:focus-visible {
+      text-decoration: underline;
+    }
+  }
+
+  &__social {
+    display: flex;
+    gap: 10px; // Figma 165:2330
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      margin: 0;
+      line-height: 0;
+    }
+
+    // White square, black glyph — Figma 165:2331 / 2333 / 2335.
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background-color: color(white);
+      color: #000;
+      transition: background-color 0.3s ease, color 0.3s ease;
+
+      &:hover,
+      &:focus-visible {
+        background-color: rgba(255, 255, 255, 0.8);
+      }
+    }
+
+    svg {
+      display: block;
+      width: 32px;
+      height: 32px;
+    }
+
+    i {
+      font-size: 18px;
+    }
+  }
+
+  // -- link lists ------------------------------------------------------------
+  &__links,
+  &__major,
+  &__legal {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      margin: 0;
+    }
+
+    a {
+      color: color(white);
+      text-decoration: none;
+      text-underline-offset: 3px;
+
+      &:hover,
+      &:focus-visible {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; // Figma 165:2339
+
+    a {
+      font-family: "DM Sans", #{$primary_font};
+      font-size: 14px;
+      font-weight: $font-400;
+      line-height: normal;
+    }
+  }
+
+  &__major {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; // Figma 165:2357
+  }
+
+  &__legal {
+    display: flex;
+    flex-direction: column;
+    gap: 7px; // Figma 165:2361
+
+    li,
+    a {
+      font-family: "DM Sans", #{$primary_font};
+      font-size: 12px;
+      font-weight: 300; // DM Sans Light
+      line-height: normal;
+      color: rgba(255, 255, 255, 0.85);
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Tablet — two columns, tighter gutters
+// ---------------------------------------------------------------------------
+@media (max-width: $xl - 1px) {
+  .site-footer {
+    &__inner {
+      padding: 0 50px;
+    }
+
+    &__club {
+      padding-top: 140px;
+
+      &-heading {
+        font-size: clamp(38px, 4.4vw, 60px);
+        line-height: 1.1;
+      }
+    }
+
+    &__cols {
+      flex-wrap: wrap;
+      gap: 50px 40px;
+    }
+
+    &__col {
+      flex: 1 1 40%;
+
+      &--contact {
+        flex-basis: 100%;
+      }
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Mobile — single column, button drops under the text
+// ---------------------------------------------------------------------------
+@media (max-width: $md - 1px) {
+  .site-footer {
+    &__inner {
+      padding: 0 25px;
+    }
+
+    &__club {
+      padding-top: 110px;
+
+      &-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 30px;
+        padding-bottom: 45px;
+      }
+
+      &-text {
+        gap: 25px;
+      }
+
+      &-heading {
+        font-size: 38px;
+        line-height: 1.1;
+        letter-spacing: -0.8px;
+      }
+
+      &-intro {
+        font-size: 14px;
+      }
+    }
+
+    &__main {
+      padding: 45px 0 55px;
+    }
+
+    &__cols {
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    &__col {
+      flex: 1 1 auto;
+      gap: 25px;
+
+      &--end {
+        gap: 35px;
+      }
+    }
+
+    &__heading,
+    &__major a {
+      font-size: 20px;
+    }
+  }
+}

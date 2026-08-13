@@ -1,0 +1,49 @@
+{
+    "key": "group_gt_menu_item",
+    "title": "Menu Item",
+    "fields": [
+        {
+            "key": "field_gt_menu_item_image",
+            "label": "Mega menu image",
+            "name": "mega_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Shown on the mega menu tile for this item. Leave empty to fall back to the linked page's featured image.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "preview_size": "thumbnail"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "nav_menu_item",
+                "operator": "==",
+                "value": "all"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0
+}

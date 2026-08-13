@@ -1,0 +1,178 @@
+{
+    "key": "group_gt_home_banner",
+    "title": "Hero Banner",
+    "fields": [
+        {
+            "key": "field_gt_hero_slides",
+            "label": "Banner slides",
+            "name": "hero_slides",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Add one row per banner. With more than one row the banner becomes an auto-playing slider.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "field_gt_hero_heading",
+            "button_label": "Add banner",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_gt_hero_image",
+                    "label": "Background image",
+                    "name": "image",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "Landscape. Shown full-bleed behind the text, so keep the subject to the right.",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "id",
+                    "library": "all",
+                    "preview_size": "medium",
+                    "parent_repeater": "field_gt_hero_slides"
+                },
+                {
+                    "key": "field_gt_hero_heading",
+                    "label": "Heading",
+                    "name": "heading",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "Great plants aren't born. They're grown.",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_gt_hero_slides"
+                },
+                {
+                    "key": "field_gt_hero_text",
+                    "label": "Intro text",
+                    "name": "text",
+                    "aria-label": "",
+                    "type": "textarea",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "rows": 3,
+                    "placeholder": "",
+                    "new_lines": "br",
+                    "parent_repeater": "field_gt_hero_slides"
+                },
+                {
+                    "key": "field_gt_hero_link",
+                    "label": "Button",
+                    "name": "link",
+                    "aria-label": "",
+                    "type": "link",
+                    "instructions": "Leave empty to hide the button.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array",
+                    "parent_repeater": "field_gt_hero_slides"
+                },
+                {
+                    "key": "field_gt_hero_slide_duration",
+                    "label": "Duration override",
+                    "name": "duration",
+                    "aria-label": "",
+                    "type": "number",
+                    "instructions": "Optional. Leave empty to use the banner's default duration below.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "min": 1,
+                    "max": 60,
+                    "step": 0.5,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "seconds",
+                    "parent_repeater": "field_gt_hero_slides"
+                }
+            ]
+        },
+        {
+            "key": "field_gt_hero_duration",
+            "label": "Slide duration",
+            "name": "slide_duration",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "How long each slide stays on screen before advancing. Only applies when there is more than one banner.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 6,
+            "min": 1,
+            "max": 60,
+            "step": 0.5,
+            "placeholder": "6",
+            "prepend": "",
+            "append": "seconds"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "page-templates/page-home.php"
+            }
+        ],
+        [
+            {
+                "param": "page_type",
+                "operator": "==",
+                "value": "front_page"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "acf_after_title",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0
+}

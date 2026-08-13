@@ -3,8 +3,10 @@
 get_header();
 ?>
 
+<?php get_template_part( 'template-parts/banner', 'hero' ); ?>
 
-<?php if(have_posts()): 
+<main class="page-wrapper">
+<?php if(have_posts()):
 		while(have_posts()): the_post(); ?>
 <?php the_content(); ?>
 <?php endwhile;

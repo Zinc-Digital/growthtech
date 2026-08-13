@@ -1,0 +1,342 @@
+// ---------------------------------------------------------------------------
+// Hero banner — Figma "Frame 62" (165:2267) over "Rectangle 9" (165:2263)
+//
+// Geometry, desktop (1440 frame):
+//   banner  1440 x 863 at 0,0 — full bleed, square edges (165:2263)
+//   content 735 wide, heading 90/100, body 547, button 242 x 49 (165:2267)
+// ---------------------------------------------------------------------------
+
+.banner-hero {
+  position: relative;
+  overflow: hidden;
+
+  &__shape {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  // -- slides ---------------------------------------------------------------
+  &__slide {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 863px;
+    padding: 173px 0 0; // clears the overlay header, then centres what is left
+  }
+
+  &__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  // Two multiply gradients, straight from Figma (165:2263).
+  &__scrim {
+    position: absolute;
+    inset: 0;
+    mix-blend-mode: multiply;
+    background:
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 32.445%),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 60.205%);
+  }
+
+  &__container {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: flex-end;
+    gap: 40px;
+    width: 100%;
+    max-width: 1440px; // 1340 content + 2 x 50 gutter
+    margin: 0 auto;
+    padding: 0 50px;
+  }
+
+  &__content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 25px; // Figma 165:2267
+    min-width: 0;
+    max-width: 735px; // Figma 165:2267
+  }
+
+  // -- type ------------------------------------------------------------------
+  &__title {
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 90px; // Figma 165:2268
+    font-weight: $font-700;
+    line-height: 100px;
+    letter-spacing: -1.8px;
+    color: color(white);
+  }
+
+  &__text {
+    max-width: 547px; // Figma 165:2269
+    margin: 0;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 16px;
+    font-weight: $font-400;
+    line-height: normal; // Figma leading-[normal] -> 42px over two lines
+    color: color(white);
+  }
+
+  // -- call to action --------------------------------------------------------
+  // Figma 165:2270 -> a flat white rectangle, square corners, label then arrow.
+  &__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px; // Figma I165:2270;165:1905
+    height: 49px;
+    padding: 0 20px;
+    background-color: color(white);
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 15px;
+    font-weight: $font-400;
+    line-height: normal;
+    color: #000;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    &-arrow {
+      display: block;
+      flex: 0 0 auto;
+      width: 21px;
+      height: 18px;
+      transition: transform 0.3s ease;
+    }
+
+    // No hover variant exists for this component in the file; this follows the
+    // inversion used by the older Primary button (6:56 hover).
+    &:hover,
+    &:focus-visible {
+      background-color: #000;
+      color: color(white);
+
+      .banner-hero__cta-arrow {
+        transform: translateX(4px);
+      }
+    }
+  }
+
+  // -- slick -----------------------------------------------------------------
+  // Slides are flex, so slick's float-based track needs help to keep them equal
+  // height and to stop the un-initialised markup stacking on first paint.
+  &__slider--multi:not(.slick-initialized) {
+    .banner-hero__slide + .banner-hero__slide {
+      display: none;
+    }
+  }
+
+  // slick-theme.css ships `.slick-slider { margin-bottom: 30px }`, which would
+  // make the banner 893 tall instead of the designed 863.
+  .slick-slider {
+    margin-bottom: 0;
+  }
+
+  .slick-list,
+  .slick-track {
+    height: 100%;
+  }
+
+  .slick-slide {
+    height: auto;
+
+    > div {
+      height: 100%;
+    }
+  }
+
+  // -- progression indicator (Figma 165:2271) --------------------------------
+  // Each slide is a 15x15 square: black once seen, white/25% while upcoming.
+  // The active slide expands into an 80x3 bar that fills black as the autoplay
+  // timer runs. 10px gaps, 180px overall for five slides.
+  &__dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 150px;
+    z-index: 3;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 50px;
+  }
+
+  .slick-dots {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      width: 15px;
+      height: 15px;
+      margin: 0;
+      line-height: 0;
+      transition: width 0.3s ease, height 0.3s ease;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      overflow: hidden;
+      text-indent: -9999px;
+      background-color: rgba(255, 255, 255, 0.25);
+      border: 0;
+      border-radius: 0;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    // Slides already shown.
+    li.is-past button {
+      background-color: #000;
+    }
+
+    // Active slide: the filling bar.
+    li.slick-active {
+      width: 80px;
+      height: 3px;
+
+      button {
+        position: relative;
+        background-color: color(white); // unfilled track
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          width: 0;
+          background-color: #000;
+          animation: gt-dot-progress var(--gt-autoplay, 6000ms) linear forwards;
+        }
+      }
+    }
+
+    // Paused (hover/focus) — hold the bar where it is.
+    li.slick-active button::after {
+      animation-play-state: running;
+    }
+  }
+
+  &.is-paused .slick-dots li.slick-active button::after {
+    animation-play-state: paused;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Tablet
+// ---------------------------------------------------------------------------
+@media (max-width: $xl - 1px) {
+  .banner-hero {
+    &__container {
+      padding: 0 25px;
+    }
+
+    &__title {
+      font-size: clamp(44px, 5.6vw, 80px);
+      line-height: 1.12;
+      letter-spacing: -1.2px;
+    }
+
+    &__dots {
+      padding: 0 25px;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Mobile — centred content (Figma 40:1006)
+// ---------------------------------------------------------------------------
+@media (max-width: $md - 1px) {
+  .banner-hero {
+    &__slide {
+      min-height: min(863px, 92vh);
+      padding: 102px 0 0; // mobile header height
+    }
+
+    &__container {
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      padding: 0 50px; // Figma 40:1011
+    }
+
+    &__content {
+      align-items: center;
+      gap: 25px;
+      max-width: 100%;
+      text-align: center;
+    }
+
+    &__title {
+      font-size: 50px;
+      line-height: 55px;
+      letter-spacing: -1px;
+    }
+
+    &__text {
+      font-size: 14px;
+    }
+
+    // Scaled from the desktop button; the mobile frame still shows the older
+    // pill, so this keeps the new flat treatment and only reduces the metrics.
+    &__cta {
+      height: 44px;
+      padding: 0 18px;
+      font-size: 13px;
+
+      &-arrow {
+        width: 19px;
+        height: 16px;
+      }
+    }
+
+    &__dots {
+      bottom: 40px;
+      padding: 0 25px;
+    }
+
+    .slick-dots {
+      justify-content: center;
+    }
+  }
+}
+
+@keyframes gt-dot-progress {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+// Without autoplay there is no timer to visualise, so show the bar filled.
+@media (prefers-reduced-motion: reduce) {
+  .banner-hero .slick-dots li.slick-active button::after {
+    width: 100%;
+    animation: none;
+  }
+
+  .banner-hero__cta,
+  .banner-hero__cta-arrow,
+  .banner-hero .slick-dots button {
+    transition: none;
+  }
+}

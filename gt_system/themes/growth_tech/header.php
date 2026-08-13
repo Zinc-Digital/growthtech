@@ -1,65 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html <?php language_attributes(); ?>>
 
-<head <?php language_attributes(); ?>>
+<head>
   <meta charset="<?php bloginfo( 'charset' ); ?>" />
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <?php wp_head(); ?>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!--Replace this with theme font if using Google 
-		<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap" rel="stylesheet">
-	-->
 
   <script src="https://kit.fontawesome.com/ef400fc0cd.js" crossorigin="anonymous"></script>
 
+  <?php wp_head(); ?>
 </head>
 
-<body <?php body_class(); ?>>
+<body <?php body_class( gt_header_is_overlay() ? 'has-overlay-header' : '' ); ?>>
+  <?php wp_body_open(); ?>
 
-  <?php $logo = get_field('logo', 'option');  ?>
+  <?php
+  $gt_logo    = gt_header_logo();
+  $gt_overlay = gt_header_is_overlay();
+  ?>
 
-  <!-- Desktop header -->
-  <header class="header-desktop">
-    <div class="container d-flex flex-wrap align-center">
-      <a href="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto">
-        <?php  $logo_url = $logo['url']; 	$logo_alt = $logo['alt']; ?>
-        <img class="logo" src="<?php echo esc_html($logo_url); ?>" alt="<?php echo esc_attr($logo_alt); ?>" />
-      </a>
+  <div class="site-header-outer <?php echo $gt_overlay ? 'site-header-outer--overlay' : ''; ?>" data-header-outer>
+    <header class="site-header <?php echo $gt_overlay ? 'site-header--overlay' : ''; ?>" data-header>
+      <div class="site-header__inner">
 
-      <nav class="primary d-flex">
-        <?php wp_nav_menu(array(
-				'theme_location'	=> 'header',
-				'container'			=> false,
-				'menu_class'		=> 'show-sub-menus'
-			));?>
-      </nav>
-    </div>
-  </header>
+        <?php gt_render_desktop_nav( 'header', 'left' ); ?>
 
-  <!-- Mobile header -->
-  <header class="header-mobile">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-        <div class="mobile_logo">
-          <a href="<?php echo home_url(); ?>">
-            <?php $logo_url = $logo['url']; $logo_alt = $logo['alt']; ?>
-            <img class="logo" src="<?php echo esc_html($logo_url); ?>" alt="<?php echo esc_attr($logo_url); ?>" />
-          </a>
+        <a class="site-header__logo" href="<?php echo esc_url( home_url( '/' ) ); ?>"
+          aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+          <img src="<?php echo esc_url( $gt_logo['url'] ); ?>" alt="<?php echo esc_attr( $gt_logo['alt'] ); ?>"
+            width="175" height="97" />
+        </a>
+
+        <div class="site-header__end">
+          <?php gt_render_desktop_nav( 'header_secondary', 'right' ); ?>
+
+          <div class="site-header__search">
+            <?php get_search_form(); ?>
+          </div>
         </div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+
+        <button type="button" class="site-header__burger" data-nav-open aria-expanded="false"
+          aria-controls="gt-mobile-nav">
+          <span></span>
+          <span class="screen-reader-text"><?php esc_html_e( 'Menu', 'gt' ); ?></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <?php wp_nav_menu(array(
-				'theme_location'	=> 'header_mobile',
-				'container'			=> false,
-				'depth'				=> 2
-			)); ?>
-        </div>
+
       </div>
-    </nav>
-  </header>
+    </header>
+  </div>
+
+  <div class="gt-mega-scrim" data-mega-scrim aria-hidden="true"></div>
+
+  <!-- Mobile slide-in panel -->
+  <div class="site-nav-mobile" id="gt-mobile-nav" data-mobile-nav>
+    <div class="site-nav-mobile__backdrop" data-nav-close></div>
+
+    <div class="site-nav-mobile__panel" role="dialog" aria-modal="true"
+      aria-label="<?php esc_attr_e( 'Menu', 'gt' ); ?>">
+      <button type="button" class="site-nav-mobile__close" data-nav-close>
+        <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/icons/close.svg' ); ?>" alt=""
+          width="21" height="21" />
+        <span class="screen-reader-text"><?php esc_html_e( 'Close menu', 'gt' ); ?></span>
+      </button>
+
+      <div class="site-nav-mobile__search">
+        <?php get_search_form(); ?>
+      </div>
+
+      <?php gt_render_mobile_nav(); ?>
+    </div>
+  </div>

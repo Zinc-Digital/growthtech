@@ -1,131 +1,557 @@
-.header-desktop,
-.header-mobile {
-  background: transparent;
-  padding: 30px 0;
+// ---------------------------------------------------------------------------
+// Site header
+//
+// Figma "Growth Technology" — three desktop states, all on a 1440 frame with
+// 50px gutters (1340 content):
+//   * Homepage (1:2)              transparent over the hero, white text
+//   * Homepage Menu Hover (54:1364) white bar, 173 tall, 175x97 logo
+//   * Homepage - Menu on Scroll (40:826) white bar, 120 tall, 145x80 logo
+// Mobile comes from "Mobile Menu" (54:839) — burger + slide-in panel.
+// ---------------------------------------------------------------------------
 
-  @media (max-width: $sm - 1px) {
-    padding-top: 0;
+$header-ink: #000;
+$header-line: rgba(35, 31, 32, 0.1);
+$header-muted: rgba(35, 31, 32, 0.35);
+$header-tint: rgba(35, 31, 32, 0.05);
+$header-font: "DM Sans", #{$primary_font};
+
+$header-pad-y: 38px; // 173 total - 97 logo = 76 / 2
+$header-pad-y-stuck: 20px; // Figma 40:826
+$header-gutter: 50px;
+
+// Outer element stays in the document so the sticky header has something to
+// hand its height back to. JS writes an inline height here once it goes fixed.
+.site-header-outer {
+  position: relative;
+  z-index: 900;
+
+  // Over-hero pages: lift the whole thing out of flow so the banner starts at
+  // the very top of the viewport and the header floats on it.
+  &--overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+}
+
+.site-header {
+  width: 100%;
+  background-color: color(white);
+  border-bottom: 1px solid $header-line;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: $header-pad-y $header-gutter;
+    transition: padding 0.3s ease;
   }
 
-  &.sticky {
-    background-color: color(white);
-    position: fixed;
-    z-index: 999;
-    padding: 30px 0;
+  // -- logo ----------------------------------------------------------------
+  &__logo {
+    display: block;
+    flex: 0 0 auto;
+    line-height: 0;
 
-    .logo {
-      display: none;
-    }
-
-    .logo.dark {
+    img {
       display: block;
+      width: 175px;
+      height: 97px;
+      object-fit: contain;
+      transition: width 0.3s ease, height 0.3s ease;
+    }
+  }
+
+  // -- navigation ----------------------------------------------------------
+  // NB: every rule here is scoped to direct children. The mega menu panel is a
+  // descendant of a nav <li>, so unscoped `ul`/`li`/`a` rules would leak into
+  // it and clobber the grid (and paint its links white in overlay state).
+  &__nav {
+    display: flex;
+    min-width: 0;
+
+    > ul {
+      display: flex;
+      align-items: center;
+      gap: 41px; // Figma 54:1365
+      list-style: none;
+      margin: 0;
+      padding: 0;
     }
 
-    li {
-      a {
-        color: color(black);
+    // Deliberately not positioned: the mega menu is absolute against
+    // .site-header so it can span the full width of the bar.
+    > ul > li {
+      margin: 0;
+    }
+
+    > ul > li > a {
+      display: block;
+      font-family: $header-font;
+      font-size: 16px;
+      font-weight: $font-500;
+      line-height: normal;
+      color: $header-ink;
+      white-space: nowrap;
+      text-decoration: none;
+      text-underline-offset: 4px;
+      transition: color 0.3s ease;
+    }
+
+    // Hover + current page both underline — Figma "Menu Hover" (54:1366)
+    > ul > li > a:hover,
+    > ul > li > a:focus-visible,
+    > ul > li.current-menu-item > a,
+    > ul > li.current-menu-ancestor > a,
+    > ul > li.is-open > a {
+      text-decoration: underline;
+    }
+
+    // Left group is 542 wide and right-aligned against the logo (Figma 54:1365)
+    &--left {
+      flex: 1 1 0;
+
+      > ul {
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+
+    // Right group sits at its natural width, the pill takes the slack.
+    &--right {
+      flex: 0 0 auto;
+
+      > ul {
+        gap: 40px; // Figma 54:1371
       }
     }
   }
 
-  li {
-    font-family: $primary_font;
-    list-style: none;
-    margin: 0 10px;
+  // Right-hand cluster: secondary links then the search pill.
+  &__end {
+    display: flex;
+    flex: 1 1 0;
+    align-items: center;
+    gap: 30px;
+    min-width: 0;
+  }
 
-    i,
-    span {
-      color: color(black);
-    }
+  &__search {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 304px; // Figma 11:97
+    margin-left: auto; // keep the pill flush with the 50px gutter
+  }
 
-    i {
-      margin-right: 10px;
-    }
+  // -- burger (mobile only) -------------------------------------------------
+  &__burger {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
 
     span {
       position: relative;
-      left: -20px;
-    }
-  }
-}
+      display: block;
+      width: 25px;
+      height: 2px;
+      background-color: $header-ink;
+      transition: background-color 0.3s ease;
 
-@media (max-width: $lg - 1px) {
-  .header-desktop {
-    display: none;
-  }
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 25px;
+        height: 2px;
+        background-color: inherit;
+      }
 
-  .header-mobile {
-    background-color: color(white);
-    nav {
-        background-color: color(white);
-        .container {
-            padding-right: 10px;
-        }
-    }
-    img.logo {
-        max-width: 180px;
-        padding: 10px 0;
-    }
-    @media (max-width: 599px) {
-        img.logo {
-            max-width: 100px;
-            padding: 0;
-        }
-    }
-    ul {
-        margin-bottom: 0;
-        margin-top: 15px;
-    }
-    .sub-menu {
-        display: none;
-        &.active {
-            display: block;
-        }
-    }
-  }
-}
+      &::before {
+        top: -8px;
+      }
 
-@media (min-width: $lg) {
-  .header-mobile {
-    display: none;
-  }
-
-  .header-desktop {
-    ul {
-      display: flex;
-      flex-wrap: wrap;
-      margin-bottom: 0;
-      align-items: center;
-
-      li {
-        margin-bottom: 0;
-        &.btn{
-          border-radius: 30px;
-          a {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            border-radius: 30px;
-            padding: 5px 14px;
-            font-weight: 500;
-            font-size: 16px;
-            line-height: 1.215;
-            letter-spacing: 0;
-            text-decoration: none;
-            transition: background-color .3s ease;
-            white-space: nowrap;
-          }
-          &.button--primary {
-
-          }
-          &.button--secondary {
-
-          }
-        }
+      &::after {
+        top: 8px;
       }
     }
-    img.logo {
-      max-width: 204px;
+  }
+
+  // -- transparent-over-hero state -----------------------------------------
+  &--overlay:not(.is-stuck) {
+    background-color: transparent;
+    border-bottom-color: transparent;
+
+    .site-header__nav > ul > li > a {
+      color: color(white);
+    }
+
+    .site-header__burger span {
+      background-color: color(white);
+    }
+
+    // Over the hero the pill is solid white with no outline (Figma 11:97)
+    .search-pill {
+      border-color: transparent;
     }
   }
+
+  // -- stuck state (Figma 40:826) ------------------------------------------
+  &.is-stuck {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 900;
+    background-color: color(white);
+    border-bottom: 2px solid $header-line;
+    box-shadow: 0 3px 11px rgba(0, 0, 0, 0.06);
+    animation: gt-header-drop 0.35s ease forwards;
+
+    .site-header__inner {
+      padding-top: $header-pad-y-stuck;
+      padding-bottom: $header-pad-y-stuck;
+    }
+
+    .site-header__logo img {
+      width: 145px;
+      height: 80px;
+    }
+
+    .site-header__nav > ul > li > a {
+      color: $header-ink;
+    }
+  }
+}
+
+@keyframes gt-header-drop {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+// Users who prefer reduced motion get the state change without the slide.
+@media (prefers-reduced-motion: reduce) {
+  .site-header,
+  .site-header__inner,
+  .site-header__logo img {
+    transition: none;
+  }
+
+  .site-header.is-stuck {
+    animation: none;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Search pill — shared by header, mega menu and mobile panel
+// ---------------------------------------------------------------------------
+.search-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 49px;
+  padding-left: 16px;
+  background-color: color(white);
+  border: 1px solid $header-line;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:focus-within {
+    border-color: $header-muted;
+    box-shadow: 0 0 0 3px $header-tint;
+  }
+
+  &__submit {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+
+    img {
+      display: block;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  &__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+    padding: 0 16px 0 0;
+    border: 0;
+    background: none;
+    font-family: $header-font;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: normal;
+    color: $header-ink;
+    appearance: none;
+
+    &::placeholder {
+      color: $header-muted;
+      opacity: 1;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Condensed desktop — nav still fits, spacing tightens
+// ---------------------------------------------------------------------------
+@media (max-width: $xl - 1px) and (min-width: $md) {
+  .site-header {
+    &__inner {
+      gap: 24px;
+      padding-left: 25px;
+      padding-right: 25px;
+    }
+
+    &__nav ul {
+      gap: 26px;
+    }
+
+    &__nav--right ul {
+      gap: 26px;
+    }
+
+    &__end {
+      gap: 20px;
+    }
+
+    &__logo img {
+      width: 130px;
+      height: 72px;
+    }
+
+    &.is-stuck .site-header__logo img {
+      width: 112px;
+      height: 62px;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Mobile / tablet — burger + slide-in panel (Figma 54:839)
+// ---------------------------------------------------------------------------
+@media (max-width: $md - 1px) {
+  .site-header {
+    &__inner {
+      gap: 15px;
+      padding: 20px 25px;
+    }
+
+    &__nav,
+    &__end {
+      display: none;
+    }
+
+    &__burger {
+      display: flex;
+      order: 3;
+    }
+
+    &__logo {
+      order: 2;
+      margin: 0 auto;
+
+      img {
+        width: 111px; // Figma 40:1009
+        height: 62px;
+      }
+    }
+
+    &.is-stuck .site-header__logo img {
+      width: 100px;
+      height: 56px;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Mobile slide-in panel
+// ---------------------------------------------------------------------------
+.site-nav-mobile {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  visibility: hidden;
+  pointer-events: none;
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(35, 31, 32, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &__panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 30px; // Figma 54:1000
+    width: min(85vw, 340px);
+    height: 100%;
+    padding: 41px 25px 40px;
+    overflow-y: auto;
+    background-color: color(white);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  &__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 21px;
+    height: 21px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+
+    img {
+      display: block;
+      width: 21px;
+      height: 21px;
+    }
+  }
+
+  &__search {
+    width: 100%;
+  }
+
+  &.is-open {
+    visibility: visible;
+    pointer-events: auto;
+
+    .site-nav-mobile__backdrop {
+      opacity: 1;
+    }
+
+    .site-nav-mobile__panel {
+      transform: translateX(0);
+    }
+  }
+
+  // -- nav list ------------------------------------------------------------
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    margin: 0;
+  }
+
+  a {
+    font-family: $header-font;
+    font-size: 16px;
+    font-weight: $font-500;
+    color: $header-ink;
+    text-decoration: none;
+  }
+
+  // Parent row: label + chevron toggle
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+
+    img {
+      display: block;
+      width: 14px;
+      height: 8px;
+      transition: transform 0.3s ease;
+    }
+  }
+
+  // Sub-menu — grey rounded card (Figma 54:980)
+  .sub-menu {
+    display: none;
+    gap: 20px;
+    margin-top: 15px;
+    padding: 20px 25px;
+    background-color: $header-tint;
+    border-radius: 10px;
+
+    a {
+      font-size: 14px;
+    }
+
+    // "All Products" sits first and heavier
+    .gt-all-link a {
+      font-weight: 900;
+    }
+  }
+
+  li.is-open {
+    > .site-nav-mobile__row .site-nav-mobile__toggle img {
+      transform: rotate(180deg);
+    }
+
+    > .sub-menu {
+      display: flex;
+    }
+  }
+}
+
+// Lock the page behind the open panel.
+body.gt-nav-open {
+  overflow: hidden;
+}
+
+// Screen-reader-only helper (used by the search label).
+.screen-reader-text {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

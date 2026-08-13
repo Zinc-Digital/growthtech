@@ -1,0 +1,68 @@
+// ---------------------------------------------------------------------------
+// Flat button — Figma component 165:1905
+//
+// A white rectangle with square corners: label, 10px gap, then the arrow.
+// Used by the hero CTA and the "Join the growth club" band.
+// ---------------------------------------------------------------------------
+
+.btn-flat {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 49px;
+  padding: 0 20px;
+  background-color: color(white);
+  font-family: "DM Sans", #{$primary_font};
+  font-size: 15px;
+  font-weight: $font-400;
+  line-height: normal;
+  color: #000;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &__arrow {
+    display: block;
+    flex: 0 0 auto;
+    width: 21px;
+    height: 18px;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover,
+  &:focus-visible {
+    background-color: #000;
+    color: color(white);
+
+    .btn-flat__arrow {
+      transform: translateX(4px);
+    }
+  }
+
+  // On a dark ground the hover inverts the other way round.
+  &--on-dark:hover,
+  &--on-dark:focus-visible {
+    background-color: rgba(255, 255, 255, 0.85);
+    color: #000;
+  }
+}
+
+@media (max-width: $md - 1px) {
+  .btn-flat {
+    height: 44px;
+    padding: 0 18px;
+    font-size: 13px;
+
+    &__arrow {
+      width: 19px;
+      height: 16px;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-flat,
+  .btn-flat__arrow {
+    transition: none;
+  }
+}

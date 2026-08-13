@@ -25,7 +25,12 @@ $colors: (
 }
 
 body {
-  height: 100vh;
+  // min-height, not height: with `overflow-x: hidden` from the reset, a fixed
+  // 100vh height turns <body> into its own scroll container, so the document
+  // never scrolls and window scroll events never fire (this broke the sticky
+  // header). min-height keeps the full-height intent and restores normal
+  // document scrolling.
+  min-height: 100vh;
 }
 
 // Border radius

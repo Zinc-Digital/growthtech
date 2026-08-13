@@ -1,0 +1,140 @@
+{
+    "key": "group_gt_footer",
+    "title": "Footer",
+    "fields": [
+        {
+            "key": "field_gt_footer_tab_club",
+            "label": "Join the growth club",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "The band above the footer. It can be hidden on individual pages from the page editor.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_gt_club_heading",
+            "label": "Heading",
+            "name": "club_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Join the growth club.",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_gt_club_link",
+            "label": "Button",
+            "name": "club_link",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "Leave empty to hide the button.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "return_format": "array"
+        },
+        {
+            "key": "field_gt_club_text",
+            "label": "Intro text",
+            "name": "club_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 3,
+            "placeholder": "",
+            "new_lines": "br"
+        },
+        {
+            "key": "field_gt_club_image",
+            "label": "Background image",
+            "name": "club_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Fades to black at the bottom so it blends into the footer.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "return_format": "id",
+            "library": "all",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_gt_footer_tab_details",
+            "label": "Footer details",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_gt_footer_address",
+            "label": "Address",
+            "name": "address",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "One line per line, as it should appear.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 5,
+            "placeholder": "Growth Technology Ltd.\nGreat Western Way\nTaunton\nSomerset\nTA2 6BX",
+            "new_lines": ""
+        },
+        {
+            "key": "field_gt_footer_credit",
+            "label": "Credit line",
+            "name": "footer_credit",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Shown under the copyright. The copyright line itself is generated automatically.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Website by Zinc Digital",
+            "prepend": "",
+            "append": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "theme-general-settings"
+            }
+        ]
+    ],
+    "menu_order": 1,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0
+}

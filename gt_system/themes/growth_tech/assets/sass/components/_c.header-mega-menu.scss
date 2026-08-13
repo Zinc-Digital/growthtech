@@ -1,126 +1,207 @@
-	.c-mega-menu {
-	  background-color: color(white);
-	  padding: 30px 0 60px;
-	  opacity: 0;
-	  visibility: hidden;
-	  position: absolute;
-	  width: 100%;
-	  left: 0;
-	  right: 0;
-	  border-bottom-left-radius: 10px;
-	  border-bottom-right-radius: 10px;
+// ---------------------------------------------------------------------------
+// Header mega menu — Figma "Homepage Menu Hover" panel (54:1606)
+//
+// Drops out of the header on hover/focus of a top-level item that has children.
+// White panel, 50px gutters, 20px top / 50px bottom padding, five product
+// tiles on a 25px gap.
+// ---------------------------------------------------------------------------
 
-	  .btn {
-	    max-width: 300px;
-	    margin: 20px auto;
-	  }
+.c-mega-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  padding: 20px $header-gutter 50px;
+  background-color: color(white);
+  border-bottom: 1px solid $header-line;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
 
-	  .container {
-	    border-top: 1px solid color(black, light);
-			padding-top: 30px;
-	  }
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 40px; // Figma 54:1605
+    width: 100%;
+    max-width: 1340px;
+    margin: 0 auto;
+  }
 
-	  @keyframes close {
-	    0% {
-	      opacity: 1;
-	      visibility: visible;
-	    }
+  &__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 25px;
+  }
 
-	    100% {
-	      opacity: 0;
-	      visibility: hidden;
-	    }
-	  }
+  &__title {
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 35px;
+    font-weight: $font-700;
+    line-height: 1.2;
+    letter-spacing: -0.7px;
+    color: $header-ink;
+  }
 
-	  @keyframes open {
-	    0% {
-	      opacity: 0;
-	      visibility: hidden;
-	    }
+  &__all {
+    flex: 0 0 auto;
+    font-family: $header-font;
+    font-size: 16px;
+    font-weight: $font-500;
+    color: $header-ink;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    white-space: nowrap;
+  }
 
-	    1% {
-	      visibility: visible;
-	    }
+  // -- product tiles --------------------------------------------------------
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 25px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
 
-	    100% {
-	      opacity: 1;
-	      visibility: visible;
-	    }
-	  }
+  &__item {
+    margin: 0;
+  }
 
-	  &.open {
-	    animation: open;
-	    animation-duration: 0.2s;
-	    animation-fill-mode: forwards;
-	  }
+  &__link {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    text-decoration: none;
 
-	  &.closing {
-	    animation: close;
-	    animation-duration: 0.2s;
-	    animation-fill-mode: forwards;
-	  }
+    &:hover,
+    &:focus-visible {
+      .c-mega-menu__thumb {
+        background-color: rgba(35, 31, 32, 0.09);
+      }
 
-	  .close_menu {
-	    display: flex;
-	    justify-content: flex-end;
-	    position: relative;
-	    z-index: 2;
-	    padding-right: 25px;
-	    left: 10px;
-	    font-family: $primary_font;
-	    top: -15px;
+      .c-mega-menu__label {
+        text-decoration: underline;
+      }
+    }
+  }
 
-	    &:before {
-	      font-size: 20px;
-	      font-family: "Font Awesome 5 Pro";
-	      content: '\f057';
-	      display: flex;
-	      align-items: center;
-	      justify-content: center;
-	      position: absolute;
-	      height: 20px;
-	      width: 20px;
-	      right: 0;
-	    }
+  &__thumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 200px; // Figma 54:1530
+    padding: 20px;
+    background-color: $header-tint;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
 
-	    &:hover {
-	      color: color(black);
-	    }
+    img {
+      display: block;
+      width: auto;
+      max-width: 100%;
+      height: 100%;
+      max-height: 168px; // 200 - 2 * 16 breathing room, keeps the bottle inset
+      object-fit: contain;
+    }
+  }
 
-	    // span {
-	    // 	display: none;
-	    // }
-	  }
+  &__label {
+    font-family: $header-font;
+    font-size: 16px;
+    font-weight: $font-700;
+    line-height: normal;
+    color: $header-ink;
+    text-align: center;
+    text-underline-offset: 4px;
+  }
 
-	  .menu {
-	    .inner {
-	      background-color: color(black, light);
-	      min-height: 210px;
-	      display: flex;
-	      flex-direction: column;
-	      height: 100%;
-	      padding: 20px 0;
-				border-radius: 8px;
+  // -- open state -----------------------------------------------------------
+  &.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
 
-	      .icon {
-	        margin: 0 auto;
-	        padding: 10px 0;
-					height: 145px;
-	      }
+// The panel hangs off the header, so the header needs to be the containing
+// block and must not clip it.
+.site-header {
+  position: relative;
+  overflow: visible;
+}
 
-	      p {
-					padding: 10px 0;
-					text-align: center;
-					margin: 0;
-	        a {
-	          color: color(black);
-	          font-weight: $font-600;
+// While a panel is open the header always reads as the solid white bar,
+// even when it is still sitting over the hero (Figma 54:1364).
+.site-header.has-mega-open:not(.is-stuck) {
+  background-color: color(white);
+  border-bottom-color: $header-line;
 
-	          &:hover {
-	            color: color(black);
-	          }
-	        }
-	      }
-	    }
-	  }
-	}
+  .site-header__nav > ul > li > a {
+    color: $header-ink;
+  }
+
+  .search-pill {
+    border-color: $header-line;
+  }
+
+  .site-header__burger span {
+    background-color: $header-ink;
+  }
+}
+
+// Dim the page under an open panel — Figma shows a 75% black wash.
+.gt-mega-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 800;
+  background-color: rgba(35, 31, 32, 0.75);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s;
+
+  &.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@media (max-width: $xl - 1px) {
+  .c-mega-menu {
+    padding-left: 25px;
+    padding-right: 25px;
+
+    &__title {
+      font-size: 28px;
+    }
+
+    &__thumb {
+      height: 160px;
+
+      img {
+        max-height: 132px;
+      }
+    }
+  }
+}
+
+// Mega menu is desktop-only; mobile uses the accordion in the slide-in panel.
+@media (max-width: $md - 1px) {
+  .c-mega-menu,
+  .gt-mega-scrim {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .c-mega-menu,
+  .gt-mega-scrim {
+    transition: none;
+  }
+}
