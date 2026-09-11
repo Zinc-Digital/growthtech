@@ -9,6 +9,7 @@
 !/.gitignore
 !/README.md
 !/gt_system
+!/docs
 
 # 2. Inside gt_system, keep only themes (drops plugins, languages, uploads, upgrade)
 /gt_system/*
