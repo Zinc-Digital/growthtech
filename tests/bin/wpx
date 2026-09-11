@@ -1,0 +1,9 @@
+#!/bin/sh
+# WP-CLI against the MAMP site: MAMP's PHP + MySQL socket + site URL.
+# Usage: tests/bin/wpx <wp args>
+exec /Applications/MAMP/bin/php/php8.3.30/bin/php \
+  -d mysqli.default_socket=/Applications/MAMP/tmp/mysql/mysql.sock \
+  -d error_reporting="E_ALL&~E_DEPRECATED" \
+  /opt/homebrew/bin/wp \
+  --path="$(cd "$(dirname "$0")/../.." && pwd)" \
+  --url=https://growth-tech.local "$@"
