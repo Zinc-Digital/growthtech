@@ -20,6 +20,7 @@
     align-items: center;
     gap: 10px;
     margin: 0;
+    font-family: inherit;
     font-size: inherit;
     line-height: inherit;
   }
@@ -36,7 +37,17 @@
   }
 
   &__current {
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 12px;
+    line-height: normal;
     font-weight: $font-500;
     color: #000;
+  }
+
+  &__sep {
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 12px;
+    line-height: normal;
+    color: rgba(0, 0, 0, 0.5);
   }
 }

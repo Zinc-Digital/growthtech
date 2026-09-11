@@ -45,7 +45,12 @@
   &__search-input {
     flex: 1 1 auto;
     min-width: 0;
+    width: auto;
+    height: auto;
     padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
     font-family: inherit;
     font-size: 14px;
     line-height: normal;
@@ -80,6 +85,7 @@
     margin: 0;
     padding-bottom: 15px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    font-family: "DM Sans", #{$primary_font};
     font-size: 18px;
     font-weight: $font-900;
     line-height: normal;
@@ -117,11 +123,16 @@
     padding: 0;
     cursor: pointer;
     text-align: left;
-    font-family: inherit;
+    font-family: "DM Sans", #{$primary_font};
     font-size: 18px;
     font-weight: $font-900;
     line-height: normal;
     color: #000;
+
+    span {
+      font: inherit;
+      line-height: inherit;
+    }
 
     &:focus-visible {
       outline: 2px solid #000;
@@ -152,6 +163,7 @@
     justify-content: space-between;
     gap: 10px;
     margin: 0;
+    font-family: "DM Sans", #{$primary_font};
     font-size: 14px;
     line-height: normal;
   }
@@ -162,12 +174,17 @@
     gap: 6px;
     min-width: 0;
     cursor: pointer;
-    font-family: inherit;
+    font-family: "DM Sans", #{$primary_font};
     font-size: 14px;
     font-weight: $font-400;
     line-height: normal;
     color: rgba(0, 0, 0, 0.5);
     transition: color 0.2s ease;
+
+    span {
+      font: inherit;
+      line-height: inherit;
+    }
 
     &:hover {
       color: #000;
@@ -204,6 +221,7 @@
 
   &__count {
     flex: 0 0 auto;
+    font-family: "DM Sans", #{$primary_font};
     font-size: 10px;
     font-weight: $font-400;
     line-height: normal;

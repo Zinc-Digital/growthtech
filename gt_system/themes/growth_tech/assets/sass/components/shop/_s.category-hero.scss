@@ -34,11 +34,16 @@
   &__title,
   &__text {
     position: relative;
-    max-width: 600px;
     margin: 0;
   }
 
   &__title {
+    // 840px (the controller-specified value) measures 13px too narrow for
+    // the seeded "Propagation - The science of the start." heading at 60px
+    // Cormorant Garamond 700 (measured natural width: 853px), so it still
+    // wrapped to two lines. 900px keeps a safe margin for one line while
+    // staying well inside the 1260px hero content width at 1440.
+    max-width: 900px;
     font-family: "Cormorant Garamond", serif;
     font-size: 60px;
     font-weight: $font-700;
@@ -47,6 +52,7 @@
   }
 
   &__text {
+    max-width: 600px;
     font-family: "DM Sans", #{$primary_font};
     font-size: 15px;
     font-weight: $font-400;

@@ -42,13 +42,26 @@
   }
 
   &__select {
+    -webkit-appearance: none;
+    appearance: none;
+    min-width: 0;
+    height: auto;
     padding: 0 12px 5px 0;
+    border: 0;
+    border-radius: 0;
     font-family: inherit;
     font-size: 12px;
     line-height: normal;
     color: #000;
     cursor: pointer;
-    background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='4' viewBox='0 0 7 4'%3E%3Cpath fill='%23000' d='M3.5 4 0 .64.67 0 3.5 2.72 6.33 0 7 .64Z'/%3E%3C/svg%3E") no-repeat right 6px / 7px 4px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    // _c.forms.scss's `form select` sets background-image/position/size with
+    // !important; match that specificity to keep the 7x4 chevron instead of
+    // the shared 18px select-down.svg.
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='4' viewBox='0 0 7 4'%3E%3Cpath fill='%23000' d='M3.5 4 0 .64.67 0 3.5 2.72 6.33 0 7 .64Z'/%3E%3C/svg%3E") !important;
+    background-position: right 6px !important;
+    background-size: 7px 4px !important;
 
     &:focus-visible {
       outline: 2px solid #000;
