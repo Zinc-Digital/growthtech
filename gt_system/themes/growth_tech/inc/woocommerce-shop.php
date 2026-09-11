@@ -202,6 +202,8 @@ function gt_shop_promos( array $selection ) {
 		'hide_empty' => false,
 		'meta_key'   => 'promo_enabled', // phpcs:ignore WordPress.DB.SlowDBQuery
 		'meta_value' => '1',              // phpcs:ignore WordPress.DB.SlowDBQuery
+		// Explicit orderby so WooCommerce's menu_order default for brands in admin-ajax can't rewrite meta_key to "order".
+		'orderby'    => 'name',
 	) );
 	if ( is_wp_error( $brands ) ) {
 		return array();

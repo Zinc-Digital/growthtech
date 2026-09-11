@@ -99,6 +99,8 @@ function gt_shop_own_brand_term_ids() {
 			'fields'     => 'ids',
 			'meta_key'   => 'own_brand',
 			'meta_value' => '1',
+			// Explicit orderby so WooCommerce's menu_order default for brands in admin-ajax can't rewrite meta_key to "order".
+			'orderby'    => 'name',
 		) );
 		$ids = is_wp_error( $terms ) ? array() : array_map( 'intval', $terms );
 	}

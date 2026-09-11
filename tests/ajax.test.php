@@ -17,6 +17,7 @@ gt_assert_equal( 'Showing 12 of 13 products', $d['count'], 'count text' );
 gt_assert_contains( 'data-shop-more', $d['more'], 'load more html returned' );
 gt_assert_equal( wc_get_page_permalink( 'shop' ), $d['url'], 'canonical url' );
 gt_assert_equal( 2, $d['total_pages'], 'total pages' );
+gt_assert_not_contains( '>Nitrozyme<', $d['grid'], 'own brands first holds over AJAX (Nitrozyme pushed to page 2)' );
 
 $res = gt_ajax( array( 'categories' => 'propagation', 'brands' => 'clonex' ) );
 $d   = $res['data'];
