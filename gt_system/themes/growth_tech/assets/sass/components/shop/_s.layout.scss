@@ -1,0 +1,173 @@
+// ---------------------------------------------------------------------------
+// Shop page frame — Figma 384:1608 / 384:1267
+//
+// 50px gutters, 1340px content, breadcrumb 30px under the header, sidebar
+// 300px + 25px gap + 3 columns of 321.67px. Rows and columns both gap 25px.
+// ---------------------------------------------------------------------------
+
+.shop {
+  padding: 30px 50px 115px;
+
+  &__inner {
+    max-width: 1340px;
+    margin: 0 auto;
+  }
+
+  &__breadcrumb {
+    margin-bottom: 14px;
+  }
+
+  &__hero {
+    margin: 20px 0 50px;
+  }
+
+  &__body {
+    display: flex;
+    align-items: flex-start;
+    gap: 25px;
+  }
+
+  &__sidebar {
+    flex: 0 0 300px;
+    max-width: 300px;
+  }
+
+  &__main {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  &__filters-toggle {
+    display: none;
+  }
+
+  &__filters-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    margin-left: 8px;
+    padding: 0 5px;
+    border-radius: 9px;
+    background-color: color(white);
+    color: #000;
+    font-size: 11px;
+  }
+
+  &__empty {
+    margin: 40px 0 0;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transition: opacity 0.2s ease;
+
+  &[aria-busy="true"] {
+    opacity: 0.45;
+    pointer-events: none;
+  }
+}
+
+.shop-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+// -- tablet: narrower sidebar, two columns --------------------------------
+@media (max-width: $xl - 1px) {
+  .shop {
+    padding-left: 25px;
+    padding-right: 25px;
+
+    &__sidebar {
+      flex-basis: 240px;
+      max-width: 240px;
+    }
+  }
+
+  .shop-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+}
+
+// -- small tablet: sidebar becomes an off-canvas panel ----------------------
+@media (max-width: $md - 1px) {
+  .shop {
+    padding-bottom: 80px;
+
+    &__body {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    &__filters-toggle {
+      display: inline-flex;
+      align-self: flex-start;
+      margin-bottom: 20px;
+    }
+
+    &__sidebar {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1000;
+      width: min(360px, 100%);
+      max-width: none;
+      overflow-y: auto;
+      background-color: #f2f2f2;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      visibility: hidden;
+
+      &.is-open {
+        transform: none;
+        visibility: visible;
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.25);
+      }
+    }
+  }
+
+  body.shop-filters-open {
+    overflow: hidden;
+  }
+}
+
+// -- mobile: one column -----------------------------------------------------
+@media (max-width: $sm - 1px) {
+  .shop {
+    padding-top: 20px;
+    padding-bottom: 60px;
+
+    &__hero {
+      margin: 15px 0 30px;
+    }
+  }
+
+  .shop-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .shop-more {
+    margin-top: 30px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shop__sidebar,
+  .shop-grid {
+    transition: none;
+  }
+}

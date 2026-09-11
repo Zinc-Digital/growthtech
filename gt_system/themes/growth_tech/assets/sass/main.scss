@@ -33,6 +33,11 @@
 
 
 //Shop
+@import "components/shop/s.layout";
+@import "components/shop/s.breadcrumb";
+@import "components/shop/s.category-hero";
+@import "components/shop/s.filters";
+@import "components/shop/s.toolbar";
 @import "components/shop/s.card";
 @import "components/shop/s.promo";
 

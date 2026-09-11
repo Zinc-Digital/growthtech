@@ -1,0 +1,251 @@
+// ---------------------------------------------------------------------------
+// Filter sidebar — Figma 384:1612
+//
+// 25px padding on a 5% black wash; blocks stack with 25px gaps. Search and
+// "Filters" rows carry bottom rules; each group is an 18px black heading, a
+// 10x6 chevron, then 14px options with 14px square checkboxes and 10px counts.
+// ---------------------------------------------------------------------------
+
+.shop-filters {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 25px;
+  background-color: rgba(0, 0, 0, 0.05);
+  font-family: "DM Sans", #{$primary_font};
+
+  &__close {
+    display: none;
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    cursor: pointer;
+
+    svg {
+      display: block;
+      width: 14px;
+      height: 14px;
+      margin: 0 auto;
+    }
+  }
+
+  &__search {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #000;
+  }
+
+  &__search-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: normal;
+    color: #000;
+
+    &::placeholder {
+      color: rgba(0, 0, 0, 0.25);
+      opacity: 1;
+    }
+
+    &::-webkit-search-cancel-button {
+      -webkit-appearance: none;
+    }
+  }
+
+  &__search-btn {
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    cursor: pointer;
+    color: #000;
+
+    svg {
+      display: block;
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  &__title {
+    margin: 0;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    font-size: 18px;
+    font-weight: $font-900;
+    line-height: normal;
+    color: #000;
+  }
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+    &.is-collapsed {
+      gap: 0;
+    }
+  }
+
+  // Written at this level so `&` is .shop-filters, not .shop-filters__group.
+  &__group.is-collapsed &__list {
+    display: none;
+  }
+
+  &__group.is-collapsed &__chevron {
+    transform: rotate(180deg);
+  }
+
+  &__group-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: $font-900;
+    line-height: normal;
+    color: #000;
+
+    &:focus-visible {
+      outline: 2px solid #000;
+      outline-offset: 3px;
+    }
+  }
+
+  &__chevron {
+    flex: 0 0 auto;
+    width: 10px;
+    height: 6px;
+    color: rgba(0, 0, 0, 0.5);
+    transition: transform 0.25s ease;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 0;
+    font-size: 14px;
+    line-height: normal;
+  }
+
+  &__option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: $font-400;
+    line-height: normal;
+    color: rgba(0, 0, 0, 0.5);
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #000;
+    }
+  }
+
+  &__checkbox {
+    flex: 0 0 auto;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    border-radius: 0;
+    background-color: color(white);
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+
+    &:checked {
+      border-color: #000;
+      background: #000 url("../images/icons/tick.svg") center / 14px 14px no-repeat;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #000;
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      cursor: default;
+    }
+  }
+
+  &__count {
+    flex: 0 0 auto;
+    font-size: 10px;
+    font-weight: $font-400;
+    line-height: normal;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  &__item.is-checked &__option,
+  &__item.is-checked &__count {
+    font-weight: $font-700;
+    color: #000;
+  }
+
+  &__item.is-empty &__option,
+  &__item.is-empty &__count {
+    color: rgba(0, 0, 0, 0.15);
+    cursor: default;
+  }
+
+  &__item.is-empty &__checkbox {
+    border-color: rgba(0, 0, 0, 0.15);
+  }
+
+  &__apply {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: $md - 1px) {
+  .shop-filters {
+    min-height: 100%;
+    padding-top: 60px;
+
+    &__close {
+      display: block;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shop-filters__chevron,
+  .shop-filters__checkbox,
+  .shop-filters__option {
+    transition: none;
+  }
+}

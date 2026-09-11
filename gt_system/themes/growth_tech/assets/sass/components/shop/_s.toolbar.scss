@@ -1,0 +1,71 @@
+// ---------------------------------------------------------------------------
+// Toolbar — Figma 384:1733. 12px count left; "Sort by" + underlined select
+// with a 7x4 chevron on the right. 25px above the grid.
+// ---------------------------------------------------------------------------
+
+.shop-toolbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 25px;
+  font-family: "DM Sans", #{$primary_font};
+  font-size: 12px;
+  line-height: normal;
+  color: rgba(0, 0, 0, 0.5);
+
+  &__count {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+  }
+
+  &__sort {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  &__sort-label {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+  }
+
+  &__select-wrap {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px solid #000;
+  }
+
+  &__select {
+    padding: 0 12px 5px 0;
+    font-family: inherit;
+    font-size: 12px;
+    line-height: normal;
+    color: #000;
+    cursor: pointer;
+    background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='4' viewBox='0 0 7 4'%3E%3Cpath fill='%23000' d='M3.5 4 0 .64.67 0 3.5 2.72 6.33 0 7 .64Z'/%3E%3C/svg%3E") no-repeat right 6px / 7px 4px;
+
+    &:focus-visible {
+      outline: 2px solid #000;
+      outline-offset: 3px;
+    }
+  }
+
+  &__go {
+    margin-left: 6px;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+@media (max-width: $sm - 1px) {
+  .shop-toolbar {
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+}
