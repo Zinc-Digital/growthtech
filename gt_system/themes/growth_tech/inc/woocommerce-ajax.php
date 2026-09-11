@@ -5,9 +5,10 @@
  *
  * admin-ajax.php requests run with is_admin() true (a WP quirk: the request
  * is served from /wp-admin/, even for wp_ajax_nopriv_ actions), which makes
- * WooCommerce default orderby to menu_order for the product_brand taxonomy;
- * the get_terms( product_brand ) calls this endpoint depends on pass an
- * explicit orderby so that default can't rewrite their meta_key filters.
+ * WooCommerce default orderby to menu_order for the product_brand taxonomy.
+ * The get_terms( product_brand ) calls this endpoint depends on (in
+ * gt_shop_own_brand_term_ids() and gt_shop_promos()) pass an explicit
+ * orderby for that reason, so that default can't rewrite their meta_key.
  */
 
 if ( ! class_exists( 'WooCommerce' ) ) {

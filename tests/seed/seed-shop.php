@@ -140,7 +140,9 @@ foreach ( $products as $sku => $p ) {
 	$product->set_short_description( "{$p[0]} - a short description that appears under the product title." );
 	$product->set_description( "{$p[0]} full description. Replace with real copy." );
 	$product->set_category_ids( array( $cat_ids[ $p[1] ] ) );
-	$product->set_menu_order( $menu_order++ );
+	// Nitrozyme is the only third-party brand; give it the lowest menu_order so
+	// that only the own-brands-first rank keeps it off page 1 — tests rely on this.
+	$product->set_menu_order( 'GT-013' === $sku ? -1 : $menu_order++ );
 
 	$attributes = array();
 	if ( $p[3] ) {
