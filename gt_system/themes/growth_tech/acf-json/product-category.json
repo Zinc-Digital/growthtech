@@ -1,0 +1,43 @@
+{
+    "key": "group_gt_product_category",
+    "title": "Category page hero",
+    "fields": [
+        {
+            "key": "field_gt_cat_hero_image",
+            "label": "Hero image",
+            "name": "hero_image",
+            "type": "image",
+            "instructions": "Landscape, cropped to 1340 x 325 at desktop. A dark gradient is laid over the left side for the text.",
+            "return_format": "id",
+            "library": "all",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_gt_cat_hero_heading",
+            "label": "Hero heading",
+            "name": "hero_heading",
+            "type": "text",
+            "instructions": "Falls back to the category name.",
+            "placeholder": "Propagation - The science of the start."
+        },
+        {
+            "key": "field_gt_cat_hero_text",
+            "label": "Hero text",
+            "name": "hero_text",
+            "type": "textarea",
+            "instructions": "Falls back to the category description.",
+            "rows": 3,
+            "new_lines": ""
+        }
+    ],
+    "location": [ [ { "param": "taxonomy", "operator": "==", "value": "product_cat" } ] ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0
+}

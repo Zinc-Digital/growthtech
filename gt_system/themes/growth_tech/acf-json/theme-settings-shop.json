@@ -1,0 +1,56 @@
+{
+    "key": "group_gt_shop_settings",
+    "title": "Shop Settings",
+    "fields": [
+        {
+            "key": "field_gt_shop_per_page",
+            "label": "Products per page",
+            "name": "shop_products_per_page",
+            "type": "number",
+            "instructions": "How many products load before the \"Load more\" button.",
+            "default_value": 12,
+            "min": 3,
+            "step": 1,
+            "wrapper": { "width": "50", "class": "", "id": "" }
+        },
+        {
+            "key": "field_gt_shop_stockist_page",
+            "label": "Stockist page",
+            "name": "shop_stockist_page",
+            "type": "page_link",
+            "instructions": "\"Find a local stockist\" buttons link here with the product pre-selected.",
+            "post_type": [ "page" ],
+            "allow_null": 1,
+            "allow_archives": 0,
+            "multiple": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" }
+        },
+        {
+            "key": "field_gt_shop_experts_link",
+            "label": "\"Ask our experts\" link",
+            "name": "shop_experts_link",
+            "type": "link",
+            "instructions": "Where the product page's \"Ask our experts\" link goes. The product ID is appended as ?product=.",
+            "return_format": "array",
+            "wrapper": { "width": "50", "class": "", "id": "" }
+        },
+        {
+            "key": "field_gt_shop_maps_key",
+            "label": "Google Maps API key",
+            "name": "shop_google_maps_key",
+            "type": "text",
+            "instructions": "Used by the stockist finder map and geocoding.",
+            "wrapper": { "width": "50", "class": "", "id": "" }
+        }
+    ],
+    "location": [ [ { "param": "options_page", "operator": "==", "value": "theme-general-settings" } ] ],
+    "menu_order": 20,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0
+}

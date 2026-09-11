@@ -1,0 +1,107 @@
+{
+    "key": "group_gt_brand",
+    "title": "Brand",
+    "fields": [
+        {
+            "key": "field_gt_brand_tab_identity",
+            "label": "Identity",
+            "name": "",
+            "type": "tab",
+            "placement": "top"
+        },
+        {
+            "key": "field_gt_brand_logo",
+            "label": "Logo",
+            "name": "logo",
+            "type": "image",
+            "instructions": "SVG or PNG on a transparent background. Shown on product cards, the brand page hero and the product page.",
+            "return_format": "id",
+            "library": "all",
+            "preview_size": "medium",
+            "wrapper": { "width": "50", "class": "", "id": "" }
+        },
+        {
+            "key": "field_gt_brand_accent",
+            "label": "Accent colour",
+            "name": "accent_colour",
+            "type": "color_picker",
+            "instructions": "Highlight colour for this brand (e.g. Clonex yellow #FBC707).",
+            "default_value": "#FBC707",
+            "enable_opacity": 0,
+            "return_format": "string",
+            "wrapper": { "width": "50", "class": "", "id": "" }
+        },
+        {
+            "key": "field_gt_brand_own",
+            "label": "Growth Technology brand",
+            "name": "own_brand",
+            "type": "true_false",
+            "instructions": "Tick for brands formulated by Growth Technology. The shop's default sort puts these first.",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "Ours",
+            "ui_off_text": "Third party"
+        },
+        {
+            "key": "field_gt_brand_tab_promo",
+            "label": "Shop promo tile",
+            "name": "",
+            "type": "tab",
+            "placement": "top"
+        },
+        {
+            "key": "field_gt_brand_promo_enabled",
+            "label": "Feature in the shop grid",
+            "name": "promo_enabled",
+            "type": "true_false",
+            "instructions": "Adds an \"Explore the range\" tile among the products on the shop page and on category pages where this brand has products.",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "Shown",
+            "ui_off_text": "Hidden"
+        },
+        {
+            "key": "field_gt_brand_promo_image",
+            "label": "Tile image",
+            "name": "promo_image",
+            "type": "image",
+            "instructions": "Portrait lifestyle shot; cropped to 322 x 439 at desktop.",
+            "return_format": "id",
+            "library": "all",
+            "preview_size": "medium",
+            "conditional_logic": [ [ { "field": "field_gt_brand_promo_enabled", "operator": "==", "value": "1" } ] ],
+            "wrapper": { "width": "50", "class": "", "id": "" }
+        },
+        {
+            "key": "field_gt_brand_promo_position",
+            "label": "Grid position",
+            "name": "promo_position",
+            "type": "number",
+            "instructions": "Which cell of the grid the tile occupies, counting from 1. The Figma uses 2 for Clonex and 7 for Root Riot.",
+            "default_value": 2,
+            "min": 1,
+            "step": 1,
+            "conditional_logic": [ [ { "field": "field_gt_brand_promo_enabled", "operator": "==", "value": "1" } ] ],
+            "wrapper": { "width": "50", "class": "", "id": "" }
+        },
+        {
+            "key": "field_gt_brand_promo_tagline",
+            "label": "Tagline",
+            "name": "promo_tagline",
+            "type": "text",
+            "instructions": "Wrap the highlighted words in <em> … </em> to colour them with the accent, e.g. The original rooting gel. <em>A complete propagation system.</em>",
+            "placeholder": "The original rooting gel. <em>A complete propagation system.</em>",
+            "conditional_logic": [ [ { "field": "field_gt_brand_promo_enabled", "operator": "==", "value": "1" } ] ]
+        }
+    ],
+    "location": [ [ { "param": "taxonomy", "operator": "==", "value": "product_brand" } ] ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Brand identity and shop promo tile. Brand landing page content is added in a later phase.",
+    "show_in_rest": 0
+}
