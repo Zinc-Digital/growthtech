@@ -94,7 +94,7 @@ function gt_seed_attribute( $name, $label, array $terms ) {
 	return array( $taxonomy, $ids );
 }
 
-list( $size_tax, $size_ids )     = gt_seed_attribute( 'size', 'Size', array( '50ml', '100ml', '300ml', '500ml', '750ml', '1L', '5L', '50L', '24 Tray', '50 Refill', '100 Refill' ) );
+list( $size_tax, $size_ids )     = gt_seed_attribute( 'size', 'Size', array( '5ml', '50ml', '100ml', '300ml', '500ml', '750ml', '1L', '5L', '50L', '24 Tray', '50 Refill', '100 Refill' ) );
 list( $medium_tax, $medium_ids ) = gt_seed_attribute( 'growing-medium', 'Growing Medium', array( 'Soil', 'Coco', 'Hydro' ) );
 list( $stage_tax, $stage_ids )   = gt_seed_attribute( 'growing-stage', 'Growing Stage', array( 'Cuttings', 'Seedlings', 'Vegetative', 'Flowering' ) );
 

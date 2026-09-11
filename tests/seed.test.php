@@ -25,6 +25,8 @@ gt_assert( $mist instanceof WC_Product, 'Clonex Mist product exists' );
 gt_assert_equal( array( '100ml', '300ml', '750ml' ), wc_get_product_terms( $mist->get_id(), 'pa_size', array( 'fields' => 'names' ) ), 'Clonex Mist sizes in order' );
 gt_assert_equal( '', $mist->get_price(), 'Clonex Mist has no price (enquiry mode)' );
 
+gt_assert_equal( array( '5ml' ), wc_get_product_terms( wc_get_product_id_by_sku( 'GT-007' ), 'pa_size', array( 'fields' => 'names' ) ), 'Pipettes has the 5ml size' );
+
 $count = new WP_Query( array( 'post_type' => 'product', 'post_status' => 'publish', 'fields' => 'ids', 'posts_per_page' => -1 ) );
 gt_assert_equal( 13, (int) $count->found_posts, '13 products seeded' );
 
