@@ -1,4 +1,21 @@
 <?php
+/**
+ * Version a theme asset by its file modification time.
+ *
+ * The theme's own version in style.css never changes, so every asset shipped as
+ * ?ver=1.0 and browsers cached it indefinitely — rebuilt CSS and JS would not
+ * reach anyone who had already loaded the old file. Falling back to the theme
+ * version keeps third-party or missing files behaving as before.
+ *
+ * @param string $relative_path Path from the theme root, e.g. /assets/css/main.css
+ * @return string
+ */
+function gt_asset_version($relative_path) {
+	$file = get_template_directory() . $relative_path;
+
+	return file_exists($file) ? (string) filemtime($file) : wp_get_theme()->get('Version');
+}
+
 //Register theme support
 function gt_theme_support() {
 	add_theme_support('post-thumbnails');
@@ -14,6 +31,10 @@ function gt_theme_support() {
 	add_image_size('gt-guide', 694, 804, true);
 	add_image_size('gt-guide-sm', 347, 402, true);
 
+	// Content slider card: 317.5 x 400 in the design, plus a 2x version.
+	add_image_size('gt-slide', 636, 800, true);
+	add_image_size('gt-slide-sm', 318, 400, true);
+
 	// Split band: half the 1440 frame, plus a 2x version.
 	add_image_size('gt-split', 1440, 1120, true);
 	add_image_size('gt-split-sm', 720, 560, true);
@@ -21,6 +42,19 @@ function gt_theme_support() {
 	// Feature band: 1440 x 660 full-bleed, plus a 1x-ish step for the srcset.
 	add_image_size('gt-band', 2160, 990, true);
 	add_image_size('gt-band-sm', 1080, 495, true);
+
+	// Shop product card: 322 x 370 tile in the design, product cut-outs sit
+	// inside it uncropped, so these are soft (max-bounds) sizes.
+	add_image_size( 'gt-product-card', 640, 740, false );
+	add_image_size( 'gt-product-card-sm', 320, 370, false );
+
+	// Brand promo tile in the shop grid: 322 x 439, cropped, plus 2x.
+	add_image_size( 'gt-promo', 644, 878, true );
+	add_image_size( 'gt-promo-sm', 322, 439, true );
+
+	// Category hero: 1340 x 325, cropped, plus 2x.
+	add_image_size( 'gt-category-hero', 2680, 650, true );
+	add_image_size( 'gt-category-hero-sm', 1340, 325, true );
 }
 add_action('after_setup_theme', 'gt_theme_support');
 
@@ -32,7 +66,7 @@ function gt_register_styles() {
 	wp_enqueue_style('bootstrap', get_template_directory_uri() . '/assets/css/bootstrap.min.css', array(), $theme_version, false);
 	wp_enqueue_style( 'slick-theme-css', get_template_directory_uri() . '/assets/css/slick-theme.css', array(), $theme_version );
 	wp_enqueue_style('slick-css', get_template_directory_uri() . '/assets/css/slick.css', array(), $theme_version, false);
-	wp_enqueue_style('main-css', get_template_directory_uri() . '/assets/css/main.css', array(), $theme_version);
+	wp_enqueue_style('main-css', get_template_directory_uri() . '/assets/css/main.css', array(), gt_asset_version('/assets/css/main.css'));
 	wp_enqueue_style('style-css', get_template_directory_uri() . '/assets/css/style.css', array(), $theme_version, false);
 }
 add_action('wp_enqueue_scripts', 'gt_register_styles');
@@ -42,11 +76,11 @@ add_action('wp_enqueue_scripts', 'gt_register_styles');
 function gt_register_scripts() {
 	$theme_version = wp_get_theme()->get('Version');
 	wp_enqueue_script( 'boot', get_template_directory_uri() . '/assets/js/bootstrap.min.js', array('jquery'), $theme_version, false);
-	wp_enqueue_script('main-js', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), $theme_version, false);
-	wp_enqueue_script('gt-header', get_template_directory_uri() . '/assets/js/header.js', array(), $theme_version, true);
+	wp_enqueue_script('main-js', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), gt_asset_version('/assets/js/main.js'), false);
+	wp_enqueue_script('gt-header', get_template_directory_uri() . '/assets/js/header.js', array(), gt_asset_version('/assets/js/header.js'), true);
 	wp_enqueue_script('slick-js', get_template_directory_uri() . '/assets/js/slick.min.js', array('jquery'), $theme_version, false);
 	wp_enqueue_script( 'slick-slider', get_template_directory_uri() . '/assets/js/slick.js');
-	wp_enqueue_script('gt-banner', get_template_directory_uri() . '/assets/js/banner.js', array('jquery', 'slick-js'), $theme_version, true);
+	wp_enqueue_script('gt-banner', get_template_directory_uri() . '/assets/js/banner.js', array('jquery', 'slick-js'), gt_asset_version('/assets/js/banner.js'), true);
 }
 add_action('wp_enqueue_scripts', 'gt_register_scripts');
 
@@ -143,3 +177,4 @@ include_once __DIR__ . '/inc/header.php';
 include_once __DIR__ . '/inc/post-types.php';
 include_once __DIR__ . '/inc/register-blocks.php';
 include_once __DIR__ . '/inc/taxonomies.php';
+include_once __DIR__ . '/inc/woocommerce.php';
