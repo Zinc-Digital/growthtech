@@ -60,7 +60,10 @@
   }
 }
 
-@media (max-width: $md - 1px) {
+// Tracks the same tablet range as the sidebar/grid breakpoint in
+// _s.layout.scss ($xl - 1px), so the hero shrinks together with them —
+// including at exactly 1024px, not just below it.
+@media (max-width: $xl - 1px) {
   .shop-hero {
     min-height: 280px;
     padding: 110px 30px 30px;
@@ -73,7 +76,9 @@
   }
 }
 
-@media (max-width: $sm - 1px) {
+// Inclusive of 768px itself (not $sm - 1px) so the 768 and 390 shots the
+// brief groups together both get the compact vertical-gradient hero.
+@media (max-width: $sm) {
   .shop-hero {
     min-height: 240px;
     padding: 90px 25px 25px;
