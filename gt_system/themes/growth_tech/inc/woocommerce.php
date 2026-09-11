@@ -145,3 +145,22 @@ function gt_shop_own_brands_first_clauses( $clauses, $query ) {
 	return $clauses;
 }
 add_filter( 'posts_clauses', 'gt_shop_own_brands_first_clauses', 20, 2 );
+
+/** Filter/sort/load-more behaviour, only where the grid is. */
+function gt_shop_enqueue_scripts() {
+	if ( ! ( is_shop() || is_product_category() ) ) {
+		return;
+	}
+	wp_enqueue_script(
+		'gt-shop-filters',
+		get_template_directory_uri() . '/assets/js/shop-filters.js',
+		array(),
+		gt_asset_version( '/assets/js/shop-filters.js' ),
+		true
+	);
+	wp_localize_script( 'gt-shop-filters', 'gtShop', array(
+		'ajaxUrl'        => admin_url( 'admin-ajax.php' ),
+		'categoryLocked' => is_product_category(),
+	) );
+}
+add_action( 'wp_enqueue_scripts', 'gt_shop_enqueue_scripts' );
