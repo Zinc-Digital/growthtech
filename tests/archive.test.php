@@ -38,6 +38,10 @@ $html = gt_fetch( '/shop/?brands=clonex&growing-medium=soil' );
 gt_assert_contains( 'Showing 4 of 4 products', $html, 'GET filters work without JS' );
 gt_assert_contains( 'name="brands[]" value="clonex" checked', $html, 'GET brand stays ticked' );
 
+$html = gt_fetch( '/shop/?brands%5B%5D=clonex&growing-medium%5B%5D=soil' );
+gt_assert_contains( 'Showing 4 of 4 products', $html, 'array-style checkbox params (no-JS submit) work' );
+gt_assert_contains( 'name="brands[]" value="clonex" checked', $html, 'array-style params stay ticked' );
+
 $html = gt_fetch( '/shop/?q=mist' );
 gt_assert_contains( 'Showing 2 of 2 products', $html, 'GET search works' );
 gt_assert_contains( 'value="mist"', $html, 'search box keeps its value' );

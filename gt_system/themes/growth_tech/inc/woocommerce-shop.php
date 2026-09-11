@@ -307,14 +307,40 @@ function gt_shop_main_query( $query ) {
 add_action( 'woocommerce_product_query', 'gt_shop_main_query' );
 
 /**
+ * Plain checkboxes submit brands[]=a&brands[]=b. WooCommerce registers
+ * "categories" and "brands" as public query vars and its Product Filters
+ * service trims them as strings, so the array form fatals its posts_clauses
+ * handler. Flatten each group param to the comma form both it and
+ * gt_shop_selection() understand.
+ */
+function gt_shop_flatten_request_vars( $vars ) {
+	foreach ( array_keys( gt_shop_filter_groups() ) as $key ) {
+		if ( isset( $vars[ $key ] ) && is_array( $vars[ $key ] ) ) {
+			$vars[ $key ] = implode( ',', gt_shop_parse_slugs( $vars[ $key ] ) );
+		}
+	}
+	return $vars;
+}
+add_filter( 'request', 'gt_shop_flatten_request_vars' );
+
+/**
  * One URL per selection: /shop/?categories=x becomes the category permalink,
- * and a category page carrying other categories goes back to the shop.
+ * and a category page carrying other categories goes back to the shop. Also
+ * fires when a group param arrived in array form (a no-JS checkbox submit),
+ * so that lands on the clean comma-form URL too.
  */
 function gt_shop_canonical_redirect() {
 	if ( wp_doing_ajax() || is_admin() || ! ( is_shop() || is_product_category() ) ) {
 		return;
 	}
-	if ( ! isset( $_GET['categories'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+	$has_array_param = false;
+	foreach ( array_keys( gt_shop_filter_groups() ) as $key ) {
+		if ( isset( $_GET[ $key ] ) && is_array( $_GET[ $key ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$has_array_param = true;
+			break;
+		}
+	}
+	if ( ! isset( $_GET['categories'] ) && ! $has_array_param ) { // phpcs:ignore WordPress.Security.NonceVerification
 		return;
 	}
 	$selection = gt_shop_selection();
