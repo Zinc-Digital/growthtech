@@ -1,0 +1,105 @@
+// ---------------------------------------------------------------------------
+// Brand promo tile — Figma 384:1750
+//
+// Fills a grid cell (stretches to the product cards' 439px). Image cover,
+// bottom gradient, then logo / tagline / link stacked at the bottom with a
+// 30px inset and 20px gaps.
+// ---------------------------------------------------------------------------
+
+.brand-promo-cell {
+  list-style: none;
+  margin: 0;
+  display: flex;
+}
+
+.brand-promo {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 20px;
+  min-height: 100%;
+  padding: 30px;
+  overflow: hidden;
+  background-color: #000;
+  color: color(white);
+  text-decoration: none;
+
+  &__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  &:hover &__img,
+  &:focus-visible &__img {
+    transform: scale(1.03);
+  }
+
+  &__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.85) 50.114%);
+  }
+
+  &__logo,
+  &__logo-text,
+  &__tagline,
+  &__link {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__logo {
+    display: block;
+    width: auto;
+    max-width: 150px;
+    height: 27px;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  &__logo-text {
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 18px;
+    font-weight: $font-900;
+    line-height: 27px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--brand-accent, #fbc707);
+  }
+
+  &__tagline {
+    display: block;
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 30px;
+    font-weight: $font-700;
+    line-height: 35px;
+    letter-spacing: -0.6px;
+
+    em {
+      font-style: normal;
+      color: var(--brand-accent, #fbc707);
+    }
+  }
+
+  &__link {
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 14px;
+    font-weight: $font-700;
+    line-height: normal;
+    text-decoration: underline;
+    text-underline-position: from-font;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-promo__img {
+    transition: none;
+  }
+}
