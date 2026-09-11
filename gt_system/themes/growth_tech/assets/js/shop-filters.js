@@ -97,9 +97,11 @@
 		options = options || {};
 		if (controller) { controller.abort(); }
 		controller = new AbortController();
+		var mine = controller;
 		setBusy(true);
 
 		var focusValue = options.focusValue || null;
+		var focusName = options.focusName || null;
 
 		return fetch(query(params), { signal: controller.signal, credentials: 'same-origin' })
 			.then(function (r) { return r.json(); })
@@ -119,10 +121,13 @@
 					sidebar.innerHTML = d.sidebar;
 					restoreCollapsed();
 					if (focusValue) {
-						var box = sidebar.querySelector('input[value="' + focusValue + '"]');
+						var box = sidebar.querySelector('input[name="' + focusName + '"][value="' + focusValue + '"]');
 						if (box) { box.focus({ preventScroll: true }); }
 					}
 				}
+
+				var s = sortSelect();
+				if (s && d.selection && d.selection.orderby) { s.value = d.selection.orderby; }
 
 				var count = page.querySelector('[data-shop-count]');
 				if (count) { count.textContent = d.count; }
@@ -140,7 +145,12 @@
 					main.appendChild(p);
 				}
 
-				if (options.push !== false) {
+				if (options.append) {
+					// Load more never creates its own history entry — replace in
+					// place so Back/Forward can't land on an append-only state
+					// that would render just the appended page.
+					history.replaceState({ gtShop: readParams() }, '', window.location.href);
+				} else if (options.push !== false) {
 					history.pushState({ gtShop: params }, '', d.url);
 				}
 				if (toggle) { updateToggleBadge(d.selection); }
@@ -152,7 +162,7 @@
 					if (f) { f.submit(); }
 				}
 			})
-			.then(function () { setBusy(false); });
+			.then(function () { if (controller === mine) { setBusy(false); } });
 	}
 
 	function updateToggleBadge(selection) {
@@ -177,7 +187,7 @@
 	page.addEventListener('change', function (event) {
 		var target = event.target;
 		if (target.matches('[data-shop-form] input[type="checkbox"]')) {
-			load(readParams(), { focusValue: target.value });
+			load(readParams(), { focusValue: target.value, focusName: target.name });
 		} else if (target.matches('[data-shop-sort]')) {
 			load(readParams());
 		}
@@ -214,7 +224,7 @@
 			params.append = '1';
 			var g = grid();
 			var before = g ? g.children.length : 0;
-			load(params, { append: true }).then(function () {
+			load(params, { append: true, push: false }).then(function () {
 				var g2 = grid();
 				if (g2 && g2.children[before]) {
 					var link = g2.children[before].querySelector('a');
