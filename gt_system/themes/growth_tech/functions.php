@@ -180,3 +180,4 @@ include_once __DIR__ . '/inc/taxonomies.php';
 include_once __DIR__ . '/inc/woocommerce.php';
 include_once __DIR__ . '/inc/woocommerce-helpers.php';
 include_once __DIR__ . '/inc/woocommerce-shop.php';
+include_once __DIR__ . '/inc/woocommerce-ajax.php';
