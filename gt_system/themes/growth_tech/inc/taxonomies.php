@@ -32,3 +32,17 @@ function gt_register_product_badge_taxonomy() {
 	);
 }
 add_action( 'init', 'gt_register_product_badge_taxonomy' );
+
+/**
+ * WooCommerce lays the product list out as a fixed table with widths on its
+ * own columns, which leaves an added taxonomy column one character wide.
+ * Give Badges the same footing as Categories / Brands.
+ */
+function gt_product_badge_admin_column_css() {
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	if ( ! $screen || 'edit-product' !== $screen->id ) {
+		return;
+	}
+	echo '<style>.post-type-product .wp-list-table .column-taxonomy-product_badge { width: 11ch; }</style>';
+}
+add_action( 'admin_head', 'gt_product_badge_admin_column_css' );
