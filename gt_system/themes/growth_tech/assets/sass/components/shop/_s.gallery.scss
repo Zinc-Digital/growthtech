@@ -49,8 +49,7 @@ $gallery-wash: rgba(35, 31, 32, 0.05);
 
   &__zoom,
   &__arrows .slick-prev,
-  &__arrows .slick-next,
-  &__lightbox-nav {
+  &__arrows .slick-next {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -79,6 +78,11 @@ $gallery-wash: rgba(35, 31, 32, 0.05);
     &:hover,
     &:focus-visible {
       background-color: #231f20;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 2px;
     }
   }
 
@@ -228,9 +232,11 @@ $gallery-wash: rgba(35, 31, 32, 0.05);
     width: 35px;
     height: 35px;
     padding: 0;
+    border: 0;
     background-color: color(white);
     color: #000;
     cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
     transform: translateY(-50%);
 
     svg {

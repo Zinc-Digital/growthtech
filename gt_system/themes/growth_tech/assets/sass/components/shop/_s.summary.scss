@@ -9,6 +9,11 @@
 $summary-text: rgba(0, 0, 0, 0.75);
 $summary-font: "DM Sans", #{$primary_font};
 
+// The base `span` rule (core/_typography.scss) would restyle button labels;
+// keep them on the button's own face. Lives here rather than _c.buttons.scss
+// because that partial has unrelated work in flight.
+.btn-flat > span { font: inherit; line-height: inherit; }
+
 .product-summary {
   display: flex;
   flex-direction: column;

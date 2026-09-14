@@ -27,11 +27,13 @@ $name      = $product->get_name();
 					<div class="product-gallery__slide">
 						<?php
 						$full = wp_get_attachment_image_url( $image_id, 'full' );
+						$alt  = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
 						echo wp_get_attachment_image( $image_id, 'gt-product-main', false, array(
 							'class'     => 'product-gallery__img',
 							'sizes'     => '(max-width: 767px) calc(100vw - 50px), (max-width: 1265px) 50vw, 600px',
 							'data-full' => $full ? $full : '',
 							'loading'   => $index > 0 ? 'lazy' : 'eager',
+							'alt'       => $alt ? $alt : $name,
 						) );
 						?>
 					</div>
