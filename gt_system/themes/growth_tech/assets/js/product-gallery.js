@@ -102,7 +102,13 @@
 				lastFocus = this;
 				showLightbox(current);
 			});
-			$items.on('click', 'img', function () {
+			// Bound on $slides (an ancestor of slick's own .slick-list) rather than
+			// on each .product-gallery__slide directly: slick binds its own
+			// click-swallowing handler on .slick-list and calls
+			// stopImmediatePropagation() there after a drag/swipe. Delegating from
+			// the outer container means slick's handler runs first during bubbling,
+			// so a post-drag click never reaches us and never opens the lightbox.
+			$slides.on('click', '.product-gallery__slide img', function () {
 				lastFocus = $zoom[0] || this;
 				showLightbox(current);
 			});
@@ -118,6 +124,24 @@
 				if (event.key === 'Escape') { hideLightbox(); }
 				if (event.key === 'ArrowLeft') { step(-1); }
 				if (event.key === 'ArrowRight') { step(1); }
+				if (event.key === 'Tab') {
+					var $focusable = $lightbox.find('[data-lightbox-close], [data-lightbox-prev], [data-lightbox-next]');
+					if (!$focusable.length) { return; }
+					var first = $focusable[0];
+					var last = $focusable[$focusable.length - 1];
+					var active = document.activeElement;
+					if (event.shiftKey) {
+						if (active === first || $.inArray(active, $focusable.toArray()) === -1) {
+							event.preventDefault();
+							last.focus();
+						}
+					} else {
+						if (active === last || $.inArray(active, $focusable.toArray()) === -1) {
+							event.preventDefault();
+							first.focus();
+						}
+					}
+				}
 			});
 		});
 	});
