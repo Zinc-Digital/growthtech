@@ -12,7 +12,7 @@ const GT_STOCKISTS_GEOCODE_BATCH = 10;
 
 // -- Columns ---------------------------------------------------------------------
 
-/** CSV columns, in order. `products` is a |-separated list of SKUs. */
+/** CSV columns, in order. `products` is a |-separated list of product names. */
 function gt_stockists_csv_columns() {
 	return array( 'id', 'name', 'status', 'type', 'address_1', 'address_2', 'town', 'region', 'postcode', 'country', 'phone', 'website', 'email', 'products', 'latitude', 'longitude', 'geocode_status' );
 }
@@ -31,11 +31,11 @@ function gt_stockists_export_rows() {
 	$rows = array();
 	foreach ( $posts as $post ) {
 		$id   = $post->ID;
-		$skus = array();
+		$names = array();
 		foreach ( array_map( 'intval', (array) get_field( 'products', $id ) ) as $pid ) {
 			$product = $pid ? wc_get_product( $pid ) : null;
-			if ( $product && $product->get_sku() ) {
-				$skus[] = $product->get_sku();
+			if ( $product ) {
+				$names[] = $product->get_name();
 			}
 		}
 		$types  = wp_get_post_terms( $id, 'stockist_type', array( 'fields' => 'names' ) );
@@ -53,7 +53,7 @@ function gt_stockists_export_rows() {
 			'phone'          => (string) get_field( 'phone', $id ),
 			'website'        => (string) get_field( 'website', $id ),
 			'email'          => (string) get_field( 'email', $id ),
-			'products'       => implode( '|', $skus ),
+			'products'       => implode( '|', $names ),
 			'latitude'       => (string) get_field( 'lat', $id ),
 			'longitude'      => (string) get_field( 'lng', $id ),
 			'geocode_status' => (string) get_field( 'geocode_status', $id ),
@@ -144,6 +144,32 @@ function gt_stockists_import_parse( $path ) {
 	return array( 'columns' => $columns, 'rows' => $rows, 'totals' => $totals );
 }
 
+/**
+ * A product by name (what the export writes) or by SKU (what older files and
+ * price lists tend to carry). Names match case-insensitively; only published
+ * products count.
+ *
+ * @return int product id or 0
+ */
+function gt_stockists_find_product( $entry ) {
+	static $by_name = null;
+	if ( null === $by_name ) {
+		$by_name = array();
+		foreach ( wc_get_products( array( 'limit' => -1, 'status' => 'publish', 'return' => 'ids' ) ) as $pid ) {
+			$product = wc_get_product( $pid );
+			if ( $product ) {
+				$by_name[ mb_strtolower( trim( $product->get_name() ) ) ] = (int) $pid;
+			}
+		}
+	}
+	$key = mb_strtolower( trim( (string) $entry ) );
+	if ( isset( $by_name[ $key ] ) ) {
+		return $by_name[ $key ];
+	}
+	$pid = wc_get_product_id_by_sku( $entry );
+	return $pid && 'publish' === get_post_status( $pid ) ? (int) $pid : 0;
+}
+
 /** Validate one raw row and decide create / update / skip. $seen tracks names already matched in this file. */
 function gt_stockists_import_plan_row( array $raw, $line, array $countries, array &$seen ) {
 	$errors   = array();
@@ -209,12 +235,12 @@ function gt_stockists_import_plan_row( array $raw, $line, array $countries, arra
 	}
 	if ( array_key_exists( 'products', $raw ) ) {
 		$ids = array();
-		foreach ( array_filter( array_map( 'trim', explode( '|', $raw['products'] ) ) ) as $sku ) {
-			$pid = wc_get_product_id_by_sku( $sku );
+		foreach ( array_filter( array_map( 'trim', explode( '|', $raw['products'] ) ) ) as $entry ) {
+			$pid = gt_stockists_find_product( $entry );
 			if ( $pid ) {
-				$ids[] = (int) $pid;
+				$ids[] = $pid;
 			} else {
-				$warnings[] = sprintf( /* translators: %s: the SKU */ __( 'No product has the SKU "%s"; it was left out.', 'gt' ), $sku );
+				$warnings[] = sprintf( /* translators: %s: the entry */ __( 'No product is called "%s" (or has that SKU); it was left out.', 'gt' ), $entry );
 			}
 		}
 		$data['products'] = array_values( array_unique( $ids ) );

@@ -23,8 +23,9 @@ gt_assert( is_array( $somerset ), 'Somerset exported' );
 gt_assert_equal( 'GB', $somerset['country'], 'country code exported' );
 gt_assert_equal( 'Hydroponics specialist', $somerset['type'], 'type name exported' );
 gt_assert_equal( '51.0153', $somerset['latitude'], 'latitude exported as typed' );
-gt_assert_contains( 'GT-001', $somerset['products'], 'products exported as SKUs' );
-gt_assert_equal( 7, count( explode( '|', $somerset['products'] ) ), 'seven SKUs, pipe-separated' );
+gt_assert_contains( 'Clonex Mist', $somerset['products'], 'products exported by name' );
+gt_assert_not_contains( 'GT-001', $somerset['products'], 'not by SKU' );
+gt_assert_equal( 7, count( explode( '|', $somerset['products'] ) ), 'seven names, pipe-separated' );
 gt_assert_equal( 'manual', $somerset['geocode_status'], 'status exported' );
 gt_assert_equal( (string) $find( 'Somerset Hydro Centre' )->ID, $somerset['id'], 'id exported' );
 
@@ -38,9 +39,9 @@ $tmp = wp_tempnam( 'stockists-import.csv' );
 $somerset_id = $find( 'Somerset Hydro Centre' )->ID;
 file_put_contents( $tmp, implode( "\n", array( // phpcs:ignore WordPress.WP.AlternativeFunctions
 	'id,name,status,type,address_1,town,postcode,country,phone,website,products,latitude,longitude,ignored_column',
-	$somerset_id . ',Somerset Hydro Centre,publish,Hydroponics specialist,"2 New Road",Taunton,TA1 2BB,GB,01823 111 222,https://somerset.example,GT-001|GT-002,,,x',
-	',Import Test Shop,publish,Garden centre,"9 Test Lane",Bath,BA1 1AA,GB,01225 000 000,,GT-003|GT-999,,,x',
-	',Import Manual Shop,draft,Grow shop,"1 Pin Street",Cork,,IE,,,GT-004,51.8985,-8.4756,x',
+	$somerset_id . ',Somerset Hydro Centre,publish,Hydroponics specialist,"2 New Road",Taunton,TA1 2BB,GB,01823 111 222,https://somerset.example,Clonex Mist|root riot,,,x',
+	',Import Test Shop,publish,Garden centre,"9 Test Lane",Bath,BA1 1AA,GB,01225 000 000,,GT-003|No Such Product,,,x',
+	',Import Manual Shop,draft,Grow shop,"1 Pin Street",Cork,,IE,,,Clonex Pro Start,51.8985,-8.4756,x',
 	',,publish,Grow shop,"No Name",Leeds,LS1 1AA,GB,,,,,,x',
 	',Import Bad Country,publish,Grow shop,"1 Elsewhere",Nowhere,,ZZ,,,,,,x',
 ) ) );
@@ -53,7 +54,7 @@ try {
 	gt_assert_equal( 'update', $plan['rows'][0]['action'], 'row with a known id updates' );
 	gt_assert_equal( $somerset_id, $plan['rows'][0]['post_id'], 'matched by id' );
 	gt_assert_equal( 'create', $plan['rows'][1]['action'], 'new name creates' );
-	gt_assert_contains( 'GT-999', implode( ' ', $plan['rows'][1]['warnings'] ), 'unknown SKU is warned about, not fatal' );
+	gt_assert_contains( 'No Such Product', implode( ' ', $plan['rows'][1]['warnings'] ), 'unknown product is warned about, not fatal' );
 	gt_assert_equal( 'create', $plan['rows'][2]['action'], 'draft row with coordinates creates' );
 	gt_assert_equal( 'skip', $plan['rows'][3]['action'], 'missing name skips' );
 	gt_assert_contains( 'name', implode( ' ', $plan['rows'][3]['errors'] ), 'skip reason names the field' );
@@ -71,7 +72,7 @@ try {
 
 	gt_assert_equal( '2 New Road', get_field( 'address_1', $somerset_id ), 'update wrote the address' );
 	gt_assert_equal( 'TA1 2BB', get_field( 'postcode', $somerset_id ), 'update wrote the postcode' );
-	gt_assert_equal( 2, count( (array) get_field( 'products', $somerset_id ) ), 'update replaced the products' );
+	gt_assert_equal( array( wc_get_product_id_by_sku( 'GT-001' ), wc_get_product_id_by_sku( 'GT-002' ) ), array_map( 'intval', (array) get_field( 'products', $somerset_id ) ), 'update replaced the products, matched by name case-insensitively' );
 	gt_assert_equal( 'https://somerset.example', get_field( 'website', $somerset_id ), 'update wrote the website' );
 	gt_assert_equal( '', (string) get_field( 'lat', $somerset_id ), 'blank coordinates clear the pin so it is re-geocoded' );
 	gt_assert( in_array( $somerset_id, gt_stockists_geocode_queue(), true ), 'updated row without coordinates is queued' );
@@ -80,7 +81,7 @@ try {
 	gt_assert( $shop instanceof WP_Post, 'created' );
 	gt_assert_equal( 'publish', $shop->post_status, 'published' );
 	gt_assert_equal( array( 'Garden centre' ), wp_get_post_terms( $shop->ID, 'stockist_type', array( 'fields' => 'names' ) ), 'new type term created and assigned' );
-	gt_assert_equal( array( wc_get_product_id_by_sku( 'GT-003' ) ), array_map( 'intval', (array) get_field( 'products', $shop->ID ) ), 'only the known SKU linked' );
+	gt_assert_equal( array( wc_get_product_id_by_sku( 'GT-003' ) ), array_map( 'intval', (array) get_field( 'products', $shop->ID ) ), 'a SKU still resolves; the unknown name is left out' );
 	gt_assert( in_array( $shop->ID, gt_stockists_geocode_queue(), true ), 'created row without coordinates is queued' );
 
 	$manual = $find( 'Import Manual Shop' );

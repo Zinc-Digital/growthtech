@@ -90,7 +90,7 @@ $labels  = array(
 
 	<?php else : ?>
 		<h2><?php esc_html_e( 'Export', 'gt' ); ?></h2>
-		<p><?php esc_html_e( 'Download every stockist as a CSV — one row each, with products listed by SKU. Edit it in a spreadsheet and import it back to update in bulk.', 'gt' ); ?></p>
+		<p><?php esc_html_e( 'Download every stockist as a CSV — one row each, with the products they stock listed by name. Edit it in a spreadsheet and import it back to update in bulk.', 'gt' ); ?></p>
 		<form method="post" action="<?php echo esc_url( gt_stockists_import_export_url() ); ?>">
 			<?php wp_nonce_field( 'gt_stockists_export' ); ?>
 			<input type="hidden" name="gt_action" value="export" />
@@ -101,7 +101,7 @@ $labels  = array(
 		<p><?php esc_html_e( 'Upload a CSV in the same layout as the export. You will see what each row would do before anything is saved.', 'gt' ); ?></p>
 		<ul class="ul-disc">
 			<li><?php esc_html_e( 'Rows with an id update that stockist; rows without an id update a stockist with exactly the same name, or create a new one.', 'gt' ); ?></li>
-			<li><?php esc_html_e( 'products: SKUs separated by | (e.g. GT-001|GT-003). country: the two-letter code (GB, IE). status: publish or draft. type: the stockist type name — new names are created.', 'gt' ); ?></li>
+			<li><?php esc_html_e( 'products: product names separated by | (e.g. Clonex Mist|Root Riot) — SKUs are accepted too. country: the two-letter code (GB, IE). status: publish or draft. type: the stockist type name — new names are created.', 'gt' ); ?></li>
 			<li><?php esc_html_e( 'Leave latitude/longitude empty to have the address looked up automatically after the import; fill both in to pin the stockist by hand.', 'gt' ); ?></li>
 			<li><?php esc_html_e( 'Columns you leave out are not changed. Stockists missing from the file are never deleted.', 'gt' ); ?></li>
 		</ul>

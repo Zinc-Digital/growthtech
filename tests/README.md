@@ -149,7 +149,8 @@ country, phone, website, email, products, latitude, longitude, geocode_status`
 - Rows match an existing stockist by `id`, otherwise by an exact `name`;
   everything else creates. Stockists missing from the file are never
   deleted. Columns left out of the file are not changed on updates.
-- `products` is `|`-separated SKUs (unknown SKUs are dropped with a note);
+- `products` is `|`-separated product names (SKUs are accepted on import
+  too; unknown entries are dropped with a note);
   `country` is the ISO-2 code; `status` is `publish` or `draft`; `type` is
   the stockist type name (created if new).
 - Both `latitude` and `longitude` present → the pin is `manual`. Either
