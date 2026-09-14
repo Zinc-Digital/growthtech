@@ -188,3 +188,26 @@ function gt_shop_enqueue_scripts() {
 	) );
 }
 add_action( 'wp_enqueue_scripts', 'gt_shop_enqueue_scripts' );
+
+/** Product gallery slider + lightbox; WooCommerce's own gallery scripts stay off. */
+function gt_product_enqueue_scripts() {
+	if ( ! is_product() ) {
+		return;
+	}
+	wp_enqueue_script(
+		'gt-product-gallery',
+		get_template_directory_uri() . '/assets/js/product-gallery.js',
+		array( 'jquery', 'slick-js' ),
+		gt_asset_version( '/assets/js/product-gallery.js' ),
+		true
+	);
+}
+add_action( 'wp_enqueue_scripts', 'gt_product_enqueue_scripts' );
+
+function gt_product_dequeue_wc_gallery() {
+	foreach ( array( 'photoswipe', 'photoswipe-ui-default', 'photoswipe-default-skin', 'zoom', 'flexslider', 'wc-single-product' ) as $handle ) {
+		wp_dequeue_script( $handle );
+		wp_dequeue_style( $handle );
+	}
+}
+add_action( 'wp_enqueue_scripts', 'gt_product_dequeue_wc_gallery', 99 );
