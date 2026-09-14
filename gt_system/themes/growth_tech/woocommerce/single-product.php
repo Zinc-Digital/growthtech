@@ -47,10 +47,10 @@ while ( have_posts() ) :
 		</div>
 	</div>
 
-	<?php /* TASK 7: complete the system goes here */ ?>
+	<?php get_template_part( 'template-parts/shop/complete-system', null, array( 'product' => $product ) ); ?>
 
 	<div class="product-page__inner">
-		<?php /* TASK 7: knowledge band goes here */ ?>
+		<?php get_template_part( 'template-parts/shop/knowledge-band', null, array( 'product_id' => $product->get_id() ) ); ?>
 	</div>
 
 	<?php do_action( 'woocommerce_after_single_product' ); ?>

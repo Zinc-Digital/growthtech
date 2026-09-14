@@ -1,0 +1,97 @@
+// ---------------------------------------------------------------------------
+// Knowledge band — Figma 384:1958
+//
+// 1340 x 300 black band inside the page gutters, image on the right under a
+// left-to-right gradient, copy 30/50 inset, 60 to the footer.
+// ---------------------------------------------------------------------------
+
+.knowledge-band {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 300px;
+  margin: 77px 0 60px;
+  padding: 30px 50px;
+  overflow: hidden;
+  background-color: #000;
+  color: color(white);
+
+  &__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: right center;
+  }
+
+  &__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, #000 40.865%, rgba(0, 0, 0, 0) 82.692%);
+  }
+
+  &__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 25px;
+    max-width: 622px;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 60px;
+    font-weight: $font-700;
+    line-height: normal;
+    letter-spacing: -1.2px;
+    color: color(white);
+  }
+
+  &__text {
+    margin: -15px 0 0;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 15px;
+    font-weight: $font-400;
+    line-height: 25px;
+    color: rgba(255, 255, 255, 0.75);
+  }
+}
+
+@media (max-width: $md - 1px) {
+  .knowledge-band {
+    margin: 60px 0 50px;
+    padding: 30px;
+
+    &__scrim {
+      background: linear-gradient(90deg, #000 30%, rgba(0, 0, 0, 0.35) 100%);
+    }
+
+    &__title {
+      font-size: 44px;
+      letter-spacing: -0.9px;
+    }
+  }
+}
+
+@media (max-width: $sm - 1px) {
+  .knowledge-band {
+    margin: 45px 0 40px;
+    padding: 30px 25px;
+
+    &__scrim {
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    &__title {
+      font-size: 34px;
+      letter-spacing: -0.7px;
+    }
+
+    &__text {
+      margin-top: -10px;
+    }
+  }
+}

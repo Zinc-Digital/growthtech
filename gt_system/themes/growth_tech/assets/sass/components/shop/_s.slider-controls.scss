@@ -1,0 +1,136 @@
+// ---------------------------------------------------------------------------
+// Slider controls shared by the shop pages: 35px square arrows and the
+// square/bar progress indicator, driven by block-slider.js through
+// [data-slider-arrows] / [data-slider-dots] targets.
+// ---------------------------------------------------------------------------
+
+$slider-muted: rgba(0, 0, 0, 0.1);
+
+.shop-slider__arrows {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .slick-prev,
+  .slick-next {
+    position: static;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    background-color: #f4f4f4;
+    // _p.home.scss paints an unscoped background image on these classes.
+    background-image: none;
+    border: 0;
+    color: #000;
+    cursor: pointer;
+    text-indent: 0;
+    transform: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    &::before,
+    &::after {
+      content: none;
+    }
+
+    &:not(.slick-disabled):hover,
+    &:not(.slick-disabled):focus-visible {
+      background-color: #393536;
+      color: color(white);
+    }
+
+    &.slick-disabled {
+      background-color: #000;
+      color: color(white);
+      opacity: 0.3;
+      cursor: default;
+    }
+  }
+
+  .slick-next {
+    background-color: #000;
+    color: color(white);
+  }
+
+  .slick-prev .block-slider__arrow {
+    transform: rotate(180deg);
+  }
+
+  .block-slider__arrow {
+    display: block;
+    width: 18px;
+    height: 15px;
+  }
+}
+
+.shop-slider__progress {
+  .slick-dots {
+    position: static;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .slick-dots li {
+    width: 15px;
+    height: 15px;
+    margin: 0;
+    line-height: 0;
+    transition: width 0.3s ease, height 0.3s ease;
+  }
+
+  .slick-dots li button {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    overflow: hidden;
+    text-indent: -9999px;
+    background-color: #f4f4f4;
+    border: 0;
+    border-radius: 0;
+    cursor: pointer;
+
+    &::before {
+      content: none;
+    }
+  }
+
+  .slick-dots li.is-past button {
+    background-color: #000;
+  }
+
+  .slick-dots li.slick-active {
+    width: 80px;
+    height: 3px;
+
+    button {
+      position: relative;
+      background-color: #f4f4f4;
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 50%;
+        background-color: #000;
+      }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shop-slider__arrows .slick-prev,
+  .shop-slider__arrows .slick-next,
+  .shop-slider__progress .slick-dots li {
+    transition: none;
+  }
+}
