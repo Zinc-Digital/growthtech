@@ -16,6 +16,17 @@ $cards    = get_field( 'cards' );
 $cta_text = get_field( 'cta_text' );
 $cta_link = get_field( 'cta_link' );
 
+/*
+ * Editable per instance, falling back to the design's light grey when empty —
+ * which also covers blocks added before this field existed. Restricted to
+ * colour syntax because the value goes straight into a style attribute.
+ */
+$background = (string) get_field( 'background_colour' );
+
+if ( ! preg_match( '/^(#[0-9a-f]{3,8}|rgba?\([\d\s.,%]+\))$/i', $background ) ) {
+	$background = '#F4F4F4';
+}
+
 // Give editors something to look at before any fields are filled in.
 if ( $is_preview && ! $heading && ! $text && empty( $cards ) ) {
 	$heading = __( "What's your growing ecosystem?", 'gt' );
@@ -50,6 +61,7 @@ if ( $is_slider ) {
 
 <section class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>"
 	id="<?php echo esc_attr( $block_id ); ?>"
+	style="--eco-bg: <?php echo esc_attr( $background ); ?>;"
 	<?php echo $heading ? 'aria-labelledby="' . esc_attr( $title_id ) . '"' : ''; ?>>
 
 	<div class="b-ecosystem__inner">

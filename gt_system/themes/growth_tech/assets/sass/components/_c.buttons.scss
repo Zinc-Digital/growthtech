@@ -51,10 +51,14 @@
     background-color: #000;
     color: color(white);
 
+    // Solid lift rather than an invert — the label and arrow stay white so the
+    // button never flashes to a light block mid-hover. #231F20 is the brand
+    // black: a visible step off #000 that still reads as an opaque colour
+    // rather than black at reduced opacity.
     &:hover,
     &:focus-visible {
-      background-color: color(white);
-      color: #000;
+      background-color: #231f20;
+      color: color(white);
     }
   }
 }

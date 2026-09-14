@@ -26,8 +26,8 @@
     // design's 1440 x 863 ratio above that width keeps the crop identical at
     // every size (863 / 1440 = 59.93vw). The 100vh cap stops the banner growing
     // taller than the screen on very large monitors.
-    min-height: min(max(863px, 59.93vw), 100vh);
-    padding: 173px 0 0; // clears the overlay header, then centres what is left
+    min-height: min(max(863px, 59.93vw), 105vh);
+    padding: 255px 0 0; // clears the overlay header, then centres what is left
   }
 
   &__img {
@@ -36,7 +36,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
+    object-position: top;
   }
 
   // Two multiply gradients, straight from Figma (165:2263).

@@ -8,6 +8,9 @@
 // ---------------------------------------------------------------------------
 
 .b-ecosystem {
+  // Set per instance from the block's "Background colour" field; the fallback
+  // keeps older blocks (and the editor's empty state) on the design grey.
+  background-color: var(--eco-bg, #f4f4f4);
   padding: 100px 0;
 
   &__inner {

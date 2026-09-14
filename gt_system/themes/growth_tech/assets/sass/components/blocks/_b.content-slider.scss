@@ -1,0 +1,495 @@
+// ---------------------------------------------------------------------------
+// Block: Content Slider — Figma "Frame 205" (384:4540)
+//
+// Geometry on the 1440 frame:
+//   section   1440 x 626, 80px vertical padding, 74px gutters (1292 content)
+//   columns   copy 465 / slider 660, 100px gap, aligned to the top
+//   copy      heading 60 at -1.2px, body 15/25 at 75% black, gap 40
+//   slides    2 x 317.5 x 400, 25px gap, 30px padding, 20px inner gap
+//   controls  31px below the slides: progress left, 35px arrows right
+// ---------------------------------------------------------------------------
+
+$cs-muted: rgba(0, 0, 0, 0.1);
+
+.b-content-slider {
+  padding: 80px 0;
+
+  &__inner {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 100px; // Figma 384:4541
+    width: 100%;
+    max-width: 1440px; // 1292 content + 2 x 74 gutter
+    margin: 0 auto;
+    padding: 0 74px;
+  }
+
+  // -- copy ------------------------------------------------------------------
+  &__content {
+    display: flex;
+    flex: 0 1 465px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px; // Figma 384:4542
+    max-width: 465px;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 60px; // Figma 384:4543
+    font-weight: $font-700;
+    line-height: 1.05;
+    letter-spacing: -1.2px;
+    color: #000;
+  }
+
+  &__text {
+    margin: 0;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 15px; // Figma 384:4544
+    font-weight: $font-400;
+    line-height: 25px;
+    color: rgba(0, 0, 0, 0.75);
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 25px; // Figma 384:4545
+  }
+
+  // The second action is a plain underlined link, not a button (Figma 384:4547).
+  &__link {
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 14px;
+    font-weight: $font-700;
+    line-height: normal;
+    color: #000;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+
+    &:hover,
+    &:focus-visible {
+      text-decoration-thickness: 2px;
+    }
+  }
+
+  // -- slider ----------------------------------------------------------------
+  &__media {
+    display: flex;
+    flex: 0 1 660px;
+    flex-direction: column;
+    gap: 31px; // Figma 384:4548
+    min-width: 0;
+    max-width: 660px;
+  }
+
+  &__slides {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 25px; // Figma 384:4549
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__slide {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px; // Figma 384:4550
+    height: 400px;
+    margin: 0;
+    padding: 30px;
+    overflow: hidden;
+    background-color: rgba(35, 31, 32, 0.05); // shows while the image loads
+    text-align: center;
+  }
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  // Darkens the lower half so the logo and links stay readable.
+  &__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.85) 50.114%);
+  }
+
+  &__slide-body {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+  }
+
+  // `width`/`height` are reset because WordPress emits width="1" height="1" for
+  // SVG uploads, which would otherwise collapse the logo to a dot.
+  &__logo {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 150px; // Figma 384:4551
+    max-height: 46px;
+    object-fit: contain;
+  }
+
+  &__slide-title {
+    margin: 0;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 12px; // Figma 384:4556
+    font-weight: $font-400;
+    line-height: 20px;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  // The underline is drawn rather than `text-decoration`, so it can animate.
+  // `_typography.scss` sets a global `a:hover { color: #0e0e0e }`, which is why
+  // the hover colour has to be restated here — the link sits on a dark photo.
+  &__slide-link {
+    position: relative;
+    display: inline-block;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 14px; // Figma 387:6330
+    font-weight: $font-700;
+    line-height: normal;
+    color: color(white);
+    text-decoration: none;
+
+    // The resting underline from the design.
+    &::before {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: -3px;
+      left: 0;
+      height: 1px;
+      background-color: currentColor;
+    }
+
+    // Sweeps in over the top on hover.
+    &::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: -4px;
+      left: 0;
+      height: 2px;
+      background-color: currentColor;
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.35s ease;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: color(white);
+    }
+
+    &:hover::after,
+    &:focus-visible::after {
+      transform: scaleX(1);
+    }
+  }
+
+  // -- controls --------------------------------------------------------------
+  &__controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+  }
+
+  // Progress indicator — Figma 384:4566. A 15px square per slide: solid once
+  // seen, 10% black while upcoming; the active slide expands into an 80 x 3 bar.
+  //
+  // Selectors are qualified down to `.slick-dots li button` because
+  // slick-theme.css styles that exact path (width 20px, transparent) and would
+  // otherwise outrank a shorter selector here.
+  &__progress {
+    // slick-theme positions the dots absolutely under the slider; here they sit
+    // in the controls row, so put them back in normal flow.
+    .slick-dots {
+      position: static;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: auto;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .slick-dots li {
+      width: 15px;
+      height: 15px;
+      margin: 0;
+      line-height: 0;
+      transition: width 0.3s ease, height 0.3s ease;
+    }
+
+    .slick-dots li button {
+      display: block;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      overflow: hidden;
+      text-indent: -9999px;
+      background-color: $cs-muted;
+      border: 0;
+      border-radius: 0;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      // slick-theme draws a bullet with an icon font this theme does not ship.
+      &::before {
+        content: none;
+      }
+    }
+
+    .slick-dots li.is-past button {
+      background-color: #000;
+    }
+
+    .slick-dots li.slick-active {
+      width: 80px;
+      height: 3px;
+
+      button {
+        position: relative;
+        background-color: $cs-muted; // the unfilled track
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          // Without autoplay there is no timer, so the bar simply reads as full.
+          width: 100%;
+          background-color: #000;
+        }
+      }
+    }
+  }
+
+  // With autoplay the bar fills in step with the timer.
+  &__inner[style*="--slider-autoplay"] &__progress .slick-dots li.slick-active button::after {
+    width: 0;
+    animation: gt-dot-progress var(--slider-autoplay, 6000ms) linear forwards;
+  }
+
+  // Arrows — Figma 384:4573 / 384:4575. Muted by default, solid black on hover.
+  &__arrows {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .slick-prev,
+    .slick-next {
+      position: static;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 35px;
+      height: 35px;
+      padding: 0;
+      background-color: $cs-muted;
+      // _p.home.scss declares an unscoped `.slick-prev/.slick-next` rule that
+      // paints arrow.svg as a background; clear it and its text-indent.
+      background-image: none;
+      border: 0;
+      color: #000;
+      cursor: pointer;
+      text-indent: 0;
+      transform: none;
+      transition: background-color 0.3s ease, color 0.3s ease;
+
+      &::before,
+      &::after {
+        content: none;
+      }
+
+      // Hover matches the block's button: lifted grey, white glyph. It is
+      // deliberately not #000 — that now reads as "unavailable" below — and a
+      // disabled arrow must not react to the pointer at all.
+      &:not(.slick-disabled):hover,
+      &:not(.slick-disabled):focus-visible {
+        background-color: #393536;
+        color: color(white);
+      }
+
+      // Solid black, faded back, once there is nothing further that way.
+      &.slick-disabled {
+        background-color: #000;
+        color: color(white);
+        opacity: 0.3;
+        cursor: default;
+      }
+    }
+
+    .slick-prev .block-slider__arrow {
+      transform: rotate(180deg);
+    }
+
+    .block-slider__arrow {
+      display: block;
+      width: 18px;
+      height: 15px;
+    }
+  }
+
+  // Slick replaces the grid once it takes over, so the layout has to be
+  // re-stated on its wrappers.
+  .slick-slider {
+    margin-bottom: 0;
+  }
+
+  &__slides.slick-initialized {
+    display: block;
+
+    .slick-track {
+      display: flex;
+      align-items: stretch;
+    }
+
+    // slick.css sets `.slick-initialized .slick-slide { display: block }`, which
+    // outranks the slide's own flex layout. The height is restated too — leaving
+    // it `auto` collapses the card to its content.
+    .slick-slide {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 400px;
+      margin: 0 12.5px; // half the 25px gap, either side
+    }
+
+    .slick-list {
+      margin: 0 -12.5px;
+    }
+  }
+
+  a:focus-visible,
+  button:focus-visible {
+    outline: 3px solid #000;
+    outline-offset: 3px;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Tablet — the two columns stack, the slider keeps two across
+// ---------------------------------------------------------------------------
+@media (max-width: $xl - 1px) {
+  .b-content-slider {
+    padding: 70px 0;
+
+    &__inner {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 50px;
+      padding: 0 50px;
+    }
+
+    &__content,
+    &__media {
+      flex: 1 1 auto;
+      max-width: 100%;
+    }
+
+    &__title {
+      font-size: clamp(34px, 4.6vw, 60px);
+      letter-spacing: -0.8px;
+    }
+
+    &__slide {
+      height: 360px;
+    }
+
+    &__slides.slick-initialized .slick-slide {
+      height: 360px;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Mobile — one slide at a time
+// ---------------------------------------------------------------------------
+@media (max-width: $md - 1px) {
+  .b-content-slider {
+    padding: 50px 0;
+
+    &__inner {
+      gap: 35px;
+      padding: 0 25px;
+    }
+
+    &__title {
+      font-size: 32px;
+      line-height: 1.15;
+      letter-spacing: -0.6px;
+    }
+
+    &__actions {
+      gap: 20px;
+    }
+
+    &__slides {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    &__slide {
+      height: 320px;
+      padding: 25px;
+    }
+
+    &__media {
+      gap: 25px;
+    }
+
+    &__slides.slick-initialized {
+      .slick-slide {
+        height: 320px;
+        margin: 0 10px;
+      }
+
+      .slick-list {
+        margin: 0 -10px;
+      }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .b-content-slider {
+    &__slide-link::after {
+      transition: none;
+    }
+
+    &__progress .slick-dots li,
+    &__progress .slick-dots li button,
+    &__arrows .slick-prev,
+    &__arrows .slick-next {
+      transition: none;
+    }
+
+    &__progress .slick-dots li.slick-active button::after {
+      width: 100%;
+      animation: none;
+    }
+  }
+}

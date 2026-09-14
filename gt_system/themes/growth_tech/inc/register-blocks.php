@@ -102,6 +102,25 @@ function register_acf_block_types() {
 		'icon'				=> 'align-pull-right'
 	));
 
+	// Formulated by Growth Technology — copy plus a brand slider
+	acf_register_block_type(array(
+		'name'				=> 'content-slider',
+		'title'				=> __('Content Slider', 'gt'),
+		'description'		=> __('Copy and two calls to action beside a slider of image cards with a progress bar.', 'gt'),
+		'render_template'	=> 'template-parts/blocks/content-slider.php',
+		'category'			=> 'formatting',
+		'keywords'			=> array('slider', 'brands', 'carousel', 'content'),
+		'mode'				=> 'preview',
+		'supports'			=> array('mode' => true, 'anchor' => true, 'align' => false, 'jsx' => false),
+		'example'			=> array(
+			'attributes' => array(
+				'mode' => 'preview',
+				'data' => array('is_example' => true),
+			),
+		),
+		'icon'				=> 'slides'
+	));
+
 }
 
 /**
@@ -114,14 +133,14 @@ function gt_block_editor_assets() {
 		'gt-admin',
 		get_template_directory_uri() . '/assets/css/admin.css',
 		array(),
-		$version
+		gt_asset_version( '/assets/css/admin.css' )
 	);
 
 	wp_enqueue_script(
 		'gt-admin-tag-map',
 		get_template_directory_uri() . '/assets/js/admin-tag-map.js',
 		array( 'jquery' ),
-		$version,
+		gt_asset_version( '/assets/js/admin-tag-map.js' ),
 		true
 	);
 }
@@ -137,7 +156,7 @@ function gt_register_block_scripts() {
 		'gt-block-slider',
 		get_template_directory_uri() . '/assets/js/block-slider.js',
 		array( 'jquery', 'slick-js' ),
-		wp_get_theme()->get( 'Version' ),
+		gt_asset_version( '/assets/js/block-slider.js' ),
 		true
 	);
 }
