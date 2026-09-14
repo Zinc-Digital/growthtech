@@ -24,7 +24,7 @@ gt_assert_contains( 'data-block-slider', $html, 'steps are a slider' );
 gt_assert_contains( 'data-progress="1"', $html, 'steps slider has the progress indicator' );
 gt_assert_contains( 'data-slider-dots', $html, 'progress target' );
 gt_assert_contains( 'data-slider-arrows', $html, 'arrows target' );
-gt_assert_contains( 'STEP 2 • MIST', $html, 'step label' );
+gt_assert_contains( 'Step 2 • Mist', $html, 'step label' );
 gt_assert_contains( 'brand-steps__marker', $html, 'plus marker' );
 gt_assert_contains( 'style="left: 73%; top: 47%;"', $html, 'marker positioned from the fields' );
 gt_assert_contains( '>Clonex Mist</h3>', $html, 'step title from the product' );

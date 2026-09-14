@@ -300,6 +300,7 @@ $brand-muted: rgba(0, 0, 0, 0.75);
     font-weight: $font-500;
     line-height: normal;
     letter-spacing: 1.2px;
+    text-transform: uppercase;
     color: rgba(255, 255, 255, 0.5);
   }
 
@@ -390,7 +391,7 @@ $brand-muted: rgba(0, 0, 0, 0.75);
 
 // -- pair band ---------------------------------------------------------------
 .brand-pair {
-  padding-top: 58px;
+  padding: 58px 50px 0;
 
   // Same bottom-space rule as .brand-range: only matters when this is the
   // last section (a brand with a pair band but no guides band).
@@ -621,8 +622,8 @@ $brand-muted: rgba(0, 0, 0, 0.75);
     }
   }
 
-  .brand-pair__inner {
-    margin: 0 25px;
+  .brand-pair {
+    padding: 58px 25px 0;
   }
 
   .brand-guides {

@@ -47,7 +47,6 @@
     line-height: normal;
     letter-spacing: -1.2px;
     color: color(white);
-    white-space: nowrap;
   }
 
   &__text {
@@ -73,7 +72,6 @@
     &__title {
       font-size: 44px;
       letter-spacing: -0.9px;
-      white-space: normal;
     }
   }
 }

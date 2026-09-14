@@ -6,7 +6,12 @@ mocked WordPress.
 ## Running
 
 - `tests/run.sh` — runs every `tests/*.test.php` through `tests/bin/wpx
-  eval-file` and exits 1 if any file fails. Read-only; safe to run any time.
+  eval-file` and exits 1 if any file fails. Safe to run any time — almost
+  every file is read-only, and the one exception,
+  `tests/product-helpers.test.php`, temporarily mutates two records
+  (Clonex Rooting Hormone's catalog visibility and Clonex Mist's knowledge
+  band override) and restores each in a `finally` block before the file
+  finishes.
 - `tests/bin/wpx <wp args>` — WP-CLI wired to MAMP's PHP 8.3 binary, MySQL
   socket and the site URL. Use it directly for one-off checks, e.g.
   `tests/bin/wpx eval-file tests/archive.test.php`.
@@ -54,3 +59,28 @@ disposable local DB, and never as part of routine test runs.
 
 `tests/seed/seed-product-content.php` — product page / brand landing content
 and generated placeholder images (run after seed-shop.php).
+
+## Image sizes
+
+Plan 2 registered ten new image sizes (`gt-product-main`, `gt-product-thumb`,
+`gt-brand-hero`, `gt-brand-hero-sm`, `gt-brand-step`, `gt-brand-step-sm`,
+`gt-brand-pair`, `gt-brand-pair-sm`, `gt-knowledge`, `gt-knowledge-sm`),
+asserted by `tests/product-helpers.test.php`. Registering a size only affects
+uploads made after that point — real media added to the library before this
+deploy will not have these cropped variants. After deploying, regenerate
+thumbnails for existing media with `tests/bin/wpx media regenerate` (or an
+equivalent regen plugin) so the new sizes exist for pre-existing images too.
+
+## Manual Phase Two check
+
+The shop currently runs in "enquiry mode" (`GT_SHOP_ENQUIRY_MODE` is `true`
+in `inc/woocommerce.php`), which hides WooCommerce's price and add-to-cart
+markup in favour of stockist/expert CTAs. To confirm the Phase Two path
+(real price + cart) still works once enquiry mode is switched off:
+
+1. On a scratch copy of the site (not production), add to `wp-config.php`,
+   above the `wp-settings.php` require: `define( 'GT_SHOP_ENQUIRY_MODE',
+   false );`
+2. Load a product page and confirm WooCommerce's price and add-to-cart
+   (including the size variation form) render in the summary, between the
+   feature tick list and the stockist/expert CTAs.

@@ -63,7 +63,7 @@ $has_title = (bool) ( $heading || $accent );
 								}
 								?>
 								<?php if ( $label ) : ?>
-									<span class="brand-steps__badge"><?php echo esc_html( mb_strtoupper( $label ) ); ?></span>
+									<span class="brand-steps__badge"><?php echo esc_html( $label ); ?></span>
 								<?php endif; ?>
 								<?php if ( $url ) : ?>
 									<a class="brand-steps__marker" href="<?php echo esc_url( $url ); ?>"
@@ -113,7 +113,7 @@ $has_title = (bool) ( $heading || $accent );
 			<?php if ( $has_faq ) : ?>
 				<aside class="brand-faq">
 					<?php if ( ! empty( $faq['eyebrow'] ) ) : ?>
-						<p class="brand-faq__eyebrow"><?php echo esc_html( mb_strtoupper( $faq['eyebrow'] ) ); ?></p>
+						<p class="brand-faq__eyebrow"><?php echo esc_html( $faq['eyebrow'] ); ?></p>
 					<?php endif; ?>
 					<p class="brand-faq__question"><?php echo esc_html( $faq['question'] ); ?></p>
 					<?php if ( ! empty( $faq['answer'] ) ) : ?>

@@ -75,14 +75,25 @@
 				return;
 			}
 
-			function showLightbox(index) {
+			// renderLightbox swaps the visible image (and keeps slick in sync) for
+			// both the initial open and subsequent next/prev steps, without
+			// touching focus. openLightbox additionally reveals the overlay and
+			// moves focus to Close, which must only happen once per open — moving
+			// focus back to Close on every next/prev step would strand keyboard
+			// and screen-reader users on a button that isn't where they navigated.
+			function renderLightbox(index) {
 				current = Math.max(0, Math.min(count - 1, index));
 				var src = fullSrc(current);
 				if (!src) { return; }
 				$lightboxImg.attr('src', src);
+				if ($slides.hasClass('slick-initialized')) { $slides.slick('slickGoTo', current); }
+			}
+
+			function openLightbox(index) {
 				$lightbox.prop('hidden', false);
 				document.body.classList.add('product-lightbox-open');
 				$lightbox.find('[data-lightbox-close]').trigger('focus');
+				renderLightbox(index);
 			}
 
 			function hideLightbox() {
@@ -94,13 +105,12 @@
 			function step(delta) {
 				var next = current + delta;
 				if (next < 0 || next >= count) { return; }
-				showLightbox(next);
-				if ($slides.hasClass('slick-initialized')) { $slides.slick('slickGoTo', next); }
+				renderLightbox(next);
 			}
 
 			$zoom.on('click', function () {
 				lastFocus = this;
-				showLightbox(current);
+				openLightbox(current);
 			});
 			// Bound on $slides (an ancestor of slick's own .slick-list) rather than
 			// on each .product-gallery__slide directly: slick binds its own
@@ -110,7 +120,7 @@
 			// so a post-drag click never reaches us and never opens the lightbox.
 			$slides.on('click', '.product-gallery__slide img', function () {
 				lastFocus = $zoom[0] || this;
-				showLightbox(current);
+				openLightbox(current);
 			});
 			$lightbox.on('click', '[data-lightbox-close]', hideLightbox);
 			$lightbox.on('click', '[data-lightbox-prev]', function () { step(-1); });

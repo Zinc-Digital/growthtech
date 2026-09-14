@@ -41,6 +41,11 @@ $slider-muted: rgba(0, 0, 0, 0.1);
       color: color(white);
     }
 
+    &:focus-visible {
+      outline: 2px solid #000;
+      outline-offset: 2px;
+    }
+
     &.slick-disabled {
       background-color: #000;
       color: color(white);
@@ -99,6 +104,11 @@ $slider-muted: rgba(0, 0, 0, 0.1);
 
     &::before {
       content: none;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #000;
+      outline-offset: 2px;
     }
   }
 

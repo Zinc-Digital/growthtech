@@ -107,6 +107,11 @@ $gallery-wash: rgba(35, 31, 32, 0.05);
       &::after {
         content: none;
       }
+
+      &:focus-visible {
+        outline: 2px solid currentColor;
+        outline-offset: 2px;
+      }
     }
 
     .slick-prev {
@@ -221,6 +226,11 @@ $gallery-wash: rgba(35, 31, 32, 0.05);
       width: 16px;
       height: 16px;
     }
+
+    &:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
   }
 
   &__nav {
@@ -243,6 +253,11 @@ $gallery-wash: rgba(35, 31, 32, 0.05);
       display: block;
       width: 35px;
       height: 35px;
+    }
+
+    &:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
     }
 
     &--prev {

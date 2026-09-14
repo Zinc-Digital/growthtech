@@ -4,10 +4,20 @@ require_once __DIR__ . '/lib/bootstrap.php';
 gt_assert( current_theme_supports( 'woocommerce' ), 'theme declares woocommerce support' );
 gt_assert( defined( 'GT_SHOP_ENQUIRY_MODE' ) && GT_SHOP_ENQUIRY_MODE === true, 'GT_SHOP_ENQUIRY_MODE is true' );
 
-gt_assert_equal( array(), apply_filters( 'woocommerce_enqueue_styles', array( 'x' => 1 ) ), 'WooCommerce front-end styles are dequeued' );
-
+// Phase Two: these two hooks are the ones that put WooCommerce's price and
+// add-to-cart (with the variation form) back on the product page once
+// enquiry mode is switched off — confirm they're still removed for now, and
+// that the summary template still fires the action they'll hook back into.
 gt_assert_equal( false, has_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price' ), 'single price hook removed in enquiry mode' );
 gt_assert_equal( false, has_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart' ), 'single add-to-cart hook removed in enquiry mode' );
+gt_assert_contains(
+	"do_action( 'woocommerce_single_product_summary' )",
+	file_get_contents( get_template_directory() . '/template-parts/shop/product-summary.php' ),
+	'product summary template still fires the Phase Two hook'
+);
+
+gt_assert_equal( array(), apply_filters( 'woocommerce_enqueue_styles', array( 'x' => 1 ) ), 'WooCommerce front-end styles are dequeued' );
+
 gt_assert_equal( false, has_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' ), 'loop add-to-cart hook removed' );
 gt_assert_equal( false, has_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price' ), 'loop price hook removed' );
 gt_assert_equal( false, has_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb' ), 'WC breadcrumb hook removed' );

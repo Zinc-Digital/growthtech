@@ -21,25 +21,38 @@ $stockist  = gt_product_stockist_url( $product );
 $experts   = gt_product_experts_url( $product );
 $logo_id   = $brand instanceof WP_Term ? (int) gt_term_field( 'logo', $brand, 0 ) : 0;
 $intro     = $product->get_short_description();
+
+$brand_link = $brand instanceof WP_Term ? get_term_link( $brand ) : null;
+if ( is_wp_error( $brand_link ) ) {
+	$brand_link = null;
+}
 ?>
 <div class="product-summary">
 	<div class="product-summary__main">
 
 		<div class="product-summary__head">
 			<?php if ( $brand instanceof WP_Term ) : ?>
-				<a class="product-summary__brand" href="<?php echo esc_url( get_term_link( $brand ) ); ?>">
+				<?php if ( $brand_link ) : ?>
+					<a class="product-summary__brand" href="<?php echo esc_url( $brand_link ); ?>">
+				<?php else : ?>
+					<span class="product-summary__brand">
+				<?php endif; ?>
 					<?php if ( $logo_id ) : ?>
 						<?php echo wp_get_attachment_image( $logo_id, 'medium', false, array( 'class' => 'product-summary__brand-img', 'alt' => $brand->name ) ); ?>
 					<?php else : ?>
 						<span class="product-summary__brand-text"><?php echo esc_html( $brand->name ); ?></span>
 					<?php endif; ?>
+				<?php if ( $brand_link ) : ?>
 				</a>
+				<?php else : ?>
+				</span>
+				<?php endif; ?>
 			<?php endif; ?>
 			<h1 class="product-summary__title"><?php echo esc_html( $product->get_name() ); ?></h1>
 		</div>
 
 		<?php if ( $intro ) : ?>
-			<div class="product-summary__intro"><?php echo wp_kses_post( wpautop( $intro ) ); ?></div>
+			<div class="product-summary__intro"><?php echo wp_kses_post( apply_filters( 'woocommerce_short_description', $intro ) ); ?></div>
 		<?php endif; ?>
 
 		<?php if ( is_array( $features ) && $features ) : ?>
@@ -64,7 +77,13 @@ $intro     = $product->get_short_description();
 			</ul>
 		<?php endif; ?>
 
-		<?php if ( $sizes ) : ?>
+		<?php
+		/*
+		 * Phase Two: WooCommerce's variation form (fired by the summary
+		 * action below) replaces these display-only chips.
+		 */
+		?>
+		<?php if ( $sizes && GT_SHOP_ENQUIRY_MODE ) : ?>
 			<div class="product-sizes">
 				<p class="product-summary__eyebrow"><?php esc_html_e( 'Available sizes', 'gt' ); ?></p>
 				<ul class="product-sizes__list" aria-label="<?php esc_attr_e( 'Available sizes', 'gt' ); ?>">

@@ -77,10 +77,12 @@ $has_title = (bool) ( $heading || $accent );
 						}
 						?>
 						<div class="brand-guides__panel">
-							<p class="brand-guides__card-title">
-								<?php if ( ! empty( $guide['lead'] ) ) : ?><strong><?php echo esc_html( $guide['lead'] ); ?></strong> <?php endif; ?>
-								<?php echo esc_html( ! empty( $guide['title'] ) ? $guide['title'] : '' ); ?>
-							</p>
+							<?php if ( ! empty( $guide['lead'] ) || ! empty( $guide['title'] ) ) : ?>
+								<p class="brand-guides__card-title">
+									<?php if ( ! empty( $guide['lead'] ) ) : ?><strong><?php echo esc_html( $guide['lead'] ); ?></strong> <?php endif; ?>
+									<?php echo esc_html( ! empty( $guide['title'] ) ? $guide['title'] : '' ); ?>
+								</p>
+							<?php endif; ?>
 							<?php if ( $link && ! empty( $link['url'] ) ) : ?>
 								<a class="brand-guides__card-link" href="<?php echo esc_url( $link['url'] ); ?>"
 									<?php echo ! empty( $link['target'] ) ? 'target="' . esc_attr( $link['target'] ) . '" rel="noopener"' : ''; ?>>

@@ -40,6 +40,15 @@ gt_assert_not_contains( 'woocommerce-Price-amount', $html, 'no price in enquiry 
 gt_assert_not_contains( 'woocommerce-product-details__short-description', $html, 'WC default excerpt markup not duplicated' );
 gt_assert_contains( 'site-footer__club', $html, 'join the growth club band shows' );
 
+// The per-page "hide join club" toggle removes the footer band.
+try {
+	update_field( 'field_gt_hide_club', 1, $mist_id );
+	$html = gt_fetch( '/product/clonex-mist/' );
+	gt_assert_not_contains( 'site-footer__club', $html, 'join the growth club band hides when the page toggle is on' );
+} finally {
+	update_field( 'field_gt_hide_club', 0, $mist_id );
+}
+
 // A product with no extras renders the essentials only.
 $html = gt_fetch( '/product/budget-propagator/' );
 gt_assert_contains( '<h1 class="product-summary__title">Budget Propagator</h1>', $html, 'plain product title' );
