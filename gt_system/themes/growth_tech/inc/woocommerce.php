@@ -42,6 +42,15 @@ function gt_wc_remove_default_hooks() {
 	remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30 );
 	remove_action( 'woocommerce_archive_description', 'woocommerce_taxonomy_archive_description', 10 );
 	remove_action( 'woocommerce_archive_description', 'woocommerce_product_archive_description', 10 );
+	// content-product.php builds the card markup itself (link wrapper, thumbnail,
+	// title, sale flash, rating) and exposes woocommerce_after_shop_loop_item_title
+	// / woocommerce_after_shop_loop_item as Phase Two slots instead.
+	remove_action( 'woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open', 10 );
+	remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_product_link_close', 5 );
+	remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_rating', 5 );
+	remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_show_product_loop_sale_flash', 10 );
+	remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
+	remove_action( 'woocommerce_shop_loop_item_title', 'woocommerce_template_loop_product_title', 10 );
 
 	if ( GT_SHOP_ENQUIRY_MODE ) {
 		remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
@@ -161,6 +170,9 @@ function gt_shop_enqueue_scripts() {
 	wp_localize_script( 'gt-shop-filters', 'gtShop', array(
 		'ajaxUrl'        => admin_url( 'admin-ajax.php' ),
 		'categoryLocked' => is_product_category(),
+		'strings'        => array(
+			'empty' => __( 'No products match those filters. Try removing one.', 'gt' ),
+		),
 	) );
 }
 add_action( 'wp_enqueue_scripts', 'gt_shop_enqueue_scripts' );

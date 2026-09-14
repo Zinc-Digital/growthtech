@@ -52,6 +52,14 @@ $img_attr = array(
 					<?php endif; ?>
 				</p>
 			<?php endif; ?>
+			<?php
+			// Phase Two: price / add-to-cart hook back in here when GT_SHOP_ENQUIRY_MODE is off.
+			do_action( 'woocommerce_after_shop_loop_item_title' );
+			?>
 		</div>
 	</a>
+	<?php
+	// Phase Two: price / add-to-cart hook back in here when GT_SHOP_ENQUIRY_MODE is off.
+	do_action( 'woocommerce_after_shop_loop_item' );
+	?>
 </li>

@@ -12,6 +12,8 @@ gt_assert_equal( 2, $sel['paged'], 'paged is an int' );
 $sel = gt_shop_selection( array( 'orderby' => 'price', 'paged' => '-3' ) );
 gt_assert_equal( 'brands', $sel['orderby'], 'invalid orderby falls back to brands' );
 gt_assert_equal( 1, $sel['paged'], 'paged never below 1' );
+gt_assert_equal( 'mist', gt_shop_selection( array( 'q' => array( 'mist', 'x' ) ) )['q'], 'array q uses its first value' );
+gt_assert_equal( 'brands', gt_shop_selection( array( 'orderby' => array( 'price' ) ) )['orderby'], 'array orderby falls back safely' );
 
 // Tax query.
 $sel = gt_shop_selection( array( 'categories' => 'propagation', 'growing-medium' => 'soil,coco' ) );
@@ -49,6 +51,7 @@ gt_assert_equal( get_term_link( 'propagation', 'product_cat' ), gt_shop_build_ur
 gt_assert_equal( add_query_arg( array( 'brands' => 'clonex' ), get_term_link( 'propagation', 'product_cat' ) ), gt_shop_build_url( gt_shop_selection( array( 'categories' => 'propagation', 'brands' => 'clonex' ) ) ), 'category permalink keeps other params' );
 gt_assert_equal( add_query_arg( array( 'categories' => 'propagation,nutrients', 'orderby' => 'title' ), $shop ), gt_shop_build_url( gt_shop_selection( array( 'categories' => 'propagation,nutrients', 'orderby' => 'title' ) ) ), 'multi-category goes to shop with params' );
 gt_assert_equal( add_query_arg( array( 'q' => 'mist' ), trailingslashit( $shop ) . 'page/2/' ), gt_shop_build_url( gt_shop_selection( array( 'q' => 'mist', 'paged' => 2 ) ) ), 'paged urls use /page/N/' );
+gt_assert_equal( add_query_arg( array( 'q' => rawurlencode( 'root & riot=x' ) ), $shop ), gt_shop_build_url( gt_shop_selection( array( 'q' => 'root & riot=x' ) ) ), 'query values are url-encoded' );
 
 // Ordering.
 $all    = new WP_Query( array_merge( gt_shop_query_args( gt_shop_selection( array() ) ), array( 'posts_per_page' => -1 ) ) );

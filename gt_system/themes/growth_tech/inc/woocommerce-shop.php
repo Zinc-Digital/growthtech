@@ -10,6 +10,15 @@ if ( ! class_exists( 'WooCommerce' ) ) {
 	return;
 }
 
+/**
+ * WooCommerce 11's Product Filters registers "categories" and "brands" as
+ * public query vars of its own and applies its own taxonomy clauses to the
+ * main query for them (same slug-list semantics as ours, so results agree
+ * either way). That's why gt_shop_flatten_request_vars() below runs on the
+ * "request" filter — it has to normalise the array-style submit before
+ * WooCommerce's own handling of these query vars sees it.
+ */
+
 /** Sidebar groups in display order. Key = query param. */
 function gt_shop_filter_groups() {
 	return array(
@@ -18,6 +27,19 @@ function gt_shop_filter_groups() {
 		'growing-medium' => array( 'label' => __( 'Growing Medium', 'gt' ), 'taxonomy' => 'pa_growing-medium', 'collapsed' => false ),
 		'growing-stage'  => array( 'label' => __( 'Growing Stage', 'gt' ), 'taxonomy' => 'pa_growing-stage', 'collapsed' => true ),
 	);
+}
+
+/** A scalar as-is, or the first scalar element of an array, or '' when none. */
+function gt_shop_first_scalar( $value ) {
+	if ( ! is_array( $value ) ) {
+		return $value;
+	}
+	foreach ( $value as $item ) {
+		if ( is_scalar( $item ) ) {
+			return $item;
+		}
+	}
+	return '';
 }
 
 /** Comma-separated slugs → clean unique slug list. */
@@ -62,9 +84,9 @@ function gt_shop_selection( $source = null ) {
 		}
 	}
 
-	$selection['q'] = isset( $source['q'] ) ? trim( sanitize_text_field( (string) $source['q'] ) ) : '';
+	$selection['q'] = isset( $source['q'] ) ? trim( sanitize_text_field( (string) gt_shop_first_scalar( $source['q'] ) ) ) : '';
 
-	$orderby              = isset( $source['orderby'] ) ? sanitize_key( (string) $source['orderby'] ) : '';
+	$orderby              = isset( $source['orderby'] ) ? sanitize_key( (string) gt_shop_first_scalar( $source['orderby'] ) ) : '';
 	$selection['orderby'] = array_key_exists( $orderby, gt_shop_sort_options() ) ? $orderby : 'brands';
 
 	$paged = isset( $source['paged'] ) ? (int) $source['paged'] : 0;
@@ -266,7 +288,19 @@ function gt_shop_build_url( array $selection ) {
 	if ( $selection['paged'] > 1 ) {
 		$base = trailingslashit( $base ) . 'page/' . $selection['paged'] . '/';
 	}
-	return $params ? add_query_arg( $params, $base ) : $base;
+	if ( ! $params ) {
+		return $base;
+	}
+	// add_query_arg() appends its args raw (WP's build_query() passes
+	// urlencode=false), so an unencoded value containing "&" or "=" would
+	// corrupt the resulting query string. "q" is the only free-text value
+	// here; every other param is a sanitize_title()/sanitize_key() slug (or
+	// a comma-joined list of them), which can't contain those characters —
+	// encoding them too would turn their joining commas into %2C.
+	if ( isset( $params['q'] ) ) {
+		$params['q'] = rawurlencode( $params['q'] );
+	}
+	return add_query_arg( $params, $base );
 }
 
 /** "Showing 7 of 26 products". */

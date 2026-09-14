@@ -21,6 +21,8 @@ gt_assert_contains( 'Propagation', $html, 'card shows primary category' );
 gt_assert_contains( '100ml/300ml/750ml', $html, 'card joins sizes with slashes' );
 gt_assert_contains( 'product-card__dot', $html, 'dot separator between category and sizes' );
 gt_assert_contains( 'product-card__img', $html, 'card has an image (placeholder when none set)' );
+gt_assert_not_contains( 'star-rating', $html, 'no rating output on the card in enquiry mode' );
+gt_assert_not_contains( 'woocommerce-Price', $html, 'no price output on the card in enquiry mode' );
 
 $html = gt_render_card( 'GT-006' );
 gt_assert_not_contains( 'product-card__dot', $html, 'no dot when the product has no sizes' );

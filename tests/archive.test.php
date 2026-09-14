@@ -46,6 +46,8 @@ $html = gt_fetch( '/shop/?q=mist' );
 gt_assert_contains( 'Showing 2 of 2 products', $html, 'GET search works' );
 gt_assert_contains( 'value="mist"', $html, 'search box keeps its value' );
 
+gt_assert_contains( 'value="root &amp; riot=x"', gt_fetch( '/shop/?q=' . rawurlencode( 'root & riot=x' ) ), 'encoded search survives a round trip' );
+
 $html = gt_fetch( '/shop/?orderby=title-desc' );
 $first = strpos( $html, 'product-card__title">' );
 gt_assert_contains( 'Root Riot', substr( $html, $first, 80 ), 'GET sort applies' );

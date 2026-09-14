@@ -118,11 +118,25 @@
 
 				if (!options.append && sidebar) {
 					rememberCollapsed();
+					// The search input is about to be destroyed by the innerHTML
+					// swap below. Capture what's actually in it first — the user
+					// may have typed more while this request was in flight, so
+					// the value this response reflects can already be stale.
+					var liveQuery = focusName === 'q' ? sidebar.querySelector('input[name="q"]') : null;
+					var liveQueryValue = liveQuery ? liveQuery.value : null;
 					sidebar.innerHTML = d.sidebar;
 					restoreCollapsed();
 					if (focusValue) {
 						var box = sidebar.querySelector('input[name="' + focusName + '"][value="' + focusValue + '"]');
 						if (box) { box.focus({ preventScroll: true }); }
+					} else if (focusName === 'q') {
+						var searchInput = sidebar.querySelector('input[name="q"]');
+						if (searchInput) {
+							if (null !== liveQueryValue) { searchInput.value = liveQueryValue; }
+							searchInput.focus({ preventScroll: true });
+							var caret = searchInput.value.length;
+							searchInput.setSelectionRange(caret, caret);
+						}
 					}
 				}
 
@@ -141,7 +155,7 @@
 				if (d.total === 0 && main) {
 					var p = document.createElement('p');
 					p.className = 'shop__empty';
-					p.textContent = 'No products match those filters. Try removing one.';
+					p.textContent = (settings.strings && settings.strings.empty) || 'No products match those filters. Try removing one.';
 					main.appendChild(p);
 				}
 
@@ -196,7 +210,7 @@
 	page.addEventListener('input', function (event) {
 		if (!event.target.matches('[data-shop-form] input[name="q"]')) { return; }
 		clearTimeout(searchTimer);
-		searchTimer = setTimeout(function () { load(readParams()); }, 350);
+		searchTimer = setTimeout(function () { load(readParams(), { focusName: 'q' }); }, 350);
 	});
 
 	page.addEventListener('submit', function (event) {
