@@ -71,7 +71,7 @@ function gt_stockist_country_choices( $field ) {
 	$field['choices'] = gt_stockist_countries();
 	return $field;
 }
-add_filter( 'acf/load_field/name=country', 'gt_stockist_country_choices' );
+add_filter( 'acf/load_field/key=field_gt_stockist_country', 'gt_stockist_country_choices' );
 
 /** "1 High Street, Taunton, TA1 1AA, United Kingdom (UK)" — empties skipped. */
 function gt_stockist_address_string( $post_id ) {
@@ -130,6 +130,20 @@ function gt_maps_key() {
 }
 
 /**
+ * Transient key for a geocode lookup. The address is case-folded so "Taunton"
+ * and "taunton" share one cache entry; used both by gt_stockist_geocode()
+ * and by the save hook, which needs the same key to force a fresh lookup.
+ *
+ * @param string $address Free-text address or place.
+ * @param string $region  Optional ISO-2 bias, e.g. "gb".
+ */
+function gt_stockist_geocode_cache_key( $address, $region = '' ) {
+	$address = mb_strtolower( trim( (string) $address ) );
+	$region  = strtolower( trim( (string) $region ) );
+	return 'gt_geocode_' . md5( $region . '|' . $address );
+}
+
+/**
  * Look an address up with the Google Geocoding API.
  *
  * @param string $address Free-text address or place.
@@ -147,7 +161,7 @@ function gt_stockist_geocode( $address, $region = '' ) {
 		return new WP_Error( 'no_key', __( 'No Google Maps API key is set in Theme Settings.', 'gt' ) );
 	}
 
-	$cache_key = 'gt_geocode_' . md5( $region . '|' . $address );
+	$cache_key = gt_stockist_geocode_cache_key( $address, $region );
 	$cached    = get_transient( $cache_key );
 	if ( is_array( $cached ) ) {
 		if ( isset( $cached['error'] ) ) {
@@ -230,9 +244,26 @@ function gt_stockist_maybe_geocode( $post_id ) {
 	}
 
 	$region = strtolower( (string) get_field( 'country', $post_id ) );
+
+	// The address is unchanged but the coordinates are empty: an admin cleared
+	// Latitude/Longitude to force a fresh lookup. Drop the cached result for
+	// this address so the request actually reaches Google again rather than
+	// quietly handing back the same 30-day-cached answer.
+	if ( ! $has_xy && '' !== $last && $last === $address ) {
+		delete_transient( gt_stockist_geocode_cache_key( $address, $region ) );
+	}
+
 	$result = gt_stockist_geocode( $address, $region );
 	if ( is_wp_error( $result ) ) {
-		update_field( 'field_gt_stockist_geocode_status', 'no_key' === $result->get_error_code() ? 'no_key' : 'failed', $post_id );
+		$status = 'no_key' === $result->get_error_code() ? 'no_key' : 'failed';
+		if ( 'no_key' !== $status ) {
+			// A stale pin must not stay on the public map once the lookup fails;
+			// on no_key nothing was attempted, so existing coordinates are left alone.
+			update_field( 'field_gt_stockist_lat', '', $post_id );
+			update_field( 'field_gt_stockist_lng', '', $post_id );
+			update_field( 'field_gt_stockist_geocoded_address', '', $post_id );
+		}
+		update_field( 'field_gt_stockist_geocode_status', $status, $post_id );
 		return;
 	}
 	update_field( 'field_gt_stockist_lat', $result['lat'], $post_id );
@@ -329,9 +360,12 @@ function gt_stockists_all() {
 	if ( ! function_exists( 'get_field' ) ) {
 		return array();
 	}
-	$countries = gt_stockist_countries();
-	$posts     = get_posts( array( 'post_type' => 'stockist', 'post_status' => 'publish', 'posts_per_page' => -1, 'orderby' => 'title', 'order' => 'ASC' ) );
-	$out       = array();
+	$countries     = gt_stockist_countries();
+	$posts         = get_posts( array( 'post_type' => 'stockist', 'post_status' => 'publish', 'posts_per_page' => -1, 'orderby' => 'title', 'order' => 'ASC' ) );
+	$out           = array();
+	// Several stockists commonly link the same product; resolve each product
+	// id at most once per request instead of once per stockist→product link.
+	$product_cache = array();
 
 	foreach ( $posts as $post ) {
 		$id       = $post->ID;
@@ -342,14 +376,22 @@ function gt_stockists_all() {
 		$products = array();
 		$brands   = array();
 		foreach ( array_map( 'intval', (array) get_field( 'products', $id ) ) as $pid ) {
-			$product = $pid ? wc_get_product( $pid ) : null;
-			if ( ! $product instanceof WC_Product || 'publish' !== $product->get_status() ) {
+			if ( ! $pid ) {
 				continue;
 			}
-			$products[] = array( 'id' => $pid, 'name' => $product->get_name() );
-			$brand      = gt_product_brand( $product );
-			if ( $brand ) {
-				$brands[ $brand->slug ] = $brand->slug;
+			if ( ! array_key_exists( $pid, $product_cache ) ) {
+				$product = wc_get_product( $pid );
+				$product_cache[ $pid ] = ( $product instanceof WC_Product && 'publish' === $product->get_status() )
+					? array( 'name' => $product->get_name(), 'brand' => gt_product_brand( $product ) )
+					: null;
+			}
+			$cached = $product_cache[ $pid ];
+			if ( null === $cached ) {
+				continue;
+			}
+			$products[] = array( 'id' => $pid, 'name' => $cached['name'] );
+			if ( $cached['brand'] ) {
+				$brands[ $cached['brand']->slug ] = $cached['brand']->slug;
 			}
 		}
 		$types   = wp_get_post_terms( $id, 'stockist_type', array( 'fields' => 'names' ) );
@@ -378,19 +420,22 @@ function gt_stockists_all() {
 				: '',
 			'products'     => $products,
 			'brands'       => array_values( $brands ),
-			'search'       => strtolower( trim( get_the_title( $post ) . ' ' . $town . ' ' . get_field( 'postcode', $id ) . ' ' . get_field( 'region', $id ) ) ),
+			'search'       => mb_strtolower( trim( get_the_title( $post ) . ' ' . $town . ' ' . get_field( 'postcode', $id ) . ' ' . get_field( 'region', $id ) ) ),
 		);
 	}
 	return $out;
 }
 
-/** id => name for the "Stocking any product" select. */
+/**
+ * id => name for the "Stocking any product" select. Every published product,
+ * including catalog-hidden ones — gt_stockist_preselect() accepts any
+ * published product for a ?product= link, so excluding hidden ones here
+ * would silently break the preselect for those.
+ */
 function gt_stockist_product_options() {
 	$options = array();
 	foreach ( wc_get_products( array( 'limit' => -1, 'status' => 'publish', 'orderby' => 'title', 'order' => 'ASC' ) ) as $product ) {
-		if ( $product->is_visible() ) {
-			$options[ $product->get_id() ] = $product->get_name();
-		}
+		$options[ $product->get_id() ] = $product->get_name();
 	}
 	return $options;
 }
@@ -453,6 +498,9 @@ function gt_stockist_is_visible( array $s, array $pre ) {
 		return false;
 	}
 	if ( $pre['brand'] && ! in_array( $pre['brand'], $s['brands'], true ) ) {
+		return false;
+	}
+	if ( '' !== $pre['q'] && false === strpos( $s['search'], mb_strtolower( $pre['q'] ) ) ) {
 		return false;
 	}
 	return true;

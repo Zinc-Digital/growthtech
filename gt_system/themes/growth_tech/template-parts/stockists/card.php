@@ -37,7 +37,7 @@ $is_site   = (bool) $s['website'];
 			</p>
 		</div>
 		<?php if ( null !== $s['lat'] ) : ?>
-			<button type="button" class="stockists-card__map" data-card-map><?php esc_html_e( 'Show on map', 'gt' ); ?></button>
+			<button type="button" class="stockists-card__map" data-card-map aria-label="<?php echo esc_attr( sprintf( __( 'Show %s on map', 'gt' ), $s['name'] ) ); ?>"><?php esc_html_e( 'Show on map', 'gt' ); ?></button>
 		<?php endif; ?>
 	</div>
 
@@ -48,7 +48,7 @@ $is_site   = (bool) $s['website'];
 			<?php endforeach; ?>
 			<?php if ( $extra ) : ?>
 				<li class="stockists-card__chip stockists-card__chip--more">
-					<button type="button" class="stockists-card__more" data-card-more data-count="<?php echo esc_attr( $extra ); ?>" aria-expanded="false"><?php echo esc_html( sprintf( /* translators: %d: hidden chips */ __( '+%d more', 'gt' ), $extra ) ); ?></button>
+					<button type="button" class="stockists-card__more" data-card-more data-count="<?php echo esc_attr( $extra ); ?>" aria-expanded="false" aria-label="<?php echo esc_attr( sprintf( __( 'Show all products stocked by %s', 'gt' ), $s['name'] ) ); ?>"><?php echo esc_html( sprintf( /* translators: %d: hidden chips */ __( '+%d more', 'gt' ), $extra ) ); ?></button>
 				</li>
 			<?php endif; ?>
 		</ul>

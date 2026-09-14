@@ -95,7 +95,10 @@
 			// A place name that matches no store still deserves an answer.
 			if (q && !visible.length) {
 				visible = pool;
-				noteText = sprintf(strings.nearest || 'Showing stockists nearest to %s', state.originLabel || state.q);
+				// Only claim a "nearest" ordering when that's the sort actually applied below.
+				if (state.sort === 'nearest') {
+					noteText = sprintf(strings.nearest || 'Showing stockists nearest to %s', state.originLabel || state.q);
+				}
 			}
 		} else {
 			pool.forEach(function (c) { c.distance = null; });
@@ -167,8 +170,10 @@
 	}
 
 	function geocode(query) {
-		// The proxy 400s anything under 2 chars; skip the round trip.
-		if (!settings.hasKey || !settings.geocodeUrl || !window.fetch || String(query).trim().length < 2) { return; }
+		// The proxy 400s anything under 2 chars; skip the round trip. Still bump
+		// the sequence so an earlier in-flight request for a longer query gets
+		// discarded by its own seq !== geocodeSeq guard below.
+		if (!settings.hasKey || !settings.geocodeUrl || !window.fetch || String(query).trim().length < 2) { geocodeSeq++; return; }
 		var seq = ++geocodeSeq;
 		var url = settings.geocodeUrl + (settings.geocodeUrl.indexOf('?') === -1 ? '?' : '&') +
 			'q=' + encodeURIComponent(query) + '&region=' + (state.region === 'uk' ? 'gb' : '');
@@ -291,6 +296,10 @@
 	if (ui.sort) { ui.sort.addEventListener('change', function () { state.sort = ui.sort.value; apply(); }); }
 	if (ui.search) {
 		ui.search.addEventListener('input', function () {
+			// Invalidate any geocode still in flight for the query as it stood
+			// before this keystroke, so clearing/shortening the search can't
+			// have a stale "nearest" response land and resort the list later.
+			geocodeSeq++;
 			state.q = ui.search.value.trim();
 			clearTimeout(geocodeTimer);
 			if (!state.q) {

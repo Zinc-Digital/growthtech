@@ -88,17 +88,26 @@ JavaScript API** and **Geocoding API** enabled:
 
 Geocoding runs on a stockist's `acf/save_post` — no separate step. A
 successful lookup is cached for 30 days (`gt_geocode_*` transients, keyed by
-region + address), so editing an already-geocoded stockist without changing
-its address won't re-hit Google. To force a re-run, change the address
-(town/country) and save — the mismatch against the stored "Geocoded
-address" triggers a fresh lookup. The "Geocoded address" field itself is
-read-only in the editor; to re-geocode an unchanged address, clear it
-directly (`wp post meta delete <id> geocoded_address` or equivalent) and
-re-save the stockist.
+region + the lower-cased address), so editing an already-geocoded stockist
+without changing its address won't re-hit Google. Changing the address
+(town/country) and saving triggers a fresh lookup automatically, since it no
+longer matches the stored "Geocoded address". To force a fresh lookup on an
+*unchanged* address, clear Latitude and Longitude and save: the cached
+result for that address is discarded and the address is looked up again. To
+use hand-typed coordinates instead, enter Latitude/Longitude and leave
+Geocoded address empty — this is recorded as status `manual` and is never
+overwritten by the save hook. A failed lookup clears Latitude, Longitude and
+Geocoded address and shows `failed` in the admin "Geocode" column until the
+address is corrected and saved again.
 
 The `gt/v1/geocode` REST proxy that the front-end search box calls keeps the
 key server-side; it also rate-limits to 30 requests per IP per minute,
-returning 429 once exceeded.
+returning 429 once exceeded. Since the proxy is public (no auth, keyed only
+by IP), put a daily quota cap on the Geocoding key in Google Cloud so a
+scripted flood can't run up billing. The per-IP limit keys on
+`REMOTE_ADDR`, so a site served through a reverse proxy or CDN needs the
+real client IP passed through (e.g. `X-Forwarded-For` trusted and mapped
+back onto `REMOTE_ADDR`) or every visitor shares one limit.
 
 No key is required, and everything degrades cleanly without one: the finder
 still lists, filters and searches by name/town, the map area shows a
