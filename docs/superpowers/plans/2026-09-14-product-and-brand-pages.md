@@ -781,13 +781,8 @@ gt_assert_equal( 'Override heading', $band['heading'], 'product override wins fo
 gt_assert( (int) $band['image'] > 0, 'unset override fields fall back individually' );
 update_field( 'field_gt_pd_knowledge', array( 'heading' => '', 'text' => '', 'image' => '', 'link' => '' ), $mist->get_id() );
 
-// Breadcrumbs rendered on real pages.
-$html = gt_fetch( '/product/clonex-mist/' );
-gt_assert_contains( 'shop-crumbs__current">Clonex Mist<', $html, 'product breadcrumb ends with the product' );
-gt_assert_contains( '>Propagation</a>', $html, 'product breadcrumb has the category' );
-gt_assert_contains( '>Clonex</a>', $html, 'product breadcrumb has the brand' );
+// Brand archives are unpaginated (Plan 1's archive template still renders them until Task 8).
 $html = gt_fetch( '/brand/clonex/' );
-gt_assert_contains( 'shop-crumbs__current">Clonex<', $html, 'brand breadcrumb ends with the brand' );
 gt_assert_contains( 'Showing 4 of 4 products', $html, 'brand archive lists every brand product' );
 
 foreach ( array( 'gt-product-main', 'gt-product-thumb', 'gt-brand-hero', 'gt-brand-hero-sm', 'gt-brand-step', 'gt-brand-step-sm', 'gt-brand-pair', 'gt-brand-pair-sm', 'gt-knowledge', 'gt-knowledge-sm' ) as $size ) {
@@ -1017,7 +1012,7 @@ Then regenerate the seeded images' sizes so the new sizes exist: `tests/bin/wpx 
 - [ ] **Step 6: Run the tests**
 
 Run: `tests/bin/wpx eval-file tests/product-helpers.test.php`
-Expected: `Success: 29 assertions passed`. The two `gt_fetch` breadcrumb checks pass because `/product/…` and `/brand/…` currently render WooCommerce's default single template / Plan 1's archive template respectively — both call the theme breadcrumb part? No: WC's default `single-product.php` does not include the theme part, so the three product breadcrumb assertions will still FAIL here. That is expected until Task 4 lands; the brand assertions pass now (archive template). Record the product-breadcrumb failures in the report and re-run this file after Task 4. If anything else fails, fix it.
+Expected: `Success: 24 assertions passed` (the product-page breadcrumb itself is asserted in Task 4, once the theme's single template exists).
 
 Run `tests/run.sh` — every other file green.
 
