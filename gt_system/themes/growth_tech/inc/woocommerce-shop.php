@@ -337,6 +337,11 @@ function gt_shop_main_query( $query ) {
 	if ( '' !== $selection['q'] ) {
 		$query->set( 's', $selection['q'] );
 	}
+
+	// The brand landing page lists its whole range under "The {Brand} Range".
+	if ( is_tax( 'product_brand' ) ) {
+		$query->set( 'posts_per_page', -1 );
+	}
 }
 add_action( 'woocommerce_product_query', 'gt_shop_main_query' );
 

@@ -55,6 +55,23 @@ function gt_theme_support() {
 	// Category hero: 1340 x 325, cropped, plus 2x.
 	add_image_size( 'gt-category-hero', 2680, 650, true );
 	add_image_size( 'gt-category-hero-sm', 1340, 325, true );
+
+	// Product page gallery: 600 x 600 tile with the cut-out contained (soft
+	// sizes), and the 187px thumbnails.
+	add_image_size( 'gt-product-main', 1200, 1200, false );
+	add_image_size( 'gt-product-thumb', 374, 374, false );
+
+	// Brand landing page: full-bleed hero, step slide, pair band; plus 2x.
+	add_image_size( 'gt-brand-hero', 2880, 1000, true );
+	add_image_size( 'gt-brand-hero-sm', 1440, 500, true );
+	add_image_size( 'gt-brand-step', 858, 840, true );
+	add_image_size( 'gt-brand-step-sm', 429, 420, true );
+	add_image_size( 'gt-brand-pair', 2680, 578, true );
+	add_image_size( 'gt-brand-pair-sm', 1340, 289, true );
+
+	// "Better knowledge" band on the product page: 1340 x 300, plus 2x.
+	add_image_size( 'gt-knowledge', 2680, 600, true );
+	add_image_size( 'gt-knowledge-sm', 1340, 300, true );
 }
 add_action('after_setup_theme', 'gt_theme_support');
 
