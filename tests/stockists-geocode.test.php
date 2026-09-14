@@ -43,6 +43,9 @@ try {
 	gt_assert_equal( $calls, count( $GLOBALS['gt_geocode_calls'] ), 'second lookup is served from the transient cache' );
 	$miss = gt_stockist_geocode( 'Nowhere' );
 	gt_assert( is_wp_error( $miss ) && 'zero_results' === $miss->get_error_code(), 'ZERO_RESULTS becomes a zero_results error' );
+	$calls = count( $GLOBALS['gt_geocode_calls'] );
+	gt_stockist_geocode( 'Nowhere' );
+	gt_assert_equal( $calls, count( $GLOBALS['gt_geocode_calls'] ), 'zero_results is negatively cached and not looked up again' );
 
 	$request = new WP_REST_Request( 'GET', '/gt/v1/geocode' );
 	$request->set_query_params( array( 'q' => 'Taunton, UK', 'region' => 'gb' ) );
@@ -55,6 +58,17 @@ try {
 	$request = new WP_REST_Request( 'GET', '/gt/v1/geocode' );
 	$request->set_query_params( array( 'q' => 'Nowhere' ) );
 	gt_assert_equal( 404, rest_do_request( $request )->get_status(), 'proxy 404 on zero results' );
+
+	// Rate limiting.
+	$rl_ip = '203.0.113.9';
+	$rl_ok = true;
+	for ( $i = 0; $i < 30; $i++ ) {
+		if ( gt_stockist_rate_limited( $rl_ip ) ) {
+			$rl_ok = false;
+		}
+	}
+	gt_assert( $rl_ok, 'rate limit allows 30 requests inside the window' );
+	gt_assert( gt_stockist_rate_limited( $rl_ip ), 'the 31st request in the window is rate limited' );
 
 	// Save hook.
 	$id = wp_insert_post( array( 'post_type' => 'stockist', 'post_status' => 'publish', 'post_title' => 'Geocode Test' ) );
@@ -83,6 +97,7 @@ try {
 		gt_stockist_maybe_geocode( $id );
 		gt_assert_equal( 'no_key', get_field( 'geocode_status', $id ), 'without a key the status says so' );
 	} finally {
+		delete_transient( 'gt_geocode_' . md5( 'gb|' . gt_stockist_address_string( $id ) ) );
 		wp_delete_post( $id, true );
 	}
 } finally {
@@ -90,7 +105,7 @@ try {
 	update_field( 'field_gt_shop_maps_key', $saved_key ? $saved_key : '', 'option' );
 	delete_transient( 'gt_geocode_' . md5( 'gb|Taunton, UK' ) );
 	delete_transient( 'gt_geocode_' . md5( '|Nowhere' ) );
-	delete_transient( 'gt_geocode_' . md5( 'gb|Taunton' ) );
+	delete_transient( 'gt_geocode_rl_' . md5( '203.0.113.9' ) );
 }
 
 gt_test_done();

@@ -150,6 +150,9 @@ function gt_stockist_geocode( $address, $region = '' ) {
 	$cache_key = 'gt_geocode_' . md5( $region . '|' . $address );
 	$cached    = get_transient( $cache_key );
 	if ( is_array( $cached ) ) {
+		if ( isset( $cached['error'] ) ) {
+			return new WP_Error( $cached['error'], isset( $cached['message'] ) ? $cached['message'] : $cached['error'] );
+		}
 		return $cached;
 	}
 
@@ -161,17 +164,33 @@ function gt_stockist_geocode( $address, $region = '' ) {
 
 	$response = wp_remote_get( $url, array( 'timeout' => 10 ) );
 	if ( is_wp_error( $response ) || 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
-		return new WP_Error( 'http', __( 'The geocoding request failed.', 'gt' ) );
+		$message = __( 'The geocoding request failed.', 'gt' );
+		set_transient( $cache_key, array( 'error' => 'http', 'message' => $message ), 5 * MINUTE_IN_SECONDS );
+		return new WP_Error( 'http', $message );
 	}
 	$data = json_decode( wp_remote_retrieve_body( $response ), true );
 	if ( ! is_array( $data ) || empty( $data['status'] ) ) {
-		return new WP_Error( 'bad_response', __( 'Unexpected geocoding response.', 'gt' ) );
+		$message = __( 'Unexpected geocoding response.', 'gt' );
+		set_transient( $cache_key, array( 'error' => 'bad_response', 'message' => $message ), 5 * MINUTE_IN_SECONDS );
+		return new WP_Error( 'bad_response', $message );
 	}
 	if ( 'ZERO_RESULTS' === $data['status'] || empty( $data['results'][0]['geometry']['location'] ) ) {
-		return new WP_Error( 'zero_results', __( 'No location found for that address.', 'gt' ) );
+		$message = __( 'No location found for that address.', 'gt' );
+		set_transient( $cache_key, array( 'error' => 'zero_results', 'message' => $message ), HOUR_IN_SECONDS );
+		return new WP_Error( 'zero_results', $message );
 	}
 	if ( 'OK' !== $data['status'] ) {
-		return new WP_Error( 'bad_response', sprintf( 'Geocoding status: %s', sanitize_text_field( $data['status'] ) ) );
+		// Google's error_message can include account/billing detail — log it, never return it over REST.
+		if ( in_array( $data['status'], array( 'REQUEST_DENIED', 'OVER_QUERY_LIMIT', 'INVALID_REQUEST' ), true ) && ! empty( $data['error_message'] ) ) {
+			error_log( sprintf( 'Google Geocoding %s: %s', $data['status'], $data['error_message'] ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+		}
+		$message = sprintf(
+			/* translators: %s: Google's geocoding status code. */
+			__( 'Geocoding status: %s', 'gt' ),
+			sanitize_text_field( $data['status'] )
+		);
+		set_transient( $cache_key, array( 'error' => 'bad_response', 'message' => $message ), 5 * MINUTE_IN_SECONDS );
+		return new WP_Error( 'bad_response', $message );
 	}
 
 	$location = $data['results'][0]['geometry']['location'];
@@ -225,18 +244,54 @@ add_action( 'acf/save_post', 'gt_stockist_maybe_geocode', 20 );
 
 // -- REST proxy (keeps the key server-side) -----------------------------------------
 
+/**
+ * Per-IP request counter for the geocode proxy: allows 30 requests per
+ * rolling 60s window. Returns true once an IP is over the limit.
+ */
+function gt_stockist_rate_limited( $ip ) {
+	$key   = 'gt_geocode_rl_' . md5( (string) $ip );
+	$count = get_transient( $key );
+	if ( false === $count ) {
+		set_transient( $key, 1, 60 );
+		return false;
+	}
+	$count = (int) $count + 1;
+	set_transient( $key, $count, 60 );
+	return $count > 30;
+}
+
 function gt_stockist_register_rest() {
 	register_rest_route( 'gt/v1', '/geocode', array(
 		'methods'             => 'GET',
 		'permission_callback' => '__return_true',
 		'args'                => array(
-			'q'      => array( 'type' => 'string', 'required' => true, 'sanitize_callback' => 'sanitize_text_field' ),
-			'region' => array( 'type' => 'string', 'default' => '', 'sanitize_callback' => 'sanitize_key' ),
+			'q'      => array(
+				'type'              => 'string',
+				'required'          => true,
+				'sanitize_callback' => 'sanitize_text_field',
+				'validate_callback' => function ( $value ) {
+					return mb_strlen( (string) $value ) <= 200;
+				},
+			),
+			'region' => array(
+				'type'              => 'string',
+				'default'           => '',
+				'sanitize_callback' => 'sanitize_key',
+				'validate_callback' => function ( $value ) {
+					return (bool) preg_match( '/^[a-z]{0,2}$/i', (string) $value );
+				},
+			),
 		),
 		'callback'            => function ( WP_REST_Request $request ) {
 			$q = trim( (string) $request->get_param( 'q' ) );
 			if ( mb_strlen( $q ) < 2 ) {
 				return new WP_REST_Response( array( 'code' => 'too_short' ), 400 );
+			}
+			$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+			if ( gt_stockist_rate_limited( $ip ) ) {
+				$response = new WP_REST_Response( array( 'code' => 'rate_limited' ), 429 );
+				$response->header( 'Retry-After', '60' );
+				return $response;
 			}
 			$result = gt_stockist_geocode( $q, (string) $request->get_param( 'region' ) );
 			if ( is_wp_error( $result ) ) {
