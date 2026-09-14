@@ -21,7 +21,8 @@ function gt_register_stockist_post_type() {
 			'exclude_from_search' => true,
 			'show_ui'             => true,
 			'show_in_menu'        => true,
-			'show_in_rest'        => true,
+			// No REST exposure — the finder page renders stockists itself; keeps published entries out of /wp/v2.
+			'show_in_rest'        => false,
 			'menu_icon'           => 'dashicons-location',
 			'menu_position'       => 27,
 			'supports'            => array( 'title' ),
@@ -46,7 +47,8 @@ function gt_register_stockist_post_type() {
 			'show_ui'            => true,
 			'show_in_menu'       => true,
 			'show_admin_column'  => true,
-			'show_in_rest'       => true,
+			// No REST exposure — the finder page renders stockists itself; keeps published entries out of /wp/v2.
+			'show_in_rest'       => false,
 			'hierarchical'       => false,
 			'rewrite'            => false,
 			'query_var'          => false,

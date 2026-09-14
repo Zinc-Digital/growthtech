@@ -6,8 +6,10 @@ $pt = get_post_type_object( 'stockist' );
 gt_assert_equal( false, $pt->public, 'stockist is not public' );
 gt_assert_equal( true, $pt->show_ui, 'stockist has admin UI' );
 gt_assert_equal( false, $pt->publicly_queryable, 'no front-end single' );
+gt_assert_equal( false, $pt->show_in_rest, 'stockist not exposed over REST' );
 gt_assert( taxonomy_exists( 'stockist_type' ), 'stockist_type taxonomy registered' );
 gt_assert( in_array( 'stockist', (array) get_taxonomy( 'stockist_type' )->object_type, true ), 'stockist_type attaches to stockists' );
+gt_assert_equal( false, get_taxonomy( 'stockist_type' )->show_in_rest, 'stockist_type not exposed over REST' );
 
 gt_assert( ! empty( acf_get_field_group( 'group_gt_stockist' ) ), 'stockist field group registered' );
 $names = wp_list_pluck( acf_get_fields( 'group_gt_stockist' ) ?: array(), 'name' );
