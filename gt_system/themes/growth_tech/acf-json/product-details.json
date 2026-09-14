@@ -64,13 +64,31 @@
         },
         {
             "key": "field_gt_pd_how_to_use",
-            "label": "How to use",
+            "label": "Intro",
             "name": "how_to_use",
             "type": "wysiwyg",
-            "instructions": "Leave empty to hide the tab.",
+            "instructions": "Optional text above the steps. With no steps this text is the whole tab; leave both empty to hide the tab.",
             "tabs": "visual",
             "toolbar": "basic",
             "media_upload": 0
+        },
+        {
+            "key": "field_gt_pd_howto_steps",
+            "label": "Steps",
+            "name": "how_to_use_steps",
+            "type": "repeater",
+            "instructions": "Numbered automatically. The badge on each image opens it full-size, or plays the video when one is set.",
+            "layout": "block",
+            "button_label": "Add step",
+            "collapsed": "field_gt_pd_howto_title",
+            "sub_fields": [
+                { "key": "field_gt_pd_howto_title", "label": "Title", "name": "title", "type": "text", "required": 1, "wrapper": { "width": "50", "class": "", "id": "" } },
+                { "key": "field_gt_pd_howto_image", "label": "Image", "name": "image", "type": "image", "required": 1, "return_format": "id", "preview_size": "medium", "instructions": "Shown at 250 x 150; also the poster for a video.", "wrapper": { "width": "50", "class": "", "id": "" } },
+                { "key": "field_gt_pd_howto_text", "label": "Text", "name": "text", "type": "textarea", "rows": 3, "new_lines": "", "instructions": "Links are allowed, e.g. <a href=\"…\">Ionic for Coco</a>." },
+                { "key": "field_gt_pd_howto_media", "label": "Media", "name": "media", "type": "radio", "layout": "horizontal", "default_value": "image", "return_format": "value", "choices": { "image": "Image only", "file": "Video upload", "youtube": "YouTube", "vimeo": "Vimeo" } },
+                { "key": "field_gt_pd_howto_video_file", "label": "Video file", "name": "video_file", "type": "file", "return_format": "id", "mime_types": "mp4,webm,m4v", "library": "all", "conditional_logic": [ [ { "field": "field_gt_pd_howto_media", "operator": "==", "value": "file" } ] ] },
+                { "key": "field_gt_pd_howto_video_url", "label": "Video URL", "name": "video_url", "type": "url", "placeholder": "https://www.youtube.com/watch?v=… or https://vimeo.com/…", "instructions": "Paste the page link or the share link; the embed is worked out from it.", "conditional_logic": [ [ { "field": "field_gt_pd_howto_media", "operator": "==", "value": "youtube" } ], [ { "field": "field_gt_pd_howto_media", "operator": "==", "value": "vimeo" } ] ] }
+            ]
         },
         {
             "key": "field_gt_pd_tab_spec",

@@ -241,3 +241,103 @@ function gt_knowledge_band( $product_id = 0 ) {
 	}
 	return '' === trim( $band['heading'] ) ? array() : $band;
 }
+
+// -- How to use steps ---------------------------------------------------------
+
+/**
+ * Turn a pasted YouTube or Vimeo link into an embed.
+ *
+ * Accepts the forms editors actually copy — watch pages, youtu.be shares,
+ * shorts, existing embed links, vimeo.com pages, channel URLs and the
+ * player host. Anything else (other hosts, non-http schemes) is rejected.
+ *
+ * @return array|null ['provider' => 'youtube'|'vimeo', 'id' => string, 'src' => string]
+ */
+function gt_video_embed( $url ) {
+	$url = trim( (string) $url );
+	if ( ! preg_match( '#^https?://#i', $url ) ) {
+		return null;
+	}
+	$parts = wp_parse_url( $url );
+	if ( empty( $parts['host'] ) ) {
+		return null;
+	}
+	$host = strtolower( preg_replace( '/^www\./', '', $parts['host'] ) );
+	$path = isset( $parts['path'] ) ? $parts['path'] : '';
+	parse_str( isset( $parts['query'] ) ? $parts['query'] : '', $query );
+
+	if ( in_array( $host, array( 'youtube.com', 'm.youtube.com', 'youtube-nocookie.com', 'youtu.be' ), true ) ) {
+		$id = '';
+		if ( 'youtu.be' === $host ) {
+			$id = trim( $path, '/' );
+		} elseif ( ! empty( $query['v'] ) ) {
+			$id = $query['v'];
+		} elseif ( preg_match( '#/(?:embed|shorts|v|live)/([^/?]+)#', $path, $m ) ) {
+			$id = $m[1];
+		}
+		if ( ! preg_match( '/^[A-Za-z0-9_-]{6,20}$/', $id ) ) {
+			return null;
+		}
+		return array(
+			'provider' => 'youtube',
+			'id'       => $id,
+			'src'      => 'https://www.youtube-nocookie.com/embed/' . rawurlencode( $id ) . '?autoplay=1&rel=0&modestbranding=1&playsinline=1',
+		);
+	}
+
+	if ( in_array( $host, array( 'vimeo.com', 'player.vimeo.com' ), true ) ) {
+		// The numeric id is the last path segment on every Vimeo URL shape.
+		if ( ! preg_match( '#/(\d+)(?:/|$)#', $path, $m ) ) {
+			return null;
+		}
+		return array(
+			'provider' => 'vimeo',
+			'id'       => $m[1],
+			'src'      => 'https://player.vimeo.com/video/' . $m[1] . '?autoplay=1&dnt=1&title=0&byline=0&portrait=0',
+		);
+	}
+
+	return null;
+}
+
+/**
+ * The product's "How to use" steps, ready to render.
+ *
+ * Each step: ['title', 'text', 'image' (id), 'media' => 'image'|'file'|'youtube'|'vimeo',
+ * 'src' => embed url / file url / '' for image]. A video step whose video
+ * cannot be resolved (missing file, unparseable URL) falls back to an image
+ * step rather than a broken player. Steps without an image are skipped.
+ */
+function gt_product_howto_steps( $product_id ) {
+	$rows = function_exists( 'get_field' ) ? get_field( 'how_to_use_steps', $product_id ) : null;
+	if ( ! is_array( $rows ) ) {
+		return array();
+	}
+	$steps = array();
+	foreach ( $rows as $row ) {
+		$image = ! empty( $row['image'] ) ? (int) $row['image'] : 0;
+		$title = ! empty( $row['title'] ) ? trim( (string) $row['title'] ) : '';
+		if ( ! $image || '' === $title ) {
+			continue;
+		}
+		$media = ! empty( $row['media'] ) ? (string) $row['media'] : 'image';
+		$src   = '';
+		if ( 'file' === $media ) {
+			$src = ! empty( $row['video_file'] ) ? (string) wp_get_attachment_url( (int) $row['video_file'] ) : '';
+		} elseif ( 'youtube' === $media || 'vimeo' === $media ) {
+			$embed = gt_video_embed( ! empty( $row['video_url'] ) ? $row['video_url'] : '' );
+			$src   = $embed && $embed['provider'] === $media ? $embed['src'] : '';
+		}
+		if ( '' === $src ) {
+			$media = 'image';
+		}
+		$steps[] = array(
+			'title' => $title,
+			'text'  => ! empty( $row['text'] ) ? (string) $row['text'] : '',
+			'image' => $image,
+			'media' => $media,
+			'src'   => $src,
+		);
+	}
+	return $steps;
+}

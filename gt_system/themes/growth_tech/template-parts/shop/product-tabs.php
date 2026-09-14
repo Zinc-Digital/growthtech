@@ -38,8 +38,16 @@ if ( is_array( $science ) ) {
 	}
 }
 
-$how = (string) get_field( 'how_to_use', $id );
-if ( trim( wp_strip_all_tags( $how ) ) ) {
+$how   = (string) get_field( 'how_to_use', $id );
+$steps = gt_product_howto_steps( $id );
+if ( $steps ) {
+	ob_start();
+	get_template_part( 'template-parts/shop/product-howto', null, array( 'steps' => $steps, 'intro' => $how ) );
+	$tabs['how-to-use'] = array( 'label' => __( 'How to use', 'gt' ), 'html' => ob_get_clean() );
+	// The lightbox shell prints once, after the tabs; the script only where there are steps.
+	wp_enqueue_script( 'gt-product-howto' );
+	add_action( 'wp_footer', 'gt_product_howto_lightbox_shell' );
+} elseif ( trim( wp_strip_all_tags( $how ) ) ) {
 	$tabs['how-to-use'] = array( 'label' => __( 'How to use', 'gt' ), 'html' => '<div class="product-tabs__text product-tabs__text--single">' . wp_kses_post( $how ) . '</div>' );
 }
 

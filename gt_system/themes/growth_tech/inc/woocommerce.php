@@ -208,8 +208,26 @@ function gt_product_enqueue_scripts() {
 		gt_asset_version( '/assets/js/product-tabs.js' ),
 		true
 	);
+	// Registered only: product-tabs.php enqueues it when the product has "How to use" steps.
+	wp_register_script(
+		'gt-product-howto',
+		get_template_directory_uri() . '/assets/js/product-howto.js',
+		array(),
+		gt_asset_version( '/assets/js/product-howto.js' ),
+		true
+	);
 }
 add_action( 'wp_enqueue_scripts', 'gt_product_enqueue_scripts' );
+
+/** Prints the "How to use" lightbox shell once; hooked to wp_footer by product-tabs.php. */
+function gt_product_howto_lightbox_shell() {
+	static $done = false;
+	if ( $done ) {
+		return;
+	}
+	$done = true;
+	get_template_part( 'template-parts/shop/product-howto-lightbox' );
+}
 
 function gt_product_dequeue_wc_gallery() {
 	foreach ( array( 'photoswipe', 'photoswipe-ui-default', 'photoswipe-default-skin', 'zoom', 'flexslider', 'wc-single-product' ) as $handle ) {

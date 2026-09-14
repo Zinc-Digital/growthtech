@@ -71,6 +71,24 @@ function gt_seed_pdf( $slug, $label ) {
 	return (int) $id;
 }
 
+/** A placeholder mp4 attachment (no real video data) so an upload step can be seeded. */
+function gt_seed_video( $slug, $label ) {
+	$filename = 'gt-seed-' . sanitize_title( $slug ) . '.mp4';
+	$existing = get_posts( array( 'post_type' => 'attachment', 'posts_per_page' => 1, 'fields' => 'ids', 'meta_key' => '_gt_seed_image', 'meta_value' => $filename ) ); // phpcs:ignore WordPress.DB.SlowDBQuery
+	if ( $existing ) {
+		return (int) $existing[0];
+	}
+	$tmp = wp_tempnam( $filename );
+	// An ftyp box is enough for WordPress to accept the file as video/mp4.
+	file_put_contents( $tmp, "\x00\x00\x00\x18ftypmp42\x00\x00\x00\x00mp42isom" ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+	$id = media_handle_sideload( array( 'name' => $filename, 'tmp_name' => $tmp ), 0, $label );
+	if ( is_wp_error( $id ) ) {
+		WP_CLI::error( 'video ' . $filename . ': ' . $id->get_error_message() );
+	}
+	update_post_meta( $id, '_gt_seed_image', $filename );
+	return (int) $id;
+}
+
 // -- Product images ----------------------------------------------------------
 
 $hues = array( array( 210, 220, 200 ), array( 200, 215, 225 ), array( 225, 210, 200 ), array( 215, 205, 225 ) );
@@ -118,6 +136,43 @@ update_field( 'field_gt_pd_science', array(
 	array( 'heading' => 'Pre-Conditioning & Root Initiation', 'text' => '<p>Pre-treating mother plants pre-loads plant tissue with mobile nitrogen, calcium, and key amino acids right at the nodes. When cuttings are taken, this localized nutrient reservoir accelerates initial cell division, prompting faster, thicker, and more uniform root emergence without depleting the cutting\'s internal energy reserves.</p>' ),
 ), $mist_id );
 update_field( 'field_gt_pd_how_to_use', '<p>Shake well. Mist mother plants 2–3 days before taking cuttings, then mist cuttings lightly every other day until rooted. Clonex Mist is ready to use — do not dilute.</p>', $mist_id );
+// How to use steps: one of each media type so the tab, badges and lightbox
+// can all be exercised. The "upload" is a placeholder attachment — a real
+// mp4 is not needed to prove the markup; the browser just gets a 404.
+update_field( 'field_gt_pd_howto_steps', array(
+	array(
+		'title'      => 'Choose a suitable pot',
+		'image'      => gt_seed_image( 'howto-1', 'Step 1', 750, 450, array( 215, 200, 185 ) ),
+		'text'       => 'Virtually any plastic pot will do, provided it has drainage holes and a saucer to stand in. Match the size to the eventual plant — at least 10 litres for large plants.',
+		'media'      => 'image',
+		'video_file' => 0,
+		'video_url'  => '',
+	),
+	array(
+		'title'      => 'Dampen the medium',
+		'image'      => gt_seed_image( 'howto-2', 'Step 2', 750, 450, array( 190, 205, 185 ) ),
+		'text'       => 'Wet the coco thoroughly with a hose or watering can, letting the fibres break up. Bagged loose coco may not need much; bricks need a full soak.',
+		'media'      => 'youtube',
+		'video_file' => 0,
+		'video_url'  => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+	),
+	array(
+		'title'      => 'Plant the seedling or clone',
+		'image'      => gt_seed_image( 'howto-3', 'Step 3', 750, 450, array( 185, 195, 210 ) ),
+		'text'       => 'Make a hole in the centre, place the young plant in, rake the medium around it and firm gently. Don\'t compact the coco any more than needed to support the plant.',
+		'media'      => 'vimeo',
+		'video_file' => 0,
+		'video_url'  => 'https://vimeo.com/76979871',
+	),
+	array(
+		'title'      => 'Water with a coco nutrient',
+		'image'      => gt_seed_image( 'howto-4', 'Step 4', 750, 450, array( 210, 190, 200 ) ),
+		'text'       => 'Water thoroughly from the top with a dedicated coco feed — <a href="' . get_permalink( wc_get_product_id_by_sku( 'GT-008' ) ) . '">Ionic Hydro Grow</a>, for example — until the saucer is about a quarter full.',
+		'media'      => 'file',
+		'video_file' => gt_seed_video( 'howto-4', 'Step 4 video' ),
+		'video_url'  => '',
+	),
+), $mist_id );
 update_field( 'field_gt_pd_specification', array(
 	array( 'label' => 'Form', 'value' => 'Ready-to-use foliar spray' ),
 	array( 'label' => 'Sizes', 'value' => '100ml, 300ml, 750ml' ),

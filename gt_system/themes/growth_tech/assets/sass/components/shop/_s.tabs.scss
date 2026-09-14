@@ -140,6 +140,148 @@ $tabs-rule: rgba(0, 0, 0, 0.25);
   }
 }
 
+// How to use — Figma 384:1965. Two steps per row; each step is a 250 x 150
+// image with a 35px badge inset 10px in its bottom-left corner, then a
+// 25px gap to STEP n / title / text. Rows are 50px apart, the pair of
+// steps 25px apart across the row.
+.product-howto {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 50px 25px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__intro {
+    margin-bottom: 40px;
+  }
+
+  &__step {
+    display: flex;
+    align-items: flex-start;
+    gap: 25px;
+    margin: 0;
+    min-width: 0;
+  }
+
+  &__media {
+    position: relative;
+    flex: 0 0 250px;
+    width: 250px;
+    height: 150px;
+    overflow: hidden;
+    background-color: rgba(35, 31, 32, 0.05);
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  // The badge is the whole control: 35px, white glyph on black, sitting on
+  // the photo. Zoom for an image, play for a video.
+  &__badge {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background-color: #000;
+    color: color(white);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    svg {
+      display: block;
+      width: 35px;
+      height: 35px;
+    }
+
+    &:hover {
+      background-color: color(white);
+      color: #000;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+    }
+  }
+
+  &__copy {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  &__eyebrow {
+    font-family: $tabs-font;
+    font-size: 12px;
+    font-weight: $font-400;
+    line-height: normal;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  &__title {
+    margin: 0;
+    font-family: $tabs-font;
+    font-size: 18px;
+    font-weight: $font-900;
+    line-height: 25px;
+    color: #000;
+  }
+
+  &__text {
+    margin: 0;
+    font-family: $tabs-font;
+    font-size: 15px;
+    font-weight: $font-300;
+    line-height: 25px;
+    color: rgba(0, 0, 0, 0.75);
+
+    a {
+      font-weight: $font-700;
+      color: #000;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+  }
+}
+
+// The lightbox stage holds one of: full image, uploaded video, embed.
+.product-lightbox--howto {
+  .product-lightbox__stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1280px;
+    height: 100%;
+  }
+
+  .product-lightbox__video,
+  .product-lightbox__frame {
+    display: block;
+    width: 100%;
+    max-height: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    background-color: #000;
+  }
+}
+
 // Specification — label / value rows.
 .product-spec {
   display: flex;
@@ -227,6 +369,11 @@ $tabs-rule: rgba(0, 0, 0, 0.25);
 }
 
 @media (max-width: $md - 1px) {
+  .product-howto {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+
   .product-page__tabs {
     margin-top: 60px;
   }
@@ -334,11 +481,33 @@ $tabs-rule: rgba(0, 0, 0, 0.25);
   .product-spec__label {
     flex-basis: auto;
   }
+
+  // Image above the copy, full width, keeping the 5:3 shape.
+  .product-howto {
+    gap: 35px;
+
+    &__step {
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    &__media {
+      flex-basis: auto;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 5 / 3;
+    }
+  }
+
+  .product-lightbox--howto {
+    padding: 60px 16px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .product-tabs__tab,
-  .product-tabs__chevron {
+  .product-tabs__chevron,
+  .product-howto__badge {
     transition: none;
   }
 }

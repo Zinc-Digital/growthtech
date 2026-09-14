@@ -51,6 +51,9 @@ Tests assume the site is already configured this way:
 - WooCommerce's "coming soon" mode must be off:
   `tests/bin/wpx option update woocommerce_coming_soon no` — otherwise every
   front-end fetch returns the coming-soon page instead of the shop.
+- Theme Settings → Shop Settings → products per page must be 12 (the shop
+  listing tests count cards). It has drifted on the shared local DB before;
+  reset with `tests/bin/wpx eval 'update_field( "field_gt_shop_per_page", 12, "option" );'`.
 
 ## Seed data
 
@@ -60,7 +63,10 @@ database** and is **local-only** — do not run it against anything but a
 disposable local DB, and never as part of routine test runs.
 
 `tests/seed/seed-product-content.php` — product page / brand landing content
-and generated placeholder images (run after seed-shop.php).
+and generated placeholder images (run after seed-shop.php). Clonex Mist gets
+four "How to use" steps covering every media type (image only, YouTube,
+Vimeo, uploaded file); the upload is a placeholder mp4 with no real video
+data, so the player shows an error if you actually press play on it.
 
 `tests/seed/seed-stockists.php` — eight stockists (address, coordinates,
 type, products) and the Find a Stockist page's template/intro/trade band
