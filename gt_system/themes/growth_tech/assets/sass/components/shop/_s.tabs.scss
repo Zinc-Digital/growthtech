@@ -282,67 +282,81 @@ $tabs-rule: rgba(0, 0, 0, 0.25);
   }
 }
 
-// Specification — label / value rows.
+// Specification — Figma 384:2049. One line per row, "Label: value", 15px
+// light on a 24px line, inset 15px, with a 1px rule between rows and 20px
+// of air either side of it.
 .product-spec {
   display: flex;
   flex-direction: column;
-  max-width: 800px;
+  width: 100%;
   margin: 0;
 
   &__row {
-    display: flex;
-    gap: 30px;
-    padding: 12px 0;
-    border-bottom: 1px solid $tabs-rule;
+    display: block;
+    padding: 10px 0 10px 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
     &:first-child {
-      border-top: 1px solid $tabs-rule;
+      padding-top: 0;
+    }
+
+    &:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
     }
   }
 
   &__label,
   &__value {
+    display: inline;
     margin: 0;
     font-family: $tabs-font;
     font-size: 15px;
-    line-height: 25px;
-  }
-
-  &__label {
-    flex: 0 0 220px;
-    font-weight: $font-700;
-    color: #000;
-  }
-
-  &__value {
-    flex: 1 1 auto;
     font-weight: $font-300;
+    line-height: 24px;
     color: rgba(0, 0, 0, 0.75);
+  }
+
+  // The colon lives in CSS so the fields stay a plain label/value pair.
+  &__label::after {
+    content: ":\00a0";
   }
 }
 
-// Useful documents — same row style as the summary downloads.
+// Useful documents — Figma 384:2087. A 35px black tile with the document
+// glyph, 15px to the label, the same rule rhythm as the specification.
 .product-docs {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  width: 100%;
   margin: 0;
   padding: 0;
   list-style: none;
 
   &__item {
     margin: 0;
+    padding: 10px 0 10px 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+    &:first-child {
+      padding-top: 0;
+    }
+
+    &:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
   }
 
   &__link {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
     font-family: $tabs-font;
     font-size: 15px;
-    font-weight: $font-400;
-    line-height: normal;
-    color: #000;
+    font-weight: $font-300;
+    line-height: 24px;
+    color: rgba(0, 0, 0, 0.75);
     text-decoration: none;
 
     span {
@@ -351,19 +365,28 @@ $tabs-rule: rgba(0, 0, 0, 0.25);
 
     &:hover span:last-child,
     &:focus-visible span:last-child {
+      color: #000;
       text-decoration: underline;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #000;
+      outline-offset: 2px;
     }
   }
 
+  // The tile is the icon's own black square; currentColor paints it.
   &__icon {
     display: block;
-    width: 14px;
-    height: 18px;
+    flex: 0 0 35px;
+    width: 35px;
+    height: 35px;
+    color: #000;
 
     svg {
       display: block;
-      width: 14px;
-      height: 18px;
+      width: 35px;
+      height: 35px;
     }
   }
 }
@@ -473,13 +496,10 @@ $tabs-rule: rgba(0, 0, 0, 0.25);
     }
   }
 
-  .product-spec__row {
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .product-spec__label {
-    flex-basis: auto;
+  // The 15px inset reads as wasted space against a 25px gutter.
+  .product-spec__row,
+  .product-docs__item {
+    padding-left: 0;
   }
 
   // Image above the copy, full width, keeping the 5:3 shape.

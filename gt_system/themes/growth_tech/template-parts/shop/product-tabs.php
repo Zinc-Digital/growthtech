@@ -78,7 +78,7 @@ if ( is_array( $docs ) ) {
 		}
 		$label = ! empty( $doc['label'] ) ? $doc['label'] : get_the_title( $file_id );
 		ob_start();
-		gt_icon_svg( 'download' );
+		gt_icon_svg( 'document' );
 		$icon   = ob_get_clean();
 		$links .= '<li class="product-docs__item"><a class="product-docs__link" href="' . esc_url( $url ) . '" target="_blank" rel="noopener"><span class="product-docs__icon" aria-hidden="true">' . $icon . '</span><span>' . esc_html( $label ) . '</span></a></li>';
 	}
