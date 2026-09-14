@@ -80,15 +80,17 @@ if ( is_wp_error( $brand_link ) ) {
 		<?php
 		/*
 		 * Phase Two: WooCommerce's variation form (fired by the summary
-		 * action below) replaces these display-only chips.
+		 * action below) replaces these display-only chips. Until then nothing
+		 * can be chosen, so no chip is marked selected — the filled state
+		 * (.is-selected) is only meaningful once a size can be picked.
 		 */
 		?>
 		<?php if ( $sizes && GT_SHOP_ENQUIRY_MODE ) : ?>
 			<div class="product-sizes">
 				<p class="product-summary__eyebrow"><?php esc_html_e( 'Available sizes', 'gt' ); ?></p>
 				<ul class="product-sizes__list" aria-label="<?php esc_attr_e( 'Available sizes', 'gt' ); ?>">
-					<?php foreach ( $sizes as $index => $size ) : ?>
-						<li class="product-sizes__chip<?php echo 0 === $index ? ' is-selected' : ''; ?>"><?php echo esc_html( $size ); ?></li>
+					<?php foreach ( $sizes as $size ) : ?>
+						<li class="product-sizes__chip"><?php echo esc_html( $size ); ?></li>
 					<?php endforeach; ?>
 				</ul>
 			</div>

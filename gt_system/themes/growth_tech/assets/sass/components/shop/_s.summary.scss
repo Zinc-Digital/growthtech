@@ -198,8 +198,10 @@ $summary-font: "DM Sans", #{$primary_font};
     font-size: 14px;
     font-weight: $font-400;
     line-height: normal;
+    background-color: color(white);
     color: #000;
 
+    // Phase Two: the chosen size. Nothing carries this in enquiry mode.
     &.is-selected {
       background-color: #000;
       color: color(white);

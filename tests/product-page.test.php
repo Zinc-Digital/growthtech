@@ -25,7 +25,8 @@ gt_assert_contains( 'a short description that appears under the product title', 
 gt_assert_equal( 4, substr_count( $html, 'class="product-summary__feature"' ), 'four feature bullets' );
 gt_assert_contains( '<strong>Direct foliar absorption</strong>', $html, 'feature lead is bold' );
 gt_assert_equal( 3, substr_count( $html, 'class="product-sizes__chip' ), 'three size chips' );
-gt_assert_contains( 'class="product-sizes__chip is-selected"', $html, 'first chip selected' );
+gt_assert_not_contains( 'product-sizes__chip is-selected', $html, 'no chip is selected in enquiry mode' );
+gt_assert_contains( '<li class="product-sizes__chip">100ml</li>', $html, 'chips render plain' );
 gt_assert_contains( 'product-summary__stockist', $html, 'stockist CTA present' );
 gt_assert_contains( 'product=clonex-mist&#038;region=uk', $html, 'stockist CTA carries the product slug + region' );
 gt_assert_contains( 'product-summary__experts', $html, 'experts link present' );
