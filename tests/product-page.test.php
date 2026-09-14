@@ -27,7 +27,7 @@ gt_assert_contains( '<strong>Direct foliar absorption</strong>', $html, 'feature
 gt_assert_equal( 3, substr_count( $html, 'class="product-sizes__chip' ), 'three size chips' );
 gt_assert_contains( 'class="product-sizes__chip is-selected"', $html, 'first chip selected' );
 gt_assert_contains( 'product-summary__stockist', $html, 'stockist CTA present' );
-gt_assert_contains( 'product=' . $mist_id . '&#038;region=uk', $html, 'stockist CTA carries product + region' );
+gt_assert_contains( 'product=clonex-mist&#038;region=uk', $html, 'stockist CTA carries the product slug + region' );
 gt_assert_contains( 'product-summary__experts', $html, 'experts link present' );
 gt_assert_contains( '>Ask our experts<', $html, 'experts link label' );
 gt_assert_equal( 2, substr_count( $html, 'class="product-downloads__link"' ), 'two downloads' );

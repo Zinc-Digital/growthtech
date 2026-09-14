@@ -42,8 +42,8 @@ $intl      = 'international' === $pre['region'];
 		<span class="stockists-controls__select-wrap">
 			<select class="stockists-controls__select" data-stockists-product>
 				<option value=""><?php esc_html_e( 'Stocking any product', 'gt' ); ?></option>
-				<?php foreach ( $products as $id => $name ) : ?>
-					<option value="<?php echo esc_attr( $id ); ?>"<?php selected( $pre['product'], $id ); ?>><?php echo esc_html( $name ); ?></option>
+				<?php foreach ( $products as $slug => $name ) : ?>
+					<option value="<?php echo esc_attr( $slug ); ?>"<?php selected( $pre['product'], $slug ); ?>><?php echo esc_html( $name ); ?></option>
 				<?php endforeach; ?>
 			</select>
 		</span>

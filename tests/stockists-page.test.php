@@ -77,10 +77,12 @@ gt_assert_contains( 'href="tel:01310000000"', $card, 'no website → check stock
 gt_assert_not_contains( 'is-extra', $card, 'two chips → no extras' );
 
 // Preselect from the product page link.
-$html = gt_fetch( '/find-a-stockist/?product=' . $mist_id . '&region=uk' );
-gt_assert_contains( '<option value="' . $mist_id . '" selected', $html, 'product preselected from the URL' );
+$html = gt_fetch( '/find-a-stockist/?product=clonex-mist&region=uk' );
+gt_assert_contains( '<option value="clonex-mist" selected', $html, 'product preselected from the URL by slug' );
 gt_assert_contains( '>3 stockists<', $html, 'only UK stockists with Clonex Mist are visible' );
 gt_assert_equal( 5, substr_count( $html, '<li class="stockists-card" hidden' ), 'the other five cards are hidden' );
+gt_assert_contains( '<option value="clonex-mist" selected', gt_fetch( '/find-a-stockist/?product=' . $mist_id ), 'an older numeric product link still preselects' );
+gt_assert_contains( '>6 stockists<', gt_fetch( '/find-a-stockist/?product=no-such-product' ), 'an unknown product slug means no preselect' );
 
 $html = gt_fetch( '/find-a-stockist/?brand=ionic' );
 gt_assert_contains( '>3 stockists<', $html, 'brand preselect: stockists with any Ionic product' );

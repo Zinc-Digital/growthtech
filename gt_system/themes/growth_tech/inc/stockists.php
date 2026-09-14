@@ -393,14 +393,14 @@ function gt_stockists_all() {
 			if ( ! array_key_exists( $pid, $product_cache ) ) {
 				$product = wc_get_product( $pid );
 				$product_cache[ $pid ] = ( $product instanceof WC_Product && 'publish' === $product->get_status() )
-					? array( 'name' => $product->get_name(), 'brand' => gt_product_brand( $product ) )
+					? array( 'name' => $product->get_name(), 'slug' => $product->get_slug(), 'brand' => gt_product_brand( $product ) )
 					: null;
 			}
 			$cached = $product_cache[ $pid ];
 			if ( null === $cached ) {
 				continue;
 			}
-			$products[] = array( 'id' => $pid, 'name' => $cached['name'] );
+			$products[] = array( 'id' => $pid, 'slug' => $cached['slug'], 'name' => $cached['name'] );
 			if ( $cached['brand'] ) {
 				$brands[ $cached['brand']->slug ] = $cached['brand']->slug;
 			}
@@ -446,7 +446,7 @@ function gt_stockists_all() {
 function gt_stockist_product_options() {
 	$options = array();
 	foreach ( wc_get_products( array( 'limit' => -1, 'status' => 'publish', 'orderby' => 'title', 'order' => 'ASC' ) ) as $product ) {
-		$options[ $product->get_id() ] = $product->get_name();
+		$options[ $product->get_slug() ] = $product->get_name();
 	}
 	return $options;
 }
@@ -465,9 +465,9 @@ function gt_stockist_countries_present( array $stockists ) {
 
 /**
  * WooCommerce registers "product" as the public query var for its product
- * post type, so a plain page request carrying ?product=130 (our preselect
+ * post type, so a plain page request carrying ?product=clonex-mist (our preselect
  * param) gets merged into the main query as pagename=find-a-stockist AND
- * post_type=product/name=130 (WP maps the "product" var onto "name" for
+ * post_type=product/name=clonex-mist (WP maps the "product" var onto "name" for
  * its rewrite tag) — an impossible combination WP_Query can't match, which
  * 404s the page before page-stockists.php ever runs. gt_stockist_preselect()
  * reads the value straight from $_GET, so it's safe to drop these here;
@@ -484,11 +484,21 @@ function gt_stockist_strip_product_query_var( $vars ) {
 }
 add_filter( 'request', 'gt_stockist_strip_product_query_var' );
 
-/** What the URL asked for: ?product=, ?brand=, ?region=, ?q=. */
+/**
+ * What the URL asked for: ?product=, ?brand=, ?region=, ?q=.
+ *
+ * Products are identified by slug (?product=clonex-mist) so the link reads
+ * as the product it points at; a numeric id from an older link is mapped to
+ * its slug. Anything that is not a published product resolves to ''.
+ */
 function gt_stockist_preselect() {
-	$product = isset( $_GET['product'] ) ? (int) $_GET['product'] : 0; // phpcs:ignore WordPress.Security.NonceVerification
-	if ( $product && ( ! wc_get_product( $product ) || 'publish' !== get_post_status( $product ) || 'product' !== get_post_type( $product ) ) ) {
-		$product = 0;
+	$product = '';
+	if ( isset( $_GET['product'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+		$raw  = sanitize_title( wp_unslash( $_GET['product'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
+		$post = ctype_digit( $raw ) ? get_post( (int) $raw ) : get_page_by_path( $raw, OBJECT, 'product' );
+		if ( $post instanceof WP_Post && 'product' === $post->post_type && 'publish' === $post->post_status ) {
+			$product = $post->post_name;
+		}
 	}
 	$brand = isset( $_GET['brand'] ) ? sanitize_title( wp_unslash( $_GET['brand'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
 	if ( $brand && ! term_exists( $brand, 'product_brand' ) ) {
@@ -505,7 +515,7 @@ function gt_stockist_is_visible( array $s, array $pre ) {
 	if ( ( 'uk' === $pre['region'] ) !== $is_uk ) {
 		return false;
 	}
-	if ( $pre['product'] && ! in_array( $pre['product'], wp_list_pluck( $s['products'], 'id' ), true ) ) {
+	if ( $pre['product'] && ! in_array( $pre['product'], wp_list_pluck( $s['products'], 'slug' ), true ) ) {
 		return false;
 	}
 	if ( $pre['brand'] && ! in_array( $pre['brand'], $s['brands'], true ) ) {

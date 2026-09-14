@@ -6,7 +6,7 @@ $rr     = wc_get_product( wc_get_product_id_by_sku( 'GT-002' ) );
 $clonex = get_term_by( 'slug', 'clonex', 'product_brand' );
 $stockist_url = get_field( 'shop_stockist_page', 'option' );
 
-gt_assert_equal( add_query_arg( array( 'product' => $mist->get_id(), 'region' => 'uk' ), $stockist_url ), gt_product_stockist_url( $mist ), 'stockist url carries product id and region' );
+gt_assert_equal( add_query_arg( array( 'product' => $mist->get_slug(), 'region' => 'uk' ), $stockist_url ), gt_product_stockist_url( $mist ), 'stockist url carries the product slug and region' );
 gt_assert_equal( add_query_arg( array( 'product' => $mist->get_id() ), get_field( 'shop_experts_link', 'option' )['url'] ), gt_product_experts_url( $mist ), 'experts url carries product id' );
 gt_assert_equal( 'Ask our experts', gt_product_experts_label(), 'experts label from the link title' );
 gt_assert_equal( add_query_arg( array( 'brand' => 'clonex' ), $stockist_url ), gt_brand_stockist_url( $clonex ), 'brand stockist url carries the brand slug' );

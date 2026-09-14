@@ -23,7 +23,7 @@ $name_id   = 'stockist-' . (int) $s['id'] . '-name';
 	data-country="<?php echo esc_attr( $s['country'] ); ?>"
 	data-lat="<?php echo esc_attr( null === $s['lat'] ? '' : $s['lat'] ); ?>"
 	data-lng="<?php echo esc_attr( null === $s['lng'] ? '' : $s['lng'] ); ?>"
-	data-products="<?php echo esc_attr( implode( ',', wp_list_pluck( $s['products'], 'id' ) ) ); ?>"
+	data-products="<?php echo esc_attr( implode( ',', wp_list_pluck( $s['products'], 'slug' ) ) ); ?>"
 	data-brands="<?php echo esc_attr( implode( ',', $s['brands'] ) ); ?>"
 	data-search="<?php echo esc_attr( $s['search'] ); ?>">
 	<div class="stockists-card__head">

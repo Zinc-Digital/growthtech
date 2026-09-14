@@ -137,7 +137,7 @@ function gt_shop_stockist_base_url() {
 /** "Find a local stockist" for a product: the stockist page with the product preselected (UK first). */
 function gt_product_stockist_url( WC_Product $product ) {
 	$base = gt_shop_stockist_base_url();
-	return $base ? add_query_arg( array( 'product' => $product->get_id(), 'region' => 'uk' ), $base ) : '';
+	return $base ? add_query_arg( array( 'product' => $product->get_slug(), 'region' => 'uk' ), $base ) : '';
 }
 
 /** "Find a stockist" for a brand: the stockist page filtered to that brand. */
