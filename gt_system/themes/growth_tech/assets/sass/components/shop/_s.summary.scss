@@ -1,0 +1,305 @@
+// ---------------------------------------------------------------------------
+// Product summary — Figma 384:1840
+//
+// Brand mark 16px tall, title 60/65, intro 15/25, tick list, sizes, CTAs;
+// 35px + rule; downloads and badges. Every text element sets its own face
+// and size because the theme's base element rules would otherwise win.
+// ---------------------------------------------------------------------------
+
+$summary-text: rgba(0, 0, 0, 0.75);
+$summary-font: "DM Sans", #{$primary_font};
+
+.product-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+    padding-bottom: 35px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  }
+
+  &__head {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  &__brand {
+    display: inline-flex;
+    align-items: center;
+    height: 16px;
+    color: var(--brand-accent, #fbc707);
+    text-decoration: none;
+  }
+
+  &__brand-img {
+    display: block;
+    width: auto;
+    height: 16px;
+    max-width: 150px;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  &__brand-text {
+    font-family: $summary-font;
+    font-size: 14px;
+    font-weight: $font-900;
+    line-height: 16px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 60px;
+    font-weight: $font-700;
+    line-height: 65px;
+    letter-spacing: -1.2px;
+    color: #000;
+  }
+
+  &__intro {
+    p {
+      margin: 0 0 12px;
+      font-family: $summary-font;
+      font-size: 15px;
+      font-weight: $font-400;
+      line-height: 25px;
+      color: $summary-text;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__features {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 564px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0;
+  }
+
+  &__tick {
+    flex: 0 0 auto;
+    display: block;
+    width: 15px;
+    height: 22px;
+    color: var(--brand-accent, #fbc707);
+
+    svg {
+      display: block;
+      width: 15px;
+      height: 22px;
+    }
+  }
+
+  &__feature-text {
+    margin: 0;
+    font-family: $summary-font;
+    font-size: 15px;
+    font-weight: $font-400;
+    line-height: 25px;
+    color: $summary-text;
+
+    strong {
+      font-weight: $font-700;
+      color: #000;
+    }
+  }
+
+  &__eyebrow {
+    margin: 0;
+    font-family: $summary-font;
+    font-size: 12px;
+    font-weight: $font-500;
+    line-height: normal;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 25px;
+  }
+
+  &__experts {
+    font-family: $summary-font;
+    font-size: 14px;
+    font-weight: $font-700;
+    line-height: normal;
+    color: #000;
+    text-decoration: underline;
+    text-underline-position: from-font;
+
+    &:hover,
+    &:focus-visible {
+      text-decoration-thickness: 2px;
+    }
+  }
+
+  &__extra {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+  }
+}
+
+// Sizes — display-only chips in Phase One (Figma 384:1867).
+.product-sizes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 10px 15px;
+    border: 1px solid #000;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 14px;
+    font-weight: $font-400;
+    line-height: normal;
+    color: #000;
+
+    &.is-selected {
+      background-color: #000;
+      color: color(white);
+    }
+  }
+}
+
+// Downloads — Figma 384:1880.
+.product-downloads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 30px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__item {
+    margin: 0;
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 14px;
+    font-weight: $font-400;
+    line-height: normal;
+    color: #000;
+    text-decoration: none;
+
+    span {
+      font: inherit;
+    }
+
+    &:hover span:last-child,
+    &:focus-visible span:last-child {
+      text-decoration: underline;
+    }
+  }
+
+  &__icon {
+    display: block;
+    width: 14px;
+    height: 18px;
+    color: #000;
+
+    svg {
+      display: block;
+      width: 14px;
+      height: 18px;
+    }
+  }
+}
+
+// Badges — Figma 384:1887.
+.product-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__item {
+    margin: 0;
+    padding: 10px 15px;
+    background-color: #f4f4f4;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 12px;
+    font-weight: $font-400;
+    line-height: normal;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #000;
+  }
+}
+
+@media (max-width: $md - 1px) {
+  .product-summary {
+    &__title {
+      font-size: 44px;
+      line-height: 48px;
+      letter-spacing: -0.9px;
+    }
+  }
+}
+
+@media (max-width: $sm - 1px) {
+  .product-summary {
+    gap: 25px;
+
+    &__main {
+      gap: 22px;
+      padding-bottom: 25px;
+    }
+
+    &__title {
+      font-size: 36px;
+      line-height: 40px;
+      letter-spacing: -0.7px;
+    }
+
+    &__actions {
+      gap: 15px;
+    }
+  }
+}

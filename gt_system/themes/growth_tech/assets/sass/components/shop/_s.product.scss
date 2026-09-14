@@ -1,0 +1,86 @@
+// ---------------------------------------------------------------------------
+// Product page frame — Figma 384:1816
+//
+// 50px gutters / 1340 content. Breadcrumb 30 under the header, 25 to the
+// gallery + summary row (600 | 69 gap | 621). Tabs 90 below, the grey
+// "Complete the system" band 77 below that (full bleed), the knowledge band
+// 77 below, and 60 to the footer.
+// ---------------------------------------------------------------------------
+
+.product-page {
+  padding-top: 30px;
+
+  &__inner {
+    max-width: 1340px;
+    margin: 0 auto;
+    padding: 0 50px;
+  }
+
+  &__crumb {
+    margin-bottom: 25px;
+  }
+
+  &__top {
+    display: flex;
+    align-items: flex-start;
+    gap: 69px;
+  }
+
+  &__gallery {
+    flex: 0 0 600px;
+    max-width: 600px;
+    min-width: 0;
+  }
+
+  &__summary {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 621px;
+  }
+}
+
+@media (max-width: $xl - 1px) {
+  .product-page {
+    &__inner {
+      padding: 0 25px;
+    }
+
+    &__top {
+      gap: 40px;
+    }
+
+    &__gallery {
+      flex-basis: 50%;
+      max-width: 50%;
+    }
+
+    &__summary {
+      max-width: none;
+    }
+  }
+}
+
+@media (max-width: $md - 1px) {
+  .product-page {
+    &__top {
+      flex-direction: column;
+      gap: 35px;
+    }
+
+    &__gallery {
+      flex-basis: auto;
+      width: 100%;
+      max-width: 600px;
+    }
+  }
+}
+
+@media (max-width: $sm - 1px) {
+  .product-page {
+    padding-top: 20px;
+
+    &__crumb {
+      margin-bottom: 20px;
+    }
+  }
+}

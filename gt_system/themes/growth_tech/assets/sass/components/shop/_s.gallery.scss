@@ -1,0 +1,287 @@
+// ---------------------------------------------------------------------------
+// Product gallery — Figma 384:1827
+//
+// 600 x 600 tile on a 5% wash, cut-out contained. Zoom (black) bottom-left
+// at 20/25; prev (light) + next (black) 35px squares bottom-right, 10 apart.
+// Thumbnails: three 187px tiles, 19 apart, 15 below.
+// ---------------------------------------------------------------------------
+
+$gallery-wash: rgba(35, 31, 32, 0.05);
+
+.product-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  &__main {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    background-color: $gallery-wash;
+    overflow: hidden;
+  }
+
+  &__slides,
+  &__slides .slick-list,
+  &__slides .slick-track {
+    height: 100%;
+  }
+
+  &__slide {
+    display: flex !important; // slick sets display:block inline on slides
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 40px 40px 75px;
+  }
+
+  // Before slick runs (or without JS) only the first image shows.
+  &__slides:not(.slick-initialized) &__slide:not(:first-child) {
+    display: none !important;
+  }
+
+  &__img {
+    display: block;
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+  }
+
+  &__zoom,
+  &__arrows .slick-prev,
+  &__arrows .slick-next,
+  &__lightbox-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    svg {
+      display: block;
+      width: 35px;
+      height: 35px;
+    }
+  }
+
+  &__zoom {
+    position: absolute;
+    left: 20px;
+    bottom: 25px;
+    z-index: 2;
+    background-color: #000;
+    color: color(white);
+
+    &:hover,
+    &:focus-visible {
+      background-color: #231f20;
+    }
+  }
+
+  &__arrows {
+    position: absolute;
+    right: 20px;
+    bottom: 25px;
+    z-index: 2;
+    display: flex;
+    gap: 10px;
+
+    // _p.home.scss paints an unscoped .slick-prev/.slick-next background
+    // image; these buttons carry their own glyph.
+    .slick-prev,
+    .slick-next {
+      position: static;
+      transform: none;
+      background-image: none;
+      text-indent: 0;
+
+      &::before,
+      &::after {
+        content: none;
+      }
+    }
+
+    .slick-prev {
+      background-color: #f4f4f4;
+      color: #000;
+
+      svg {
+        transform: rotate(180deg);
+      }
+
+      &:hover,
+      &:focus-visible {
+        background-color: #e6e6e6;
+      }
+    }
+
+    .slick-next {
+      background-color: #000;
+      color: color(white);
+
+      &:hover,
+      &:focus-visible {
+        background-color: #231f20;
+      }
+    }
+
+    .slick-disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+  }
+
+  &__thumbs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 19px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__thumb-item {
+    margin: 0;
+  }
+
+  &__thumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    padding: 18px;
+    background-color: $gallery-wash;
+    outline: 2px solid transparent;
+    outline-offset: -2px;
+    transition: outline-color 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      outline-color: rgba(0, 0, 0, 0.35);
+    }
+
+    &.is-active {
+      outline-color: #000;
+    }
+  }
+
+  &__thumb-img {
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+  }
+}
+
+// -- lightbox -----------------------------------------------------------------
+.product-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 70px 80px;
+  background-color: rgba(0, 0, 0, 0.92);
+
+  &[hidden] {
+    display: none;
+  }
+
+  &__img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  &__close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    color: color(white);
+    cursor: pointer;
+
+    svg {
+      display: block;
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &__nav {
+    position: absolute;
+    top: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    background-color: color(white);
+    color: #000;
+    cursor: pointer;
+    transform: translateY(-50%);
+
+    svg {
+      display: block;
+      width: 35px;
+      height: 35px;
+    }
+
+    &--prev {
+      left: 20px;
+
+      svg {
+        transform: rotate(180deg);
+      }
+    }
+
+    &--next {
+      right: 20px;
+    }
+  }
+}
+
+body.product-lightbox-open {
+  overflow: hidden;
+}
+
+@media (max-width: $sm - 1px) {
+  .product-gallery {
+    &__slide {
+      padding: 25px 25px 70px;
+    }
+
+    &__thumbs {
+      gap: 12px;
+    }
+
+    &__thumb {
+      padding: 10px;
+    }
+  }
+
+  .product-lightbox {
+    padding: 70px 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-gallery__zoom,
+  .product-gallery__thumb,
+  .product-gallery__arrows .slick-prev,
+  .product-gallery__arrows .slick-next {
+    transition: none;
+  }
+}
