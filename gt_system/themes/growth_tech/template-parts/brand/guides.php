@@ -23,8 +23,9 @@ $guides  = is_array( $guides ) ? array_values( array_filter( $guides, function (
 if ( ! $heading && ! $accent && ! $guides ) {
 	return;
 }
+$has_title = (bool) ( $heading || $accent );
 ?>
-<section class="brand-guides" aria-labelledby="brand-guides-title">
+<section class="brand-guides"<?php echo $has_title ? ' aria-labelledby="brand-guides-title"' : ' aria-label="' . esc_attr( sprintf( /* translators: %s: brand name */ __( '%s guides', 'gt' ), $brand->name ) ) . '"'; ?>>
 	<div class="brand-guides__inner">
 		<div class="brand-guides__copy">
 			<?php if ( $heading || $accent ) : ?>

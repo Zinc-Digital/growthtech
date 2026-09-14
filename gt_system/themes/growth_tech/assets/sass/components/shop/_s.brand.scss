@@ -331,6 +331,13 @@ $brand-muted: rgba(0, 0, 0, 0.75);
 .brand-range {
   padding-top: 90px;
 
+  // The range is always rendered, and is often the last section (a brand
+  // with no pair/guides content) — without this the cards sit right above
+  // the footer's newsletter band instead of matching the page's own rhythm.
+  &:last-child {
+    padding-bottom: 90px;
+  }
+
   &__inner {
     display: flex;
     flex-direction: column;
@@ -384,6 +391,12 @@ $brand-muted: rgba(0, 0, 0, 0.75);
 // -- pair band ---------------------------------------------------------------
 .brand-pair {
   padding-top: 58px;
+
+  // Same bottom-space rule as .brand-range: only matters when this is the
+  // last section (a brand with a pair band but no guides band).
+  &:last-child {
+    padding-bottom: 90px;
+  }
 
   &__inner {
     position: relative;
@@ -726,6 +739,10 @@ $brand-muted: rgba(0, 0, 0, 0.75);
   .brand-range {
     padding-top: 50px;
 
+    &:last-child {
+      padding-bottom: 50px;
+    }
+
     &__head {
       flex-direction: column;
       align-items: flex-start;
@@ -743,6 +760,10 @@ $brand-muted: rgba(0, 0, 0, 0.75);
 
   .brand-pair {
     padding-top: 45px;
+
+    &:last-child {
+      padding-bottom: 50px;
+    }
 
     &__inner {
       padding: 30px 25px;

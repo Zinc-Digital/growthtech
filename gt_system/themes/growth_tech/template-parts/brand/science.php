@@ -28,8 +28,9 @@ $is_slider = count( $steps ) > 1;
 if ( $is_slider ) {
 	wp_enqueue_script( 'gt-block-slider' );
 }
+$has_title = (bool) ( $heading || $accent );
 ?>
-<section class="brand-science" data-slider-scope>
+<section class="brand-science" data-slider-scope<?php echo $has_title ? ' aria-labelledby="brand-science-title"' : ' aria-label="' . esc_attr( $brand->name ) . '"'; ?>>
 	<div class="brand-science__inner">
 
 		<?php if ( $steps ) : ?>
@@ -97,7 +98,7 @@ if ( $is_slider ) {
 
 		<div class="brand-science__copy">
 			<?php if ( $heading || $accent ) : ?>
-				<h2 class="brand-science__title"><?php
+				<h2 class="brand-science__title" id="brand-science-title"><?php
 					echo esc_html( $heading );
 					if ( $accent ) {
 						echo ' <em class="brand-science__accent">' . esc_html( $accent ) . '</em>';

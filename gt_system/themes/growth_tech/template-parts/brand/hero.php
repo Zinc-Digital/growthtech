@@ -21,7 +21,7 @@ $has_copy = '' !== $heading;
 /* translators: %s: brand name */
 $explore = sprintf( __( 'Explore the %s Range', 'gt' ), $brand->name );
 ?>
-<section class="brand-hero<?php echo $image_id ? '' : ' brand-hero--plain'; ?>" aria-label="<?php echo esc_attr( $brand->name ); ?>">
+<section class="brand-hero" aria-label="<?php echo esc_attr( $brand->name ); ?>">
 	<?php
 	if ( $image_id ) {
 		echo wp_get_attachment_image( $image_id, 'gt-brand-hero', false, array(
