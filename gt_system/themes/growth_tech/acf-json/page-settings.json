@@ -20,20 +20,9 @@
         }
     ],
     "location": [
-        [
-            {
-                "param": "post_type",
-                "operator": "==",
-                "value": "page"
-            }
-        ],
-        [
-            {
-                "param": "post_type",
-                "operator": "==",
-                "value": "post"
-            }
-        ]
+        [ { "param": "post_type", "operator": "==", "value": "page" } ],
+        [ { "param": "post_type", "operator": "==", "value": "post" } ],
+        [ { "param": "post_type", "operator": "==", "value": "product" } ]
     ],
     "menu_order": 10,
     "position": "side",

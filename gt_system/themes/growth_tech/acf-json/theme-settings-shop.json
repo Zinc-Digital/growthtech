@@ -41,7 +41,18 @@
             "type": "text",
             "instructions": "Used by the stockist finder map and geocoding.",
             "wrapper": { "width": "50", "class": "", "id": "" }
-        }
+        },
+        {
+            "key": "field_gt_shop_knowledge_tab",
+            "label": "\"Better knowledge\" band",
+            "name": "",
+            "type": "tab",
+            "placement": "top"
+        },
+        { "key": "field_gt_shop_knowledge_heading", "label": "Heading", "name": "shop_knowledge_heading", "type": "text", "instructions": "Default for the band above the footer on product pages. Products can override it.", "placeholder": "Better knowledge. Stronger roots.", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_shop_knowledge_image", "label": "Image", "name": "shop_knowledge_image", "type": "image", "return_format": "id", "library": "all", "preview_size": "medium", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_shop_knowledge_text", "label": "Text", "name": "shop_knowledge_text", "type": "textarea", "rows": 3, "new_lines": "" },
+        { "key": "field_gt_shop_knowledge_link", "label": "Button", "name": "shop_knowledge_link", "type": "link", "return_format": "array" }
     ],
     "location": [ [ { "param": "options_page", "operator": "==", "value": "theme-general-settings" } ] ],
     "menu_order": 20,

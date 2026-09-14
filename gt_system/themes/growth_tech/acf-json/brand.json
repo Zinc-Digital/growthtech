@@ -92,6 +92,97 @@
             "instructions": "Wrap the highlighted words in <em> … </em> to colour them with the accent, e.g. The original rooting gel. <em>A complete propagation system.</em>",
             "placeholder": "The original rooting gel. <em>A complete propagation system.</em>",
             "conditional_logic": [ [ { "field": "field_gt_brand_promo_enabled", "operator": "==", "value": "1" } ] ]
+        },
+        {
+            "key": "field_gt_brand_lp_tab_hero",
+            "label": "Landing: hero",
+            "name": "",
+            "type": "tab",
+            "placement": "top"
+        },
+        { "key": "field_gt_brand_lp_hero_heading", "label": "Hero heading", "name": "hero_heading", "type": "text", "placeholder": "The original rooting gel.", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_brand_lp_hero_accent", "label": "Hero accent line", "name": "hero_accent_line", "type": "text", "instructions": "Second line, in the accent colour.", "placeholder": "A complete propagation system.", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_brand_lp_hero_intro", "label": "Hero intro", "name": "hero_intro", "type": "textarea", "rows": 3, "new_lines": "" },
+        { "key": "field_gt_brand_lp_hero_image", "label": "Hero image", "name": "hero_image", "type": "image", "instructions": "Product group shot on black, sits on the right of the 1440 x 500 hero.", "return_format": "id", "library": "all", "preview_size": "medium" },
+        {
+            "key": "field_gt_brand_lp_tab_science",
+            "label": "Landing: science",
+            "name": "",
+            "type": "tab",
+            "placement": "top"
+        },
+        { "key": "field_gt_brand_lp_science_heading", "label": "Heading", "name": "science_heading", "type": "text", "placeholder": "Rooted in science.", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_brand_lp_science_accent", "label": "Accent line", "name": "science_accent_line", "type": "text", "placeholder": "Built for success.", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_brand_lp_science_text", "label": "Text", "name": "science_text", "type": "wysiwyg", "tabs": "visual", "toolbar": "basic", "media_upload": 0 },
+        {
+            "key": "field_gt_brand_lp_steps",
+            "label": "Product steps",
+            "name": "steps",
+            "type": "repeater",
+            "instructions": "One slide per step. The plus marker is positioned as a percentage of the image.",
+            "layout": "block",
+            "button_label": "Add step",
+            "sub_fields": [
+                { "key": "field_gt_brand_lp_step_label", "label": "Step label", "name": "label", "type": "text", "placeholder": "Step 2 • Mist", "wrapper": { "width": "50", "class": "", "id": "" } },
+                { "key": "field_gt_brand_lp_step_product", "label": "Product", "name": "product", "type": "post_object", "post_type": [ "product" ], "return_format": "id", "allow_null": 1, "ui": 1, "wrapper": { "width": "50", "class": "", "id": "" } },
+                { "key": "field_gt_brand_lp_step_image", "label": "Image", "name": "image", "type": "image", "return_format": "id", "library": "all", "preview_size": "medium", "wrapper": { "width": "50", "class": "", "id": "" } },
+                { "key": "field_gt_brand_lp_step_hx", "label": "Marker X (%)", "name": "hotspot_x", "type": "number", "default_value": 73, "min": 0, "max": 100, "wrapper": { "width": "25", "class": "", "id": "" } },
+                { "key": "field_gt_brand_lp_step_hy", "label": "Marker Y (%)", "name": "hotspot_y", "type": "number", "default_value": 47, "min": 0, "max": 100, "wrapper": { "width": "25", "class": "", "id": "" } },
+                { "key": "field_gt_brand_lp_step_text", "label": "Text", "name": "text", "type": "textarea", "rows": 3, "new_lines": "" }
+            ]
+        },
+        {
+            "key": "field_gt_brand_lp_faq",
+            "label": "FAQ callout",
+            "name": "faq",
+            "type": "group",
+            "layout": "block",
+            "sub_fields": [
+                { "key": "field_gt_brand_lp_faq_eyebrow", "label": "Eyebrow", "name": "eyebrow", "type": "text", "default_value": "What growers ask us most", "wrapper": { "width": "50", "class": "", "id": "" } },
+                { "key": "field_gt_brand_lp_faq_link", "label": "Link", "name": "link", "type": "link", "return_format": "array", "wrapper": { "width": "50", "class": "", "id": "" } },
+                { "key": "field_gt_brand_lp_faq_question", "label": "Question", "name": "question", "type": "text", "placeholder": "“Can I dip straight into the bottle?”" },
+                { "key": "field_gt_brand_lp_faq_answer", "label": "Answer", "name": "answer", "type": "textarea", "rows": 3, "new_lines": "" }
+            ]
+        },
+        {
+            "key": "field_gt_brand_lp_tab_pair",
+            "label": "Landing: pair band",
+            "name": "",
+            "type": "tab",
+            "placement": "top"
+        },
+        { "key": "field_gt_brand_lp_pair_brand", "label": "Paired brand", "name": "pair_brand", "type": "taxonomy", "taxonomy": "product_brand", "field_type": "select", "return_format": "id", "allow_null": 1, "add_term": 0, "save_terms": 0, "load_terms": 0, "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_brand_lp_pair_image", "label": "Image", "name": "pair_image", "type": "image", "return_format": "id", "library": "all", "preview_size": "medium", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_brand_lp_pair_heading", "label": "Heading", "name": "pair_heading", "type": "text", "placeholder": "Pair with Root Riot® for maximum propagation success" },
+        { "key": "field_gt_brand_lp_pair_text", "label": "Text", "name": "pair_text", "type": "textarea", "rows": 3, "new_lines": "" },
+        { "key": "field_gt_brand_lp_pair_link", "label": "Button", "name": "pair_link", "type": "link", "return_format": "array" },
+        {
+            "key": "field_gt_brand_lp_tab_guides",
+            "label": "Landing: guides",
+            "name": "",
+            "type": "tab",
+            "placement": "top"
+        },
+        { "key": "field_gt_brand_lp_guides_heading", "label": "Heading", "name": "guides_heading", "type": "text", "placeholder": "Better knowledge.", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_brand_lp_guides_accent", "label": "Accent line", "name": "guides_accent_line", "type": "text", "placeholder": "Stronger roots.", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_brand_lp_guides_text", "label": "Text", "name": "guides_text", "type": "textarea", "rows": 3, "new_lines": "" },
+        { "key": "field_gt_brand_lp_guides_cta1", "label": "Button", "name": "guides_cta_1", "type": "link", "return_format": "array", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_brand_lp_guides_cta2", "label": "Text link", "name": "guides_cta_2", "type": "link", "return_format": "array", "wrapper": { "width": "50", "class": "", "id": "" } },
+        {
+            "key": "field_gt_brand_lp_guides",
+            "label": "Guide cards",
+            "name": "guides",
+            "type": "repeater",
+            "instructions": "Two cards in the design.",
+            "layout": "block",
+            "max": 2,
+            "button_label": "Add guide",
+            "sub_fields": [
+                { "key": "field_gt_brand_lp_guide_image", "label": "Image", "name": "image", "type": "image", "return_format": "id", "library": "all", "preview_size": "medium", "wrapper": { "width": "50", "class": "", "id": "" } },
+                { "key": "field_gt_brand_lp_guide_link", "label": "Link", "name": "link", "type": "link", "return_format": "array", "wrapper": { "width": "50", "class": "", "id": "" } },
+                { "key": "field_gt_brand_lp_guide_lead", "label": "Lead (bold)", "name": "lead", "type": "text", "placeholder": "From Seed to Sprout:", "wrapper": { "width": "50", "class": "", "id": "" } },
+                { "key": "field_gt_brand_lp_guide_title", "label": "Title", "name": "title", "type": "text", "placeholder": "The Beginner’s Guide to Perfect Germination", "wrapper": { "width": "50", "class": "", "id": "" } }
+            ]
         }
     ],
     "location": [ [ { "param": "taxonomy", "operator": "==", "value": "product_brand" } ] ],
@@ -102,6 +193,6 @@
     "instruction_placement": "label",
     "hide_on_screen": "",
     "active": true,
-    "description": "Brand identity and shop promo tile. Brand landing page content is added in a later phase.",
+    "description": "Brand identity, shop promo tile and brand landing page content.",
     "show_in_rest": 0
 }
