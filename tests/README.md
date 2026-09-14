@@ -94,11 +94,15 @@ without changing its address won't re-hit Google. Changing the address
 longer matches the stored "Geocoded address". To force a fresh lookup on an
 *unchanged* address, clear Latitude and Longitude and save: the cached
 result for that address is discarded and the address is looked up again. To
-use hand-typed coordinates instead, enter Latitude/Longitude and leave
-Geocoded address empty — this is recorded as status `manual` and is never
-overwritten by the save hook. A failed lookup clears Latitude, Longitude and
-Geocoded address and shows `failed` in the admin "Geocode" column until the
-address is corrected and saved again.
+use hand-typed coordinates instead (on a stockist that has not been geocoded
+yet, or whose lookup failed), enter Latitude/Longitude and leave Geocoded
+address empty — this is recorded as status `manual` and is never overwritten
+by the save hook. When Google reports no such place, the lookup clears
+Latitude, Longitude and Geocoded address and shows `failed` in the admin
+"Geocode" column until the address is corrected and saved again. A key or
+transport problem (`REQUEST_DENIED`, quota, timeout) keeps the existing
+coordinates and shows `error` instead — fix the key and re-save (such
+errors are cached for five minutes).
 
 The `gt/v1/geocode` REST proxy that the front-end search box calls keeps the
 key server-side; it also rate-limits to 30 requests per IP per minute,

@@ -8,7 +8,9 @@ $google_ok = function ( $pre, $args, $url ) {
 	$GLOBALS['gt_geocode_calls'][] = $url;
 	$body = ( false !== strpos( $url, 'Nowhere' ) )
 		? array( 'status' => 'ZERO_RESULTS', 'results' => array() )
-		: array( 'status' => 'OK', 'results' => array( array( 'formatted_address' => 'Taunton, UK', 'geometry' => array( 'location' => array( 'lat' => 51.0153, 'lng' => -3.1069 ) ) ) ) );
+		: ( ( false !== strpos( $url, 'Denied' ) )
+		? array( 'status' => 'REQUEST_DENIED', 'results' => array(), 'error_message' => 'API key not valid' )
+		: array( 'status' => 'OK', 'results' => array( array( 'formatted_address' => 'Taunton, UK', 'geometry' => array( 'location' => array( 'lat' => 51.0153, 'lng' => -3.1069 ) ) ) ) ) );
 	return array( 'response' => array( 'code' => 200, 'message' => 'OK' ), 'body' => wp_json_encode( $body ), 'headers' => array(), 'cookies' => array(), 'filename' => null );
 };
 
@@ -138,6 +140,17 @@ try {
 		delete_transient( gt_stockist_geocode_cache_key( gt_stockist_address_string( $id ), 'gb' ) );
 		update_field( 'field_gt_stockist_town', 'Taunton', $id );
 
+		// A key/transport problem says nothing about the address: the existing
+		// pin stays and the status points at the key rather than the address.
+		gt_stockist_maybe_geocode( $id );
+		gt_assert_equal( 'ok', get_field( 'geocode_status', $id ), 'located again before the denied case' );
+		update_field( 'field_gt_stockist_town', 'Denied', $id );
+		gt_stockist_maybe_geocode( $id );
+		gt_assert_equal( 'error', get_field( 'geocode_status', $id ), 'REQUEST_DENIED is reported as error, not failed' );
+		gt_assert_equal( 51.0153, (float) get_field( 'lat', $id ), 'a key/transport error keeps the existing pin' );
+		delete_transient( gt_stockist_geocode_cache_key( gt_stockist_address_string( $id ), 'gb' ) );
+		update_field( 'field_gt_stockist_town', 'Taunton', $id );
+
 		update_field( 'field_gt_stockist_lat', 50.0, $id );
 		update_field( 'field_gt_stockist_lng', -1.0, $id );
 		update_field( 'field_gt_stockist_geocoded_address', '', $id );
@@ -154,6 +167,7 @@ try {
 	} finally {
 		delete_transient( gt_stockist_geocode_cache_key( gt_stockist_address_string( $id ), 'gb' ) );
 		delete_transient( gt_stockist_geocode_cache_key( 'Nowhere, United Kingdom (UK)', 'gb' ) );
+		delete_transient( gt_stockist_geocode_cache_key( 'Denied, United Kingdom (UK)', 'gb' ) );
 		wp_delete_post( $id, true );
 	}
 } finally {

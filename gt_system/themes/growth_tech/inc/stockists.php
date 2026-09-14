@@ -115,6 +115,7 @@ function gt_stockist_admin_column_value( $column, $post_id ) {
 		'ok'     => __( 'Located', 'gt' ),
 		'manual' => __( 'Manual coordinates', 'gt' ),
 		'failed' => __( 'Not found — check the address', 'gt' ),
+		'error'  => __( 'Lookup error — check the key and try again', 'gt' ),
 		'no_key' => __( 'No Google Maps key set', 'gt' ),
 	);
 	echo esc_html( isset( $labels[ $status ] ) ? $labels[ $status ] : __( 'Not geocoded yet', 'gt' ) );
@@ -188,11 +189,13 @@ function gt_stockist_geocode( $address, $region = '' ) {
 		set_transient( $cache_key, array( 'error' => 'bad_response', 'message' => $message ), 5 * MINUTE_IN_SECONDS );
 		return new WP_Error( 'bad_response', $message );
 	}
-	if ( 'ZERO_RESULTS' === $data['status'] || empty( $data['results'][0]['geometry']['location'] ) ) {
+	if ( 'ZERO_RESULTS' === $data['status'] || ( 'OK' === $data['status'] && empty( $data['results'][0]['geometry']['location'] ) ) ) {
 		$message = __( 'No location found for that address.', 'gt' );
 		set_transient( $cache_key, array( 'error' => 'zero_results', 'message' => $message ), HOUR_IN_SECONDS );
 		return new WP_Error( 'zero_results', $message );
 	}
+	// Any other non-OK status (REQUEST_DENIED, OVER_QUERY_LIMIT, ...) also has
+	// empty results, but says nothing about the address — keep it distinct.
 	if ( 'OK' !== $data['status'] ) {
 		// Google's error_message can include account/billing detail — log it, never return it over REST.
 		if ( in_array( $data['status'], array( 'REQUEST_DENIED', 'OVER_QUERY_LIMIT', 'INVALID_REQUEST' ), true ) && ! empty( $data['error_message'] ) ) {
@@ -255,13 +258,21 @@ function gt_stockist_maybe_geocode( $post_id ) {
 
 	$result = gt_stockist_geocode( $address, $region );
 	if ( is_wp_error( $result ) ) {
-		$status = 'no_key' === $result->get_error_code() ? 'no_key' : 'failed';
-		if ( 'no_key' !== $status ) {
-			// A stale pin must not stay on the public map once the lookup fails;
-			// on no_key nothing was attempted, so existing coordinates are left alone.
+		// Only a definite "no such place" clears the coordinates: a stale pin
+		// must not stay on the public map once Google says the address does not
+		// exist. A key/transport problem (REQUEST_DENIED, quota, timeout) says
+		// nothing about the address, so the existing pin is kept and the admin
+		// column points at the key instead. On no_key nothing was attempted.
+		$code = $result->get_error_code();
+		if ( 'zero_results' === $code ) {
 			update_field( 'field_gt_stockist_lat', '', $post_id );
 			update_field( 'field_gt_stockist_lng', '', $post_id );
 			update_field( 'field_gt_stockist_geocoded_address', '', $post_id );
+			$status = 'failed';
+		} elseif ( 'no_key' === $code ) {
+			$status = 'no_key';
+		} else {
+			$status = 'error';
 		}
 		update_field( 'field_gt_stockist_geocode_status', $status, $post_id );
 		return;

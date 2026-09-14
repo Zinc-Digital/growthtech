@@ -15,6 +15,7 @@ $extra     = max( 0, count( $chips ) - 3 );
 $tel       = preg_replace( '/[^\d+]/', '', $s['phone'] );
 $check_url = $s['website'] ? $s['website'] : ( $tel ? 'tel:' . $tel : '' );
 $is_site   = (bool) $s['website'];
+$name_id   = 'stockist-' . (int) $s['id'] . '-name';
 ?>
 <li class="stockists-card"<?php echo $visible ? '' : ' hidden'; ?>
 	data-id="<?php echo esc_attr( $s['id'] ); ?>"
@@ -27,7 +28,7 @@ $is_site   = (bool) $s['website'];
 	data-search="<?php echo esc_attr( $s['search'] ); ?>">
 	<div class="stockists-card__head">
 		<div class="stockists-card__id">
-			<h2 class="stockists-card__name"><?php echo esc_html( $s['name'] ); ?></h2>
+			<h2 class="stockists-card__name" id="<?php echo esc_attr( $name_id ); ?>"><?php echo esc_html( $s['name'] ); ?></h2>
 			<p class="stockists-card__meta">
 				<span><?php echo esc_html( trim( $s['town'] . ( $s['town'] && $s['country_name'] ? ', ' : '' ) . $s['country_name'] ) ); ?></span>
 				<?php if ( $s['type'] ) : ?>
@@ -48,7 +49,7 @@ $is_site   = (bool) $s['website'];
 			<?php endforeach; ?>
 			<?php if ( $extra ) : ?>
 				<li class="stockists-card__chip stockists-card__chip--more">
-					<button type="button" class="stockists-card__more" data-card-more data-count="<?php echo esc_attr( $extra ); ?>" aria-expanded="false" aria-label="<?php echo esc_attr( sprintf( __( 'Show all products stocked by %s', 'gt' ), $s['name'] ) ); ?>"><?php echo esc_html( sprintf( /* translators: %d: hidden chips */ __( '+%d more', 'gt' ), $extra ) ); ?></button>
+					<button type="button" class="stockists-card__more" data-card-more data-count="<?php echo esc_attr( $extra ); ?>" aria-expanded="false" aria-describedby="<?php echo esc_attr( $name_id ); ?>"><?php echo esc_html( sprintf( /* translators: %d: hidden chips */ __( '+%d more', 'gt' ), $extra ) ); ?></button>
 				</li>
 			<?php endif; ?>
 		</ul>
