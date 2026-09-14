@@ -60,6 +60,10 @@ disposable local DB, and never as part of routine test runs.
 `tests/seed/seed-product-content.php` — product page / brand landing content
 and generated placeholder images (run after seed-shop.php).
 
+`tests/seed/seed-stockists.php` — eight stockists (address, coordinates,
+type, products) and the Find a Stockist page's template/intro/trade band
+content (run after seed-shop.php and seed-product-content.php).
+
 ## Image sizes
 
 Plan 2 registered ten new image sizes (`gt-product-main`, `gt-product-thumb`,
