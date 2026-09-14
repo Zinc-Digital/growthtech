@@ -51,3 +51,6 @@ Tests assume the site is already configured this way:
 against (13 products, Clonex/Ionic brands, etc). It **writes to the
 database** and is **local-only** — do not run it against anything but a
 disposable local DB, and never as part of routine test runs.
+
+`tests/seed/seed-product-content.php` — product page / brand landing content
+and generated placeholder images (run after seed-shop.php).

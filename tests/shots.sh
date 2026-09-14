@@ -12,4 +12,6 @@ shot() { # name url width height
 for w in 1440 1024 768 390; do
   shot shop "https://growth-tech.local/shop/" "$w" 2600
   shot category "https://growth-tech.local/product-category/propagation/" "$w" 3000
+  shot product "https://growth-tech.local/product/clonex-mist/" "$w" 3400
+  shot brand "https://growth-tech.local/brand/clonex/" "$w" 3800
 done
