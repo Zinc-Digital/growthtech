@@ -9,7 +9,9 @@ foreach ( array( 'data-stockists', 'data-stockists-region', 'data-stockists-coun
 }
 $html = gt_fetch( '/find-a-stockist/' );
 gt_assert_contains( 'var gtStockists = ', $html, 'settings localised' );
-gt_assert_contains( '"hasKey":false', $html, 'hasKey false without a key' );
+// Derived from the configured key so this stays green once the user sets one, rather than hard-coding "no key".
+$expect_has_key = gt_maps_key() ? '"hasKey":true' : '"hasKey":false';
+gt_assert_contains( $expect_has_key, $html, 'hasKey matches the configured key' );
 gt_assert_contains( '"geocodeUrl":"', $html, 'geocode url present' );
 gt_assert_not_contains( 'assets/js/stockists.js', gt_fetch( '/shop/' ), 'not enqueued elsewhere' );
 

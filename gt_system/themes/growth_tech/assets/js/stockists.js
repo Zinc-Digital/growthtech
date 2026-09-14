@@ -7,6 +7,7 @@
 	'use strict';
 
 	var settings = window.gtStockists || {};
+	var strings = settings.strings || {}; // A missing gtStockists (e.g. script loaded off-page) must never throw.
 	var root = document.querySelector('[data-stockists]');
 	if (!root) { return; }
 
@@ -67,6 +68,8 @@
 		return 2 * R * Math.asin(Math.sqrt(s));
 	}
 
+	function hasCoords(card) { return isFinite(card.lat) && isFinite(card.lng); }
+
 	function inRegion(card) {
 		if (state.region === 'uk') { return card.country === 'GB'; }
 		if (card.country === 'GB') { return false; }
@@ -87,12 +90,12 @@
 
 		if (state.origin) {
 			pool.forEach(function (c) {
-				c.distance = isNaN(c.lat) ? null : haversine(state.origin, { lat: c.lat, lng: c.lng });
+				c.distance = hasCoords(c) ? haversine(state.origin, { lat: c.lat, lng: c.lng }) : null;
 			});
 			// A place name that matches no store still deserves an answer.
 			if (q && !visible.length) {
 				visible = pool;
-				noteText = sprintf(settings.strings.nearest || 'Showing stockists nearest to %s', state.originLabel || state.q);
+				noteText = sprintf(strings.nearest || 'Showing stockists nearest to %s', state.originLabel || state.q);
 			}
 		} else {
 			pool.forEach(function (c) { c.distance = null; });
@@ -112,7 +115,7 @@
 		visible.forEach(function (c) { c.el.hidden = false; list.appendChild(c.el); });
 
 		if (ui.count) {
-			ui.count.textContent = visible.length === 1 ? (settings.strings.one || '1 stockist') : sprintf(settings.strings.count || '%d stockists', visible.length);
+			ui.count.textContent = visible.length === 1 ? (strings.one || '1 stockist') : sprintf(strings.count || '%d stockists', visible.length);
 		}
 		if (ui.empty) { ui.empty.hidden = visible.length > 0; }
 		if (ui.note) { ui.note.textContent = noteText; ui.note.hidden = !noteText; }
@@ -129,7 +132,7 @@
 		if (state.product) { params.set('product', state.product); } else if (state.brand) { params.set('brand', state.brand); }
 		if (state.q) { params.set('q', state.q); }
 		var qs = params.toString();
-		window.history.replaceState(null, '', window.location.pathname + (qs ? '?' + qs : ''));
+		window.history.replaceState(null, '', window.location.pathname + (qs ? '?' + qs : '') + window.location.hash);
 	}
 
 	function setRegion(region) {
@@ -145,11 +148,32 @@
 	}
 
 	// -- geocoding (only with a key) ----------------------------------------------
+
+	/**
+	 * Keeps the "Nearest first" option honest: disabled whenever there is no
+	 * origin to sort by (and always disabled without a key), and drops a
+	 * selected 'nearest' sort back to 'az' the moment its origin goes away —
+	 * otherwise the select can keep claiming a sort that apply() silently
+	 * isn't applying. Call this everywhere state.origin is set or cleared.
+	 */
+	function setOriginAvailable(available) {
+		if (!ui.sort) { return; }
+		var opt = ui.sort.querySelector('option[value="nearest"]');
+		if (opt) { opt.disabled = !settings.hasKey || !available; }
+		if (!available && state.sort === 'nearest') {
+			state.sort = 'az';
+			ui.sort.value = 'az';
+		}
+	}
+
 	function geocode(query) {
-		if (!settings.hasKey || !settings.geocodeUrl || !window.fetch) { return; }
+		// The proxy 400s anything under 2 chars; skip the round trip.
+		if (!settings.hasKey || !settings.geocodeUrl || !window.fetch || String(query).trim().length < 2) { return; }
 		var seq = ++geocodeSeq;
 		var url = settings.geocodeUrl + (settings.geocodeUrl.indexOf('?') === -1 ? '?' : '&') +
 			'q=' + encodeURIComponent(query) + '&region=' + (state.region === 'uk' ? 'gb' : '');
+		// Note: a 429 (rate limited) response's Retry-After is not read here; the
+		// next attempt is simply gated by the normal input debounce below.
 		fetch(url, { credentials: 'same-origin' })
 			.then(function (r) { return r.ok ? r.json() : null; })
 			.then(function (data) {
@@ -157,17 +181,21 @@
 				if (data && typeof data.lat === 'number') {
 					state.origin = { lat: data.lat, lng: data.lng };
 					state.originLabel = data.label || query;
-					if (ui.sort) {
-						ui.sort.querySelector('option[value="nearest"]').disabled = false;
-						ui.sort.value = 'nearest';
-						state.sort = 'nearest';
-					}
+					setOriginAvailable(true);
+					state.sort = 'nearest';
+					if (ui.sort) { ui.sort.value = 'nearest'; }
 				} else {
 					state.origin = null;
+					setOriginAvailable(false);
 				}
 				apply();
 			})
-			.catch(function () { state.origin = null; apply(); });
+			.catch(function () {
+				if (seq !== geocodeSeq) { return; }
+				state.origin = null;
+				setOriginAvailable(false);
+				apply();
+			});
 	}
 
 	// -- map --------------------------------------------------------------------------
@@ -213,7 +241,7 @@
 			]
 		});
 		cards.forEach(function (c) {
-			if (isNaN(c.lat) || isNaN(c.lng)) { return; }
+			if (!hasCoords(c)) { return; }
 			c.marker = new google.maps.Marker({
 				position: { lat: c.lat, lng: c.lng },
 				title: c.name,
@@ -237,7 +265,7 @@
 			var card = more.closest('.stockists-card');
 			var expanded = card.classList.toggle('is-expanded');
 			more.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-			more.textContent = expanded ? (settings.strings.showLess || 'Show less') : sprintf(settings.strings.more || '+%d more', more.getAttribute('data-count'));
+			more.textContent = expanded ? (strings.showLess || 'Show less') : sprintf(strings.more || '+%d more', more.getAttribute('data-count'));
 			return;
 		}
 
@@ -267,8 +295,7 @@
 			clearTimeout(geocodeTimer);
 			if (!state.q) {
 				state.origin = null;
-				if (ui.sort && ui.sort.value === 'nearest') { ui.sort.value = 'az'; state.sort = 'az'; }
-				if (ui.sort && !settings.hasKey) { ui.sort.querySelector('option[value="nearest"]').disabled = true; }
+				setOriginAvailable(false);
 			}
 			apply();
 			if (state.q && settings.hasKey) { geocodeTimer = setTimeout(function () { geocode(state.q); }, 450); }
