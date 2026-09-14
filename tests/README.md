@@ -7,11 +7,11 @@ mocked WordPress.
 
 - `tests/run.sh` — runs every `tests/*.test.php` through `tests/bin/wpx
   eval-file` and exits 1 if any file fails. Safe to run any time — almost
-  every file is read-only, and the one exception,
-  `tests/product-helpers.test.php`, temporarily mutates two records
-  (Clonex Rooting Hormone's catalog visibility and Clonex Mist's knowledge
-  band override) and restores each in a `finally` block before the file
-  finishes.
+  every file is read-only, with two exceptions that briefly mutate a record
+  and restore it in a `finally` block before the file finishes:
+  `tests/product-helpers.test.php` (Clonex Rooting Hormone's catalog
+  visibility and Clonex Mist's knowledge band override, two records) and
+  `tests/product-page.test.php` (Clonex Mist's `hide_join_club` field).
 - `tests/bin/wpx <wp args>` — WP-CLI wired to MAMP's PHP 8.3 binary, MySQL
   socket and the site URL. Use it directly for one-off checks, e.g.
   `tests/bin/wpx eval-file tests/archive.test.php`.

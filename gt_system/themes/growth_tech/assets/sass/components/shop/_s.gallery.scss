@@ -136,6 +136,12 @@ $gallery-wash: rgba(35, 31, 32, 0.05);
       &:focus-visible {
         background-color: #231f20;
       }
+
+      // currentColor is white here (light text/glyph on a black button), which
+      // disappears against the light gallery wash the ring is drawn over.
+      &:focus-visible {
+        outline-color: #000;
+      }
     }
 
     .slick-disabled {
@@ -255,8 +261,11 @@ $gallery-wash: rgba(35, 31, 32, 0.05);
       height: 35px;
     }
 
+    // currentColor is black here (the button's own icon colour), which
+    // disappears against the near-black lightbox overlay the ring is drawn
+    // over — use white so the ring actually shows against the overlay.
     &:focus-visible {
-      outline: 2px solid currentColor;
+      outline: 2px solid #fff;
       outline-offset: 2px;
     }
 

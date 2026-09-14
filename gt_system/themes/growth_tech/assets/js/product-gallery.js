@@ -41,9 +41,18 @@
 
 			// -- slider ---------------------------------------------------------
 			if (count > 1 && $.fn.slick) {
+				// While the lightbox is open it owns `current` (arrow keys/clicks
+				// there call slickGoTo with dontAnimate, but the slide has still
+				// already changed by the time this fires) — only let slick's own
+				// afterChange overwrite `current` when the lightbox isn't driving
+				// it, so the two don't fight over the index. Thumbs stay in sync
+				// either way since they just mirror slick's actual slide.
 				$slides.on('init afterChange', function (event, slick, index) {
-					current = typeof index === 'number' ? index : (slick.currentSlide || 0);
-					setThumb(current);
+					var slickIndex = typeof index === 'number' ? index : (slick.currentSlide || 0);
+					if ($lightbox.prop('hidden') !== false) {
+						current = slickIndex;
+					}
+					setThumb(slickIndex);
 				});
 				$slides.slick({
 					slidesToShow: 1,
@@ -86,7 +95,15 @@
 				var src = fullSrc(current);
 				if (!src) { return; }
 				$lightboxImg.attr('src', src);
-				if ($slides.hasClass('slick-initialized')) { $slides.slick('slickGoTo', current); }
+				// slickGoTo animates even a no-op move to the slide it's already
+				// on (350ms, waitForAnimate default), which would swallow a rapid
+				// second arrow-key press and let afterChange stomp `current` back
+				// to the old index once the animation settles. Skip the no-op, and
+				// pass dontAnimate for real moves — the lightbox image has already
+				// swapped instantly, so slick doesn't need to animate to match.
+				if ($slides.hasClass('slick-initialized') && $slides.slick('slickCurrentSlide') !== current) {
+					$slides.slick('slickGoTo', current, true);
+				}
 			}
 
 			function openLightbox(index) {
