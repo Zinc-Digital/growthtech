@@ -17,6 +17,14 @@ $related = gt_product_related( $rr );
 gt_assert_equal( array( 'Clonex Mist', 'Clonex Rooting Hormone' ), array_map( function ( $p ) { return $p->get_name(); }, $related ), 'related uses upsells in order when set' );
 gt_assert_equal( 1, count( gt_product_related( $mist, 1 ) ), 'related respects the limit' );
 
+$rooting_hormone = wc_get_product( wc_get_product_id_by_sku( 'GT-003' ) );
+$rooting_hormone->set_catalog_visibility( 'hidden' );
+$rooting_hormone->save();
+gt_assert_equal( array( 'Clonex Pro Start', 'Clonex Mist Concentrate' ), array_map( function ( $p ) { return $p->get_name(); }, gt_product_related( $mist ) ), 'related filters out hidden same-brand products' );
+$rooting_hormone->set_catalog_visibility( 'visible' );
+$rooting_hormone->save();
+wc_delete_product_transients( $rooting_hormone->get_id() );
+
 gt_assert_equal( array( 'Independently tested', 'Made in Somerset', 'Registered product' ), wp_list_pluck( gt_product_badges( $mist ), 'name' ), 'badges in name order' );
 gt_assert_equal( array(), gt_product_badges( $rr ), 'no badges → empty array' );
 

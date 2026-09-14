@@ -91,10 +91,12 @@ function gt_shop_breadcrumb_items() {
 		foreach ( $chain as $ancestor_id ) {
 			$ancestor = get_term( $ancestor_id, 'product_cat' );
 			if ( $ancestor instanceof WP_Term ) {
-				$items[] = array( 'label' => $ancestor->name, 'url' => get_term_link( $ancestor ) );
+				$link    = get_term_link( $ancestor );
+				$items[] = array( 'label' => $ancestor->name, 'url' => is_wp_error( $link ) ? null : $link );
 			}
 		}
-		$items[] = array( 'label' => $term->name, 'url' => $link_last ? get_term_link( $term ) : null );
+		$link    = $link_last ? get_term_link( $term ) : null;
+		$items[] = array( 'label' => $term->name, 'url' => ( null === $link || is_wp_error( $link ) ) ? null : $link );
 	};
 
 	if ( is_product_category() ) {
@@ -177,7 +179,8 @@ function gt_product_related( WC_Product $product, $limit = 8 ) {
 			'post_type'      => 'product',
 			'post_status'    => 'publish',
 			'fields'         => 'ids',
-			'posts_per_page' => $limit + 1,
+			'posts_per_page' => -1,
+			'no_found_rows'  => true,
 			'post__not_in'   => array( $product->get_id() ),
 			'orderby'        => array( 'menu_order' => 'ASC', 'title' => 'ASC' ),
 			'tax_query'      => array( array( 'taxonomy' => 'product_brand', 'field' => 'term_id', 'terms' => $brand->term_id ) ), // phpcs:ignore WordPress.DB.SlowDBQuery
