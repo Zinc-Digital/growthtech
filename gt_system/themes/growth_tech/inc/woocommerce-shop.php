@@ -358,6 +358,34 @@ function gt_shop_flatten_request_vars( $vars ) {
 add_filter( 'request', 'gt_shop_flatten_request_vars' );
 
 /**
+ * Structural URL comparison: same path (untrailingslashit'd) and the same
+ * query parameters once parsed, regardless of param order or whether the
+ * query string was urlencoded. Core's add_query_arg() urlencode_deep()s the
+ * existing query when it rebuilds the current URL, so a raw-comma built URL
+ * and the encoded current URL are never string-equal even when they mean the
+ * same thing — compare them parsed instead.
+ */
+function gt_shop_urls_match( $a, $b ) {
+	$parsed_a = wp_parse_url( $a );
+	$parsed_b = wp_parse_url( $b );
+
+	$path_a = untrailingslashit( isset( $parsed_a['path'] ) ? $parsed_a['path'] : '' );
+	$path_b = untrailingslashit( isset( $parsed_b['path'] ) ? $parsed_b['path'] : '' );
+	if ( $path_a !== $path_b ) {
+		return false;
+	}
+
+	$query_a = array();
+	$query_b = array();
+	wp_parse_str( isset( $parsed_a['query'] ) ? $parsed_a['query'] : '', $query_a );
+	wp_parse_str( isset( $parsed_b['query'] ) ? $parsed_b['query'] : '', $query_b );
+	ksort( $query_a );
+	ksort( $query_b );
+
+	return $query_a == $query_b; // phpcs:ignore WordPress.PHP.StrictComparisons -- structural comparison of decoded query params.
+}
+
+/**
  * One URL per selection: /shop/?categories=x becomes the category permalink,
  * and a category page carrying other categories goes back to the shop. Also
  * fires when a group param arrived in array form (a no-JS checkbox submit),
@@ -380,7 +408,7 @@ function gt_shop_canonical_redirect() {
 	$selection = gt_shop_selection();
 	$target    = gt_shop_build_url( $selection );
 	$current   = home_url( add_query_arg( array() ) );
-	if ( untrailingslashit( $target ) !== untrailingslashit( $current ) ) {
+	if ( ! gt_shop_urls_match( $target, $current ) ) {
 		wp_safe_redirect( $target, 302 );
 		exit;
 	}

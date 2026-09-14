@@ -42,6 +42,16 @@ $html = gt_fetch( '/shop/?brands%5B%5D=clonex&growing-medium%5B%5D=soil' );
 gt_assert_contains( 'Showing 4 of 4 products', $html, 'array-style checkbox params (no-JS submit) work' );
 gt_assert_contains( 'name="brands[]" value="clonex" checked', $html, 'array-style params stay ticked' );
 
+$html = gt_fetch( '/shop/?categories=propagation,nutrients' );
+gt_assert_contains( 'Showing 11 of 11 products', $html, 'multi-category shop URL renders without redirect loop' );
+gt_assert_contains( 'name="categories[]" value="nutrients" checked', $html, 'second category stays ticked' );
+
+// gt_fetch() follows redirects, so it can't tell a genuine 200 from a
+// redirect loop that happens to land on the right page eventually. Check the
+// status directly with redirects disabled.
+$response = wp_remote_get( home_url( '/shop/?categories=propagation,nutrients' ), array( 'sslverify' => false, 'redirection' => 0 ) );
+gt_assert_equal( 200, wp_remote_retrieve_response_code( $response ), 'multi-category URL is not redirected' );
+
 $html = gt_fetch( '/shop/?q=mist' );
 gt_assert_contains( 'Showing 2 of 2 products', $html, 'GET search works' );
 gt_assert_contains( 'value="mist"', $html, 'search box keeps its value' );

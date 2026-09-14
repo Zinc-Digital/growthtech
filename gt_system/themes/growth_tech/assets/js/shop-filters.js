@@ -124,6 +124,11 @@
 					// the value this response reflects can already be stale.
 					var liveQuery = focusName === 'q' ? sidebar.querySelector('input[name="q"]') : null;
 					var liveQueryValue = liveQuery ? liveQuery.value : null;
+					// Only restore focus/caret if the search input actually had
+					// focus before the swap — e.g. a checkbox change can also
+					// land here with focusName 'q' from a queued search request,
+					// and it must not steal focus away from the checkbox.
+					var liveQueryWasFocused = !!liveQuery && liveQuery === document.activeElement;
 					sidebar.innerHTML = d.sidebar;
 					restoreCollapsed();
 					if (focusValue) {
@@ -133,9 +138,11 @@
 						var searchInput = sidebar.querySelector('input[name="q"]');
 						if (searchInput) {
 							if (null !== liveQueryValue) { searchInput.value = liveQueryValue; }
-							searchInput.focus({ preventScroll: true });
-							var caret = searchInput.value.length;
-							searchInput.setSelectionRange(caret, caret);
+							if (liveQueryWasFocused) {
+								searchInput.focus({ preventScroll: true });
+								var caret = searchInput.value.length;
+								searchInput.setSelectionRange(caret, caret);
+							}
 						}
 					}
 				}
