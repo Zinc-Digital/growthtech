@@ -27,10 +27,25 @@ $html    = gt_fetch( '/find-a-stockist/' );
 gt_assert_contains( 'class="page-wrapper stockists"', $html, 'template renders' );
 gt_assert_contains( '<h1 class="stockists__title">Find a Stockist</h1>', $html, 'title' );
 gt_assert_contains( 'independent specialists', $html, 'intro' );
-gt_assert_contains( 'data-has-key="0"', $html, 'no maps key flag' );
-gt_assert_contains( 'stockists-map__placeholder', $html, 'map placeholder without a key' );
-gt_assert_not_contains( 'maps.googleapis.com/maps/api/js', $html, 'Maps JS not loaded without a key' );
-gt_assert_contains( 'option value="nearest" disabled', $html, 'nearest-first disabled without a key' );
+// Branch on whatever key is actually configured (Theme Settings → Shop
+// Settings → "Google Maps API key") rather than assuming either state —
+// the site this runs against may or may not have one set, and both are
+// valid. The key's value itself is never asserted on or printed.
+$has_key = '' !== gt_maps_key();
+gt_assert_contains( $has_key ? 'data-has-key="1"' : 'data-has-key="0"', $html, 'maps key flag matches configuration' );
+if ( $has_key ) {
+	gt_assert_not_contains( 'stockists-map__placeholder', $html, 'placeholder replaced by the map canvas with a key' );
+	gt_assert_contains( 'maps.googleapis.com/maps/api/js', $html, 'Maps JS loaded with a key' );
+	gt_assert_contains( 'callback=gtStockistsMapReady', $html, 'Maps JS wires the ready callback' );
+	gt_assert_contains( 'loading=async', $html, 'Maps JS uses async loading' );
+	gt_assert_contains( 'data-map-zoom="in"', $html, 'zoom controls render with a key' );
+	gt_assert_contains( '<option value="nearest">', $html, 'nearest-first option present with a key' );
+	gt_assert_not_contains( 'option value="nearest" disabled', $html, 'nearest-first is not disabled server-side with a key' );
+} else {
+	gt_assert_contains( 'stockists-map__placeholder', $html, 'map placeholder without a key' );
+	gt_assert_not_contains( 'maps.googleapis.com/maps/api/js', $html, 'Maps JS not loaded without a key' );
+	gt_assert_contains( 'option value="nearest" disabled', $html, 'nearest-first disabled without a key' );
+}
 
 gt_assert_equal( 8, substr_count( $html, '<li class="stockists-card"' ), 'all eight cards rendered' );
 gt_assert_equal( 2, substr_count( $html, '<li class="stockists-card" hidden' ), 'the two international cards start hidden' );

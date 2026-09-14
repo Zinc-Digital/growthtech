@@ -112,6 +112,12 @@ is safe to run at any time; like `product-helpers.test.php` and
 `product-page.test.php`, it briefly sets the Maps key option and a test
 stockist record and restores both in a `finally` block.
 
+`tests/stockists-page.test.php` reads `gt_maps_key()` and asserts the
+matching branch (map canvas + Maps JS + enabled "Nearest first" with a key;
+placeholder + no Maps JS + disabled "Nearest first" without one), so the
+whole suite is green regardless of whether this install has a key
+configured — it doesn't assume either state.
+
 ## Image sizes
 
 Plan 2 registered ten new image sizes (`gt-product-main`, `gt-product-thumb`,
