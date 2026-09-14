@@ -42,6 +42,7 @@
             "instructions": "Used by the stockist finder map and geocoding.",
             "wrapper": { "width": "50", "class": "", "id": "" }
         },
+        { "key": "field_gt_shop_geocoding_key", "label": "Google Geocoding key (server)", "name": "shop_google_geocoding_key", "type": "text", "instructions": "Optional. A browser key restricted by HTTP referrer is rejected by the Geocoding web service — use a second key restricted by IP (or unrestricted) here. Leave empty to reuse the Maps key.", "wrapper": { "width": "50", "class": "", "id": "" } },
         {
             "key": "field_gt_shop_knowledge_tab",
             "label": "\"Better knowledge\" band",

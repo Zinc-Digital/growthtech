@@ -142,7 +142,7 @@ function gt_stockist_geocode( $address, $region = '' ) {
 	if ( '' === $address ) {
 		return new WP_Error( 'empty', __( 'No address to look up.', 'gt' ) );
 	}
-	$key = gt_maps_key();
+	$key = gt_geocoding_key();
 	if ( '' === $key ) {
 		return new WP_Error( 'no_key', __( 'No Google Maps API key is set in Theme Settings.', 'gt' ) );
 	}
@@ -315,3 +315,174 @@ function gt_stockist_register_rest() {
 	) );
 }
 add_action( 'rest_api_init', 'gt_stockist_register_rest' );
+
+// -- Data for the finder page ------------------------------------------------------
+
+/** Server-side Geocoding key: the dedicated field, else the Maps key. */
+function gt_geocoding_key() {
+	$key = function_exists( 'get_field' ) ? trim( (string) get_field( 'shop_google_geocoding_key', 'option' ) ) : '';
+	return '' !== $key ? $key : gt_maps_key();
+}
+
+/** Every published stockist as a flat array the template and JS both read. */
+function gt_stockists_all() {
+	if ( ! function_exists( 'get_field' ) ) {
+		return array();
+	}
+	$countries = gt_stockist_countries();
+	$posts     = get_posts( array( 'post_type' => 'stockist', 'post_status' => 'publish', 'posts_per_page' => -1, 'orderby' => 'title', 'order' => 'ASC' ) );
+	$out       = array();
+
+	foreach ( $posts as $post ) {
+		$id       = $post->ID;
+		$code     = strtoupper( trim( (string) get_field( 'country', $id ) ) );
+		$lat      = get_field( 'lat', $id );
+		$lng      = get_field( 'lng', $id );
+		$has_xy   = '' !== (string) $lat && null !== $lat && '' !== (string) $lng && null !== $lng;
+		$products = array();
+		$brands   = array();
+		foreach ( array_map( 'intval', (array) get_field( 'products', $id ) ) as $pid ) {
+			$product = $pid ? wc_get_product( $pid ) : null;
+			if ( ! $product instanceof WC_Product || 'publish' !== $product->get_status() ) {
+				continue;
+			}
+			$products[] = array( 'id' => $pid, 'name' => $product->get_name() );
+			$brand      = gt_product_brand( $product );
+			if ( $brand ) {
+				$brands[ $brand->slug ] = $brand->slug;
+			}
+		}
+		$types   = wp_get_post_terms( $id, 'stockist_type', array( 'fields' => 'names' ) );
+		$address = gt_stockist_address_string( $id );
+		$town    = trim( (string) get_field( 'town', $id ) );
+
+		$out[] = array(
+			'id'           => $id,
+			'name'         => get_the_title( $post ),
+			'town'         => $town,
+			'region'       => trim( (string) get_field( 'region', $id ) ),
+			'postcode'     => trim( (string) get_field( 'postcode', $id ) ),
+			'country'      => $code,
+			'country_name' => isset( $countries[ $code ] ) ? $countries[ $code ] : $code,
+			'type'         => ( ! is_wp_error( $types ) && $types ) ? $types[0] : '',
+			'lat'          => $has_xy ? (float) $lat : null,
+			'lng'          => $has_xy ? (float) $lng : null,
+			'phone'        => trim( (string) get_field( 'phone', $id ) ),
+			'website'      => trim( (string) get_field( 'website', $id ) ),
+			'email'        => trim( (string) get_field( 'email', $id ) ),
+			'address'      => $address,
+			// Coordinates need no encoding (esc_url() only touches the "&" on output); a free-text
+			// address does, so only that branch is rawurlencode()'d.
+			'directions'   => 'https://www.google.com/maps/dir/?api=1&destination=' . ( $has_xy ? $lat . ',' . $lng : rawurlencode( $address ) ),
+			'products'     => $products,
+			'brands'       => array_values( $brands ),
+			'search'       => strtolower( trim( get_the_title( $post ) . ' ' . $town . ' ' . get_field( 'postcode', $id ) . ' ' . get_field( 'region', $id ) ) ),
+		);
+	}
+	return $out;
+}
+
+/** id => name for the "Stocking any product" select. */
+function gt_stockist_product_options() {
+	$options = array();
+	foreach ( wc_get_products( array( 'limit' => -1, 'status' => 'publish', 'orderby' => 'title', 'order' => 'ASC' ) ) as $product ) {
+		if ( $product->is_visible() ) {
+			$options[ $product->get_id() ] = $product->get_name();
+		}
+	}
+	return $options;
+}
+
+/** Country options for the International tab: codes present on non-GB stockists. */
+function gt_stockist_countries_present( array $stockists ) {
+	$present = array();
+	foreach ( $stockists as $s ) {
+		if ( 'GB' !== $s['country'] && $s['country'] ) {
+			$present[ $s['country'] ] = $s['country_name'];
+		}
+	}
+	asort( $present );
+	return $present;
+}
+
+/**
+ * WooCommerce registers "product" as the public query var for its product
+ * post type, so a plain page request carrying ?product=130 (our preselect
+ * param) gets merged into the main query as pagename=find-a-stockist AND
+ * post_type=product/name=130 (WP maps the "product" var onto "name" for
+ * its rewrite tag) — an impossible combination WP_Query can't match, which
+ * 404s the page before page-stockists.php ever runs. gt_stockist_preselect()
+ * reads the value straight from $_GET, so it's safe to drop these here;
+ * only the main query resolution needs protecting, and only when it
+ * already resolves to a page (a real product permalink never carries a
+ * pagename/page_id too).
+ */
+function gt_stockist_strip_product_query_var( $vars ) {
+	if ( ( isset( $vars['pagename'] ) || isset( $vars['page_id'] ) ) && isset( $vars['product'] ) ) {
+		unset( $vars['product'], $vars['post_type'], $vars['name'] );
+	}
+	return $vars;
+}
+add_filter( 'request', 'gt_stockist_strip_product_query_var' );
+
+/** What the URL asked for: ?product=, ?brand=, ?region=, ?q=. */
+function gt_stockist_preselect() {
+	$product = isset( $_GET['product'] ) ? (int) $_GET['product'] : 0; // phpcs:ignore WordPress.Security.NonceVerification
+	if ( $product && ( ! wc_get_product( $product ) || 'publish' !== get_post_status( $product ) ) ) {
+		$product = 0;
+	}
+	$brand = isset( $_GET['brand'] ) ? sanitize_title( wp_unslash( $_GET['brand'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
+	if ( $brand && ! term_exists( $brand, 'product_brand' ) ) {
+		$brand = '';
+	}
+	$region = isset( $_GET['region'] ) && 'international' === sanitize_key( $_GET['region'] ) ? 'international' : 'uk'; // phpcs:ignore WordPress.Security.NonceVerification
+	$q      = isset( $_GET['q'] ) ? sanitize_text_field( wp_unslash( $_GET['q'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
+	return array( 'product' => $product, 'brand' => $brand, 'region' => $region, 'q' => $q );
+}
+
+/** Initial visibility of a card for the requested region/product/brand. */
+function gt_stockist_is_visible( array $s, array $pre ) {
+	$is_uk = 'GB' === $s['country'];
+	if ( ( 'uk' === $pre['region'] ) !== $is_uk ) {
+		return false;
+	}
+	if ( $pre['product'] && ! in_array( $pre['product'], wp_list_pluck( $s['products'], 'id' ), true ) ) {
+		return false;
+	}
+	if ( $pre['brand'] && ! in_array( $pre['brand'], $s['brands'], true ) ) {
+		return false;
+	}
+	return true;
+}
+
+/** Front-end script (+ Google Maps when a key is set) on the finder template only. */
+function gt_stockists_enqueue() {
+	if ( ! is_page_template( 'page-templates/page-stockists.php' ) ) {
+		return;
+	}
+	$key = gt_maps_key();
+	wp_enqueue_script( 'gt-stockists', get_template_directory_uri() . '/assets/js/stockists.js', array(), gt_asset_version( '/assets/js/stockists.js' ), true );
+	wp_localize_script( 'gt-stockists', 'gtStockists', array(
+		'geocodeUrl' => rest_url( 'gt/v1/geocode' ),
+		'hasKey'     => '' !== $key,
+		'pin'        => 'data:image/svg+xml;utf8,' . rawurlencode( '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24.75" viewBox="0 0 18 24.75"><path fill="#000" d="M0 8.84063C0 3.95625 4.03125 0 9 0C13.9688 0 18 3.95625 18 8.84063C18 15.9094 9 24.75 9 24.75C9 24.75 0 15.9094 0 8.84063ZM9 12C9.79565 12 10.5587 11.6839 11.1213 11.1213C11.6839 10.5587 12 9.79565 12 9C12 8.20435 11.6839 7.44129 11.1213 6.87868C10.5587 6.31607 9.79565 6 9 6C8.20435 6 7.44129 6.31607 6.87868 6.87868C6.31607 7.44129 6 8.20435 6 9C6 9.79565 6.31607 10.5587 6.87868 11.1213C7.44129 11.6839 8.20435 12 9 12Z"/></svg>' ),
+		'strings'    => array(
+			/* translators: %d: number of stockists */
+			'count'    => __( '%d stockists', 'gt' ),
+			'one'      => __( '1 stockist', 'gt' ),
+			'nearest'  => __( 'Showing stockists nearest to %s', 'gt' ),
+			'showLess' => __( 'Show less', 'gt' ),
+			'more'     => __( '+%d more', 'gt' ),
+		),
+	) );
+	if ( '' !== $key ) {
+		wp_enqueue_script(
+			'google-maps',
+			add_query_arg( array( 'key' => rawurlencode( $key ), 'callback' => 'gtStockistsMapReady', 'loading' => 'async' ), 'https://maps.googleapis.com/maps/api/js' ),
+			array( 'gt-stockists' ),
+			null,
+			array( 'in_footer' => true, 'strategy' => 'async' )
+		);
+	}
+}
+add_action( 'wp_enqueue_scripts', 'gt_stockists_enqueue' );
