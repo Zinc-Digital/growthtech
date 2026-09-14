@@ -40,6 +40,24 @@
     transform: scale(1.03);
   }
 
+  // _typography.scss sets a global `a:hover { color: #0e0e0e }`, which
+  // would turn every line of the tile near-black against its dark scrim.
+  // The tile stays white; the hover cue is a heavier underline on the link.
+  &:hover,
+  &:focus-visible {
+    color: color(white);
+  }
+
+  &:hover &__link,
+  &:focus-visible &__link {
+    text-decoration-thickness: 2px;
+  }
+
+  &:focus-visible {
+    outline: 2px solid color(white);
+    outline-offset: -6px;
+  }
+
   &__scrim {
     position: absolute;
     inset: 0;
@@ -94,12 +112,17 @@
     font-weight: $font-700;
     line-height: normal;
     text-decoration: underline;
+    text-decoration-thickness: 1px;
     text-underline-position: from-font;
+    text-underline-offset: 3px;
+    color: color(white);
+    transition: text-decoration-thickness 0.15s ease;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .brand-promo__img {
+  .brand-promo__img,
+  .brand-promo__link {
     transition: none;
   }
 }
