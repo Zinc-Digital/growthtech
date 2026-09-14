@@ -1,0 +1,22 @@
+{
+    "key": "group_gt_stockists_page",
+    "title": "Stockist Finder page",
+    "fields": [
+        { "key": "field_gt_stockists_intro", "label": "Intro", "name": "intro", "type": "textarea", "instructions": "Short paragraph to the right of the title.", "rows": 3, "new_lines": "" },
+        { "key": "field_gt_stockists_trade_tab", "label": "\"Run a store?\" band", "name": "", "type": "tab", "placement": "top" },
+        { "key": "field_gt_stockists_trade_heading", "label": "Heading", "name": "trade_heading", "type": "text", "placeholder": "Run a store? Stock the originals.", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_stockists_trade_image", "label": "Image", "name": "trade_image", "type": "image", "return_format": "id", "library": "all", "preview_size": "medium", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_stockists_trade_text", "label": "Text", "name": "trade_text", "type": "textarea", "rows": 3, "new_lines": "" },
+        { "key": "field_gt_stockists_trade_link", "label": "Button", "name": "trade_link", "type": "link", "return_format": "array" }
+    ],
+    "location": [ [ { "param": "page_template", "operator": "==", "value": "page-templates/page-stockists.php" } ] ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0
+}
