@@ -201,6 +201,13 @@ function gt_product_enqueue_scripts() {
 		gt_asset_version( '/assets/js/product-gallery.js' ),
 		true
 	);
+	wp_enqueue_script(
+		'gt-product-tabs',
+		get_template_directory_uri() . '/assets/js/product-tabs.js',
+		array(),
+		gt_asset_version( '/assets/js/product-tabs.js' ),
+		true
+	);
 }
 add_action( 'wp_enqueue_scripts', 'gt_product_enqueue_scripts' );
 

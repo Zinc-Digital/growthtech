@@ -42,7 +42,9 @@ while ( have_posts() ) :
 			</div>
 		</div>
 
-		<?php /* TASK 6: tabs go here */ ?>
+		<div class="product-page__tabs">
+			<?php get_template_part( 'template-parts/shop/product-tabs', null, array( 'product' => $product ) ); ?>
+		</div>
 	</div>
 
 	<?php /* TASK 7: complete the system goes here */ ?>

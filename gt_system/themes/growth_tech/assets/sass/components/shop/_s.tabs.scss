@@ -1,0 +1,339 @@
+// ---------------------------------------------------------------------------
+// Product tabs — Figma 384:1894
+//
+// 90px below the summary row. Tabs are 15px medium with a 1px rule under
+// each (black when active, 25% black otherwise) and 25px rule spacers; the
+// panel sits 50 below with a 25px inset and two 550px columns. Under 768px
+// the tablist hides and each panel's own heading toggles it (accordion).
+// ---------------------------------------------------------------------------
+
+$tabs-font: "DM Sans", #{$primary_font};
+$tabs-rule: rgba(0, 0, 0, 0.25);
+
+.product-page__tabs {
+  margin-top: 90px;
+}
+
+.product-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+
+  &__list {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+
+    // The rule continues to the right edge.
+    &::after {
+      content: "";
+      flex: 1 1 auto;
+      border-bottom: 1px solid $tabs-rule;
+    }
+  }
+
+  &__tab {
+    flex: 0 0 auto;
+    padding: 10px 5px;
+    margin-right: 25px;
+    border-bottom: 1px solid $tabs-rule;
+    font-family: $tabs-font;
+    font-size: 15px;
+    font-weight: $font-500;
+    line-height: normal;
+    color: $tabs-rule;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease;
+
+    // The 25px spacer between tabs is part of the rule too.
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      right: -25px;
+      bottom: -1px;
+      width: 25px;
+      border-bottom: 1px solid $tabs-rule;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: #000;
+    }
+
+    &.is-active {
+      color: #000;
+      border-bottom-color: #000;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #000;
+      outline-offset: 2px;
+    }
+  }
+
+  &__panel {
+    padding: 0 25px;
+
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  &__acc {
+    display: none;
+  }
+
+  &__columns {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  &__column {
+    display: flex;
+    flex: 0 1 550px;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 550px;
+  }
+
+  &__heading {
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 35px;
+    font-weight: $font-700;
+    line-height: normal;
+    letter-spacing: -0.7px;
+    color: #000;
+  }
+
+  &__text {
+    p,
+    li {
+      margin: 0 0 12px;
+      font-family: $tabs-font;
+      font-size: 15px;
+      font-weight: $font-300;
+      line-height: 25px;
+      color: rgba(0, 0, 0, 0.75);
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    ul,
+    ol {
+      margin: 0 0 12px;
+      padding-left: 20px;
+
+      li {
+        list-style-position: outside;
+      }
+    }
+
+    &--single {
+      max-width: 800px;
+    }
+  }
+}
+
+// Specification — label / value rows.
+.product-spec {
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+  margin: 0;
+
+  &__row {
+    display: flex;
+    gap: 30px;
+    padding: 12px 0;
+    border-bottom: 1px solid $tabs-rule;
+
+    &:first-child {
+      border-top: 1px solid $tabs-rule;
+    }
+  }
+
+  &__label,
+  &__value {
+    margin: 0;
+    font-family: $tabs-font;
+    font-size: 15px;
+    line-height: 25px;
+  }
+
+  &__label {
+    flex: 0 0 220px;
+    font-weight: $font-700;
+    color: #000;
+  }
+
+  &__value {
+    flex: 1 1 auto;
+    font-weight: $font-300;
+    color: rgba(0, 0, 0, 0.75);
+  }
+}
+
+// Useful documents — same row style as the summary downloads.
+.product-docs {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__item {
+    margin: 0;
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: $tabs-font;
+    font-size: 15px;
+    font-weight: $font-400;
+    line-height: normal;
+    color: #000;
+    text-decoration: none;
+
+    span {
+      font: inherit;
+    }
+
+    &:hover span:last-child,
+    &:focus-visible span:last-child {
+      text-decoration: underline;
+    }
+  }
+
+  &__icon {
+    display: block;
+    width: 14px;
+    height: 18px;
+
+    svg {
+      display: block;
+      width: 14px;
+      height: 18px;
+    }
+  }
+}
+
+@media (max-width: $md - 1px) {
+  .product-page__tabs {
+    margin-top: 60px;
+  }
+
+  .product-tabs {
+    gap: 35px;
+
+    &__panel {
+      padding: 0;
+    }
+
+    &__columns {
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    &__column {
+      flex-basis: auto;
+      max-width: none;
+    }
+
+    &__heading {
+      font-size: 30px;
+      letter-spacing: -0.6px;
+    }
+  }
+
+  .product-spec__label {
+    flex-basis: 160px;
+  }
+}
+
+// -- accordion under 768px --------------------------------------------------
+@media (max-width: $sm - 1px) {
+  .product-page__tabs {
+    margin-top: 45px;
+  }
+
+  .product-tabs {
+    gap: 0;
+
+    &__list {
+      display: none;
+    }
+
+    &__panel {
+      border-top: 1px solid $tabs-rule;
+
+      &:last-child {
+        border-bottom: 1px solid $tabs-rule;
+      }
+    }
+
+    &__acc {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 16px 0;
+      cursor: pointer;
+      text-align: left;
+      font-family: $tabs-font;
+      font-size: 15px;
+      font-weight: $font-500;
+      line-height: normal;
+      color: #000;
+
+      span {
+        font: inherit;
+      }
+    }
+
+    &__chevron {
+      flex: 0 0 auto;
+      width: 10px;
+      height: 6px;
+      color: rgba(0, 0, 0, 0.5);
+      transform: rotate(180deg);
+      transition: transform 0.25s ease;
+    }
+
+    &__panel.is-open &__chevron {
+      transform: none;
+    }
+
+    &__body {
+      padding: 0 0 20px;
+    }
+
+    &--accordion &__panel:not(.is-open) &__body {
+      display: none;
+    }
+  }
+
+  .product-spec__row {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .product-spec__label {
+    flex-basis: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-tabs__tab,
+  .product-tabs__chevron {
+    transition: none;
+  }
+}
