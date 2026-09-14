@@ -263,6 +263,11 @@ $st-muted: rgba(0, 0, 0, 0.5);
     line-height: normal;
     color: #000;
 
+    &:focus-visible {
+      outline: 2px solid #000;
+      outline-offset: 2px;
+    }
+
     &::placeholder {
       font-weight: $font-300;
       color: rgba(35, 31, 32, 0.35);

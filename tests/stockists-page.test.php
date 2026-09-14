@@ -8,7 +8,11 @@ require_once __DIR__ . '/lib/bootstrap.php';
  * markup.
  */
 function gt_stockist_extract_card( $html, $needle ) {
-	$at         = strpos( $html, $needle );
+	$at = strpos( $html, $needle );
+	gt_assert( false !== $at, 'card found (looking for "' . $needle . '")' );
+	if ( false === $at ) {
+		return '';
+	}
 	$card_start = strrpos( substr( $html, 0, $at ), '<li class="stockists-card"' );
 	$card_end   = strpos( $html, '<li class="stockists-card"', $at );
 	if ( false === $card_end ) {

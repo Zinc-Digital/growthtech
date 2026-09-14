@@ -59,7 +59,9 @@ $is_site   = (bool) $s['website'];
 			<?php if ( $s['phone'] ) : ?>
 				<a class="stockists-card__phone" href="tel:<?php echo esc_attr( $tel ); ?>"><?php echo esc_html( $s['phone'] ); ?></a>
 			<?php endif; ?>
-			<a class="stockists-card__link" href="<?php echo esc_url( $s['directions'] ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Get Directions', 'gt' ); ?></a>
+			<?php if ( $s['directions'] ) : ?>
+				<a class="stockists-card__link" href="<?php echo esc_url( $s['directions'] ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Get Directions', 'gt' ); ?></a>
+			<?php endif; ?>
 			<?php if ( $check_url ) : ?>
 				<a class="stockists-card__link" href="<?php echo esc_url( $check_url ); ?>"<?php echo $is_site ? ' target="_blank" rel="noopener"' : ''; ?>><?php esc_html_e( 'Check stock first', 'gt' ); ?></a>
 			<?php endif; ?>

@@ -373,7 +373,9 @@ function gt_stockists_all() {
 			'address'      => $address,
 			// Coordinates need no encoding (esc_url() only touches the "&" on output); a free-text
 			// address does, so only that branch is rawurlencode()'d.
-			'directions'   => 'https://www.google.com/maps/dir/?api=1&destination=' . ( $has_xy ? $lat . ',' . $lng : rawurlencode( $address ) ),
+			'directions'   => ( $has_xy || '' !== $address )
+				? 'https://www.google.com/maps/dir/?api=1&destination=' . ( $has_xy ? $lat . ',' . $lng : rawurlencode( $address ) )
+				: '',
 			'products'     => $products,
 			'brands'       => array_values( $brands ),
 			'search'       => strtolower( trim( get_the_title( $post ) . ' ' . $town . ' ' . get_field( 'postcode', $id ) . ' ' . get_field( 'region', $id ) ) ),
@@ -418,7 +420,8 @@ function gt_stockist_countries_present( array $stockists ) {
  * pagename/page_id too).
  */
 function gt_stockist_strip_product_query_var( $vars ) {
-	if ( ( isset( $vars['pagename'] ) || isset( $vars['page_id'] ) ) && isset( $vars['product'] ) ) {
+	$is_page_request = isset( $vars['pagename'] ) || isset( $vars['page_id'] );
+	if ( $is_page_request && isset( $vars['product'] ) && 'product' === ( isset( $vars['post_type'] ) ? $vars['post_type'] : '' ) ) {
 		unset( $vars['product'], $vars['post_type'], $vars['name'] );
 	}
 	return $vars;
@@ -428,7 +431,7 @@ add_filter( 'request', 'gt_stockist_strip_product_query_var' );
 /** What the URL asked for: ?product=, ?brand=, ?region=, ?q=. */
 function gt_stockist_preselect() {
 	$product = isset( $_GET['product'] ) ? (int) $_GET['product'] : 0; // phpcs:ignore WordPress.Security.NonceVerification
-	if ( $product && ( ! wc_get_product( $product ) || 'publish' !== get_post_status( $product ) ) ) {
+	if ( $product && ( ! wc_get_product( $product ) || 'publish' !== get_post_status( $product ) || 'product' !== get_post_type( $product ) ) ) {
 		$product = 0;
 	}
 	$brand = isset( $_GET['brand'] ) ? sanitize_title( wp_unslash( $_GET['brand'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
@@ -462,7 +465,9 @@ function gt_stockists_enqueue() {
 	}
 	$key = gt_maps_key();
 	wp_enqueue_script( 'gt-stockists', get_template_directory_uri() . '/assets/js/stockists.js', array(), gt_asset_version( '/assets/js/stockists.js' ), true );
-	wp_localize_script( 'gt-stockists', 'gtStockists', array(
+	// wp_localize_script() would stringify hasKey ("" / "1"); Task 5 wants a real boolean, so build the
+	// object ourselves and hand it to the script as an inline var instead.
+	$data = array(
 		'geocodeUrl' => rest_url( 'gt/v1/geocode' ),
 		'hasKey'     => '' !== $key,
 		'pin'        => 'data:image/svg+xml;utf8,' . rawurlencode( '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24.75" viewBox="0 0 18 24.75"><path fill="#000" d="M0 8.84063C0 3.95625 4.03125 0 9 0C13.9688 0 18 3.95625 18 8.84063C18 15.9094 9 24.75 9 24.75C9 24.75 0 15.9094 0 8.84063ZM9 12C9.79565 12 10.5587 11.6839 11.1213 11.1213C11.6839 10.5587 12 9.79565 12 9C12 8.20435 11.6839 7.44129 11.1213 6.87868C10.5587 6.31607 9.79565 6 9 6C8.20435 6 7.44129 6.31607 6.87868 6.87868C6.31607 7.44129 6 8.20435 6 9C6 9.79565 6.31607 10.5587 6.87868 11.1213C7.44129 11.6839 8.20435 12 9 12Z"/></svg>' ),
@@ -474,7 +479,8 @@ function gt_stockists_enqueue() {
 			'showLess' => __( 'Show less', 'gt' ),
 			'more'     => __( '+%d more', 'gt' ),
 		),
-	) );
+	);
+	wp_add_inline_script( 'gt-stockists', 'var gtStockists = ' . wp_json_encode( $data ) . ';', 'before' );
 	if ( '' !== $key ) {
 		wp_enqueue_script(
 			'google-maps',

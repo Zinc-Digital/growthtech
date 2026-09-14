@@ -9,7 +9,7 @@
 $has_key = ! empty( $args['has_key'] );
 ?>
 <div class="stockists-map" data-stockists-map>
-	<div class="stockists-map__canvas" data-stockists-canvas role="region" aria-label="<?php esc_attr_e( 'Map of stockists', 'gt' ); ?>"></div>
+	<div class="stockists-map__canvas" data-stockists-canvas<?php echo $has_key ? ' role="region" aria-label="' . esc_attr__( 'Map of stockists', 'gt' ) . '"' : ''; ?>></div>
 	<?php if ( ! $has_key ) : ?>
 		<div class="stockists-map__placeholder">
 			<?php if ( current_user_can( 'manage_options' ) ) : ?>
