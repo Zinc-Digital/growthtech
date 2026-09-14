@@ -11,7 +11,7 @@ if ( ! $band ) {
 	return;
 }
 ?>
-<section class="knowledge-band" aria-label="<?php echo esc_attr( $band['heading'] ); ?>">
+<section class="knowledge-band" aria-labelledby="knowledge-band-title">
 	<?php
 	if ( $band['image'] ) {
 		echo wp_get_attachment_image( $band['image'], 'gt-knowledge', false, array(
@@ -24,7 +24,7 @@ if ( ! $band ) {
 	?>
 	<span class="knowledge-band__scrim" aria-hidden="true"></span>
 	<div class="knowledge-band__content">
-		<h2 class="knowledge-band__title"><?php echo esc_html( $band['heading'] ); ?></h2>
+		<h2 id="knowledge-band-title" class="knowledge-band__title"><?php echo esc_html( $band['heading'] ); ?></h2>
 		<?php if ( $band['text'] ) : ?>
 			<p class="knowledge-band__text"><?php echo wp_kses_post( $band['text'] ); ?></p>
 		<?php endif; ?>

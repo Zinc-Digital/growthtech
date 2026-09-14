@@ -37,7 +37,6 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 25px;
-    max-width: 622px;
   }
 
   &__title {
@@ -48,9 +47,11 @@
     line-height: normal;
     letter-spacing: -1.2px;
     color: color(white);
+    white-space: nowrap;
   }
 
   &__text {
+    max-width: 622px;
     margin: -15px 0 0;
     font-family: "DM Sans", #{$primary_font};
     font-size: 15px;
@@ -72,6 +73,7 @@
     &__title {
       font-size: 44px;
       letter-spacing: -0.9px;
+      white-space: normal;
     }
   }
 }
