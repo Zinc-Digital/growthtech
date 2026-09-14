@@ -199,3 +199,4 @@ include_once __DIR__ . '/inc/woocommerce-helpers.php';
 include_once __DIR__ . '/inc/woocommerce-shop.php';
 include_once __DIR__ . '/inc/woocommerce-ajax.php';
 include_once __DIR__ . '/inc/stockists.php';
+include_once __DIR__ . '/inc/stockists-import-export.php';

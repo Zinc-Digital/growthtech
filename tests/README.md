@@ -137,6 +137,33 @@ placeholder + no Maps JS + disabled "Nearest first" without one), so the
 whole suite is green regardless of whether this install has a key
 configured — it doesn't assume either state.
 
+### Import / Export
+
+**Stockists → Import / Export** (editors and above) downloads every stockist
+as a CSV and imports one back in two steps: upload → preview of what each
+row would do (create / update / skip, with reasons) → run. Columns:
+
+`id, name, status, type, address_1, address_2, town, region, postcode,
+country, phone, website, email, products, latitude, longitude, geocode_status`
+
+- Rows match an existing stockist by `id`, otherwise by an exact `name`;
+  everything else creates. Stockists missing from the file are never
+  deleted. Columns left out of the file are not changed on updates.
+- `products` is `|`-separated SKUs (unknown SKUs are dropped with a note);
+  `country` is the ISO-2 code; `status` is `publish` or `draft`; `type` is
+  the stockist type name (created if new).
+- Both `latitude` and `longitude` present → the pin is `manual`. Either
+  empty → the row is queued and geocoded by WP-Cron (`gt_stockist_geocode_batch`,
+  10 at a time, a minute apart) through the same save-hook geocoder, so the
+  cache and the `ok/failed/error/no_key` statuses behave as for a manual
+  save. The queue lives in the `gt_stockists_geocode_queue` option.
+- The parsed preview waits in a per-user transient for 30 minutes; every
+  action is nonce-checked.
+
+`tests/stockists-import-export.test.php` covers the round trip, the plan
+rules, idempotent re-import and the queue/batch, then re-runs the stockist
+seed to restore the fixtures it edited.
+
 ## Image sizes
 
 Plan 2 registered ten new image sizes (`gt-product-main`, `gt-product-thumb`,
