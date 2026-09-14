@@ -303,6 +303,7 @@
 		ui.search.closest('form') && ui.search.closest('form').addEventListener('submit', function (e) { e.preventDefault(); });
 	}
 
+	setOriginAvailable(!!state.origin);
 	apply();
 	if (state.q && settings.hasKey) { geocode(state.q); }
 })();

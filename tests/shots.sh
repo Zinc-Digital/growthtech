@@ -14,4 +14,5 @@ for w in 1440 1024 768 390; do
   shot category "https://growth-tech.local/product-category/propagation/" "$w" 3000
   shot product "https://growth-tech.local/product/clonex-mist/" "$w" 3400
   shot brand "https://growth-tech.local/brand/clonex/" "$w" 3800
+  shot stockists "https://growth-tech.local/find-a-stockist/" "$w" 1800
 done

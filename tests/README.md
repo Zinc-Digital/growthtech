@@ -7,11 +7,13 @@ mocked WordPress.
 
 - `tests/run.sh` — runs every `tests/*.test.php` through `tests/bin/wpx
   eval-file` and exits 1 if any file fails. Safe to run any time — almost
-  every file is read-only, with two exceptions that briefly mutate a record
-  and restore it in a `finally` block before the file finishes:
+  every file is read-only, with three exceptions that briefly mutate a
+  record and restore it in a `finally` block before the file finishes:
   `tests/product-helpers.test.php` (Clonex Rooting Hormone's catalog
-  visibility and Clonex Mist's knowledge band override, two records) and
-  `tests/product-page.test.php` (Clonex Mist's `hide_join_club` field).
+  visibility and Clonex Mist's knowledge band override, two records),
+  `tests/product-page.test.php` (Clonex Mist's `hide_join_club` field) and
+  `tests/stockists-geocode.test.php` (the "Google Maps API key" option and a
+  temporary stockist record — see "Stockist finder" below).
 - `tests/bin/wpx <wp args>` — WP-CLI wired to MAMP's PHP 8.3 binary, MySQL
   socket and the site URL. Use it directly for one-off checks, e.g.
   `tests/bin/wpx eval-file tests/archive.test.php`.
@@ -63,6 +65,52 @@ and generated placeholder images (run after seed-shop.php).
 `tests/seed/seed-stockists.php` — eight stockists (address, coordinates,
 type, products) and the Find a Stockist page's template/intro/trade band
 content (run after seed-shop.php and seed-product-content.php).
+
+## Stockist finder
+
+Seed order: `seed-shop.php` → `seed-product-content.php` →
+`seed-stockists.php` — each depends on terms/content the one before it
+creates.
+
+The map and geocoding need a Google Maps Platform project with the **Maps
+JavaScript API** and **Geocoding API** enabled:
+
+1. Create a browser key restricted by HTTP referrer
+   (`growth-tech.local/*`, plus the production domain) and put it in Theme
+   Settings → Shop Settings → "Google Maps API key". This alone drives both
+   the map and geocoding.
+2. Optionally, create a second key restricted by IP (the server's egress
+   IP) or left unrestricted with a quota, and put it in "Google Geocoding
+   key (server)". A referrer-restricted key is rejected by the Geocoding
+   web service (it's a server-to-server call, no referrer to check), so
+   without this second key geocoding silently fails unless the Maps key
+   happens to be unrestricted.
+
+Geocoding runs on a stockist's `acf/save_post` — no separate step. A
+successful lookup is cached for 30 days (`gt_geocode_*` transients, keyed by
+region + address), so editing an already-geocoded stockist without changing
+its address won't re-hit Google. To force a re-run, change the address
+(town/country) and save — the mismatch against the stored "Geocoded
+address" triggers a fresh lookup. The "Geocoded address" field itself is
+read-only in the editor; to re-geocode an unchanged address, clear it
+directly (`wp post meta delete <id> geocoded_address` or equivalent) and
+re-save the stockist.
+
+The `gt/v1/geocode` REST proxy that the front-end search box calls keeps the
+key server-side; it also rate-limits to 30 requests per IP per minute,
+returning 429 once exceeded.
+
+No key is required, and everything degrades cleanly without one: the finder
+still lists, filters and searches by name/town, the map area shows a
+placeholder instead of a canvas, and "Nearest first" stays disabled. Once a
+key is saved, the map and "Nearest first" sort activate automatically —
+nothing else to wire up.
+
+`tests/stockists-geocode.test.php` stubs Google's HTTP response (via
+`pre_http_request`) rather than calling the real API, so it needs no key and
+is safe to run at any time; like `product-helpers.test.php` and
+`product-page.test.php`, it briefly sets the Maps key option and a test
+stockist record and restores both in a `finally` block.
 
 ## Image sizes
 
