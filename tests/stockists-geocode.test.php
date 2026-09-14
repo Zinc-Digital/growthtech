@@ -70,6 +70,22 @@ try {
 	gt_assert( $rl_ok, 'rate limit allows 30 requests inside the window' );
 	gt_assert( gt_stockist_rate_limited( $rl_ip ), 'the 31st request in the window is rate limited' );
 
+	// The window is fixed, not a refreshing accumulator: an expired window
+	// resets rather than staying tripped, and a live one doesn't get pushed
+	// back by every call.
+	$rl_key2 = 'gt_geocode_rl_' . md5( $rl_ip );
+	set_transient( $rl_key2, array( 'count' => 31, 'reset' => time() - 1 ), 60 );
+	try {
+		gt_assert( ! gt_stockist_rate_limited( $rl_ip ), 'an expired rate-limit window is recreated, not treated as still over limit' );
+		$tripped = false;
+		for ( $i = 0; $i < 30; $i++ ) {
+			$tripped = gt_stockist_rate_limited( $rl_ip );
+		}
+		gt_assert( $tripped, 'the fixed window still trips after 31 requests without the window itself being extended' );
+	} finally {
+		delete_transient( $rl_key2 );
+	}
+
 	// Save hook.
 	$id = wp_insert_post( array( 'post_type' => 'stockist', 'post_status' => 'publish', 'post_title' => 'Geocode Test' ) );
 	try {

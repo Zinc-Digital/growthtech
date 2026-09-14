@@ -246,18 +246,29 @@ add_action( 'acf/save_post', 'gt_stockist_maybe_geocode', 20 );
 
 /**
  * Per-IP request counter for the geocode proxy: allows 30 requests per
- * rolling 60s window. Returns true once an IP is over the limit.
+ * fixed 60s window. The window's expiry is set once, on the first request
+ * that opens it, and later requests never push it back — an accumulator
+ * that keeps refreshing its own TTL on every call would let a client that
+ * stays active (retrying after a 429, or just browsing steadily) end up
+ * blocked indefinitely, since the window would never get 60s of total
+ * silence to expire in. Returns true once an IP is over the limit.
  */
 function gt_stockist_rate_limited( $ip ) {
-	$key   = 'gt_geocode_rl_' . md5( (string) $ip );
-	$count = get_transient( $key );
-	if ( false === $count ) {
-		set_transient( $key, 1, 60 );
+	$key  = 'gt_geocode_rl_' . md5( (string) $ip );
+	$data = get_transient( $key );
+	if ( ! is_array( $data ) || ! isset( $data['count'], $data['reset'] ) || time() >= $data['reset'] ) {
+		// No window yet, or the old one has lapsed: open a fresh one.
+		set_transient( $key, array( 'count' => 1, 'reset' => time() + 60 ), 60 );
 		return false;
 	}
-	$count = (int) $count + 1;
-	set_transient( $key, $count, 60 );
-	return $count > 30;
+	if ( $data['count'] > 30 ) {
+		// Already over the limit for this window: don't write, don't extend it.
+		return true;
+	}
+	$data['count']++;
+	// Re-save with whatever time is left in the window, never more.
+	set_transient( $key, $data, max( 1, $data['reset'] - time() ) );
+	return $data['count'] > 30;
 }
 
 function gt_stockist_register_rest() {
