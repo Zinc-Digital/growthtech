@@ -1,21 +1,39 @@
 <?php
 /**
- * Guides band — Figma 384:1589. Heading + copy + two CTAs left, two guide
- * cards right on a grey band.
+ * Guides band — Figma 384:1589 / 385:5502. Heading + copy + two CTAs left,
+ * two guide cards right on a grey band. Fed either by a brand term (the
+ * brand landing page) or by a ready-made fields array (the Brands page).
  *
- * @param array $args ['brand' => WP_Term]
+ * @param array $args ['brand' => WP_Term] or ['fields' => [
+ *   'heading' => string, 'accent' => string, 'text' => string,
+ *   'cta1' => array|null, 'cta2' => array|null, 'guides' => array, 'label' => string
+ * ]]
  */
 
-$brand = isset( $args['brand'] ) ? $args['brand'] : null;
-if ( ! $brand instanceof WP_Term ) {
+$brand  = isset( $args['brand'] ) && $args['brand'] instanceof WP_Term ? $args['brand'] : null;
+$fields = isset( $args['fields'] ) && is_array( $args['fields'] ) ? $args['fields'] : null;
+if ( ! $brand && ! $fields ) {
 	return;
 }
-$heading = (string) gt_term_field( 'guides_heading', $brand, '' );
-$accent  = (string) gt_term_field( 'guides_accent_line', $brand, '' );
-$text    = (string) gt_term_field( 'guides_text', $brand, '' );
-$cta1    = gt_term_field( 'guides_cta_1', $brand, null );
-$cta2    = gt_term_field( 'guides_cta_2', $brand, null );
-$guides  = gt_term_field( 'guides', $brand, array() );
+if ( $brand ) {
+	$fields = array(
+		'heading' => gt_term_field( 'guides_heading', $brand, '' ),
+		'accent'  => gt_term_field( 'guides_accent_line', $brand, '' ),
+		'text'    => gt_term_field( 'guides_text', $brand, '' ),
+		'cta1'    => gt_term_field( 'guides_cta_1', $brand, null ),
+		'cta2'    => gt_term_field( 'guides_cta_2', $brand, null ),
+		'guides'  => gt_term_field( 'guides', $brand, array() ),
+		/* translators: %s: brand name */
+		'label'   => sprintf( __( '%s guides', 'gt' ), $brand->name ),
+	);
+}
+$fields  = array_merge( array( 'heading' => '', 'accent' => '', 'text' => '', 'cta1' => null, 'cta2' => null, 'guides' => array(), 'label' => __( 'Guides', 'gt' ) ), $fields );
+$heading = (string) $fields['heading'];
+$accent  = (string) $fields['accent'];
+$text    = (string) $fields['text'];
+$cta1    = $fields['cta1'];
+$cta2    = $fields['cta2'];
+$guides  = $fields['guides'];
 $guides  = is_array( $guides ) ? array_values( array_filter( $guides, function ( $g ) {
 	return ! empty( $g['title'] ) || ! empty( $g['lead'] ) || ! empty( $g['image'] );
 } ) ) : array();
@@ -25,7 +43,7 @@ if ( ! $heading && ! $accent && ! $guides ) {
 }
 $has_title = (bool) ( $heading || $accent );
 ?>
-<section class="brand-guides"<?php echo $has_title ? ' aria-labelledby="brand-guides-title"' : ' aria-label="' . esc_attr( sprintf( /* translators: %s: brand name */ __( '%s guides', 'gt' ), $brand->name ) ) . '"'; ?>>
+<section class="brand-guides"<?php echo $has_title ? ' aria-labelledby="brand-guides-title"' : ' aria-label="' . esc_attr( $fields['label'] ) . '"'; ?>>
 	<div class="brand-guides__inner">
 		<div class="brand-guides__copy">
 			<?php if ( $heading || $accent ) : ?>

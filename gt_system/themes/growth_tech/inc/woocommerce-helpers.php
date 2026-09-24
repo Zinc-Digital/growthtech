@@ -146,6 +146,89 @@ function gt_brand_stockist_url( WP_Term $brand ) {
 	return $base ? add_query_arg( array( 'brand' => $brand->slug ), $base ) : '';
 }
 
+/**
+ * Tiles for the Our Brands page — Figma 385:5006. Growth Technology's own
+ * brands first, then the rest, each in WooCommerce's brand order. Brands
+ * hidden from the page (Brand > Brands page tile) are skipped. Each tile is
+ * ['brand' => WP_Term, 'image' => int, 'logo' => int, 'tagline' => string,
+ * 'link_text' => string, 'url' => string].
+ *
+ * @param bool $own_only Only brands flagged as ours.
+ * @return array[]
+ */
+function gt_brands_page_tiles( $own_only = false ) {
+	if ( ! taxonomy_exists( 'product_brand' ) ) {
+		return array();
+	}
+	$brands = get_terms( array(
+		'taxonomy'   => 'product_brand',
+		'hide_empty' => false,
+		// Explicit orderby so WooCommerce's menu_order default for brands in admin-ajax can't rewrite meta_key to "order".
+		'orderby'    => 'name',
+	) );
+	if ( is_wp_error( $brands ) || ! $brands ) {
+		return array();
+	}
+
+	// WooCommerce stores the drag-and-drop brand order as "order" term meta;
+	// fall back to alphabetical for brands that have never been reordered.
+	$position = function ( WP_Term $brand ) {
+		$order = get_term_meta( $brand->term_id, 'order', true );
+		return '' === $order ? PHP_INT_MAX : (int) $order;
+	};
+	$is_own = function ( WP_Term $brand ) {
+		return (bool) gt_term_field( 'own_brand', $brand, false );
+	};
+	usort( $brands, function ( WP_Term $a, WP_Term $b ) use ( $position, $is_own ) {
+		$own = (int) $is_own( $b ) - (int) $is_own( $a );
+		if ( 0 !== $own ) {
+			return $own;
+		}
+		$pos = $position( $a ) - $position( $b );
+		return 0 !== $pos ? $pos : strcasecmp( $a->name, $b->name );
+	} );
+
+	$tiles = array();
+	foreach ( $brands as $brand ) {
+		if ( gt_term_field( 'tile_hidden', $brand, false ) || ( $own_only && ! $is_own( $brand ) ) ) {
+			continue;
+		}
+		$url = get_term_link( $brand );
+		if ( is_wp_error( $url ) ) {
+			continue;
+		}
+		$image = (int) gt_term_field( 'tile_image', $brand, 0 );
+		if ( ! $image ) {
+			$image = (int) gt_term_field( 'promo_image', $brand, 0 );
+		}
+		if ( ! $image ) {
+			$image = (int) gt_term_field( 'hero_image', $brand, 0 );
+		}
+		$logo = (int) gt_term_field( 'tile_logo', $brand, 0 );
+		if ( ! $logo ) {
+			$logo = (int) gt_term_field( 'logo', $brand, 0 );
+		}
+		$tagline = (string) gt_term_field( 'tile_tagline', $brand, '' );
+		if ( '' === $tagline ) {
+			$tagline = wp_strip_all_tags( (string) gt_term_field( 'promo_tagline', $brand, '' ) );
+		}
+		$link_text = (string) gt_term_field( 'tile_link_text', $brand, '' );
+		if ( '' === $link_text ) {
+			/* translators: %s: brand name */
+			$link_text = sprintf( __( 'Explore the %s Range', 'gt' ), $brand->name );
+		}
+		$tiles[] = array(
+			'brand'     => $brand,
+			'image'     => $image,
+			'logo'      => $logo,
+			'tagline'   => $tagline,
+			'link_text' => $link_text,
+			'url'       => $url,
+		);
+	}
+	return $tiles;
+}
+
 /** "Ask our experts" link from Theme Settings with the product appended, or ''. */
 function gt_product_experts_url( WC_Product $product ) {
 	$link = function_exists( 'get_field' ) ? get_field( 'shop_experts_link', 'option' ) : null;

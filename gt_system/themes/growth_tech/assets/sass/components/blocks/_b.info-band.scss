@@ -1,0 +1,73 @@
+// ---------------------------------------------------------------------------
+// Info Band block — Figma 387:5948 (Frames 99 and 182)
+//
+// Black band, 30 padding, a hug-width serif label and the copy 25 to its
+// right, the two centred against each other.
+// ---------------------------------------------------------------------------
+
+.b-info-band {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin: 0;
+  padding: 30px;
+  background-color: #000;
+
+  &__label {
+    flex: 0 0 auto;
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 25px;
+    font-weight: $font-700;
+    line-height: 30.3px;
+    letter-spacing: -0.5px;
+    color: color(white);
+  }
+
+  &__text {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 15px;
+    font-weight: $font-400;
+    line-height: 25px;
+    color: rgba(255, 255, 255, 0.75);
+
+    // p/li/span carry the theme's base 16/22, which beats inheritance.
+    p {
+      margin: 0;
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+    }
+
+    a {
+      color: color(white);
+      text-decoration: underline;
+      text-underline-position: from-font;
+
+      &:hover,
+      &:focus-visible {
+        color: color(white);
+      }
+    }
+  }
+
+  &__cite {
+    font-style: normal;
+    font-weight: $font-700;
+    color: color(white);
+  }
+}
+
+@media (max-width: $sm - 1px) {
+  .b-info-band {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 25px 20px;
+  }
+}

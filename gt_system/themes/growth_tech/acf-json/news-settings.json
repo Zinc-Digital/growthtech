@@ -1,0 +1,22 @@
+{
+    "key": "group_gt_news_settings",
+    "title": "News Settings",
+    "fields": [
+        { "key": "field_gt_news_opt_heading", "label": "Archive heading", "name": "news_heading", "type": "text", "instructions": "The big centred heading on /news/.", "placeholder": "Become the expert your plants think you are." },
+        { "key": "field_gt_news_opt_intro", "label": "Archive intro", "name": "news_intro", "type": "textarea", "instructions": "Centred paragraph under the heading.", "rows": 3, "new_lines": "" },
+        { "key": "field_gt_news_opt_byline", "label": "Default byline", "name": "news_default_byline", "type": "text", "instructions": "Used on stories that do not set their own. Shown as \"Written by …\".", "placeholder": "the Growth Tech Lab team" },
+        { "key": "field_gt_news_opt_related_tab", "label": "\"Catch up on other news stories\"", "name": "", "type": "tab", "placement": "top" },
+        { "key": "field_gt_news_opt_related_heading", "label": "Heading", "name": "news_related_heading", "type": "text", "placeholder": "Catch up on other news stories.", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_news_opt_related_text", "label": "Text", "name": "news_related_text", "type": "textarea", "rows": 2, "new_lines": "", "wrapper": { "width": "50", "class": "", "id": "" } }
+    ],
+    "location": [ [ { "param": "options_page", "operator": "==", "value": "theme-general-settings" } ] ],
+    "menu_order": 20,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0
+}

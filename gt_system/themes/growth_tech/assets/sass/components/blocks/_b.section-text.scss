@@ -1,0 +1,68 @@
+// ---------------------------------------------------------------------------
+// Section Text block — Figma 387:5948 (Frame 137)
+//
+// A 35px serif sub-heading, 15 above body copy set at 15/25 in light weight.
+// Paragraphs are a blank line apart, as the design draws them.
+// ---------------------------------------------------------------------------
+
+.b-section-text {
+  &__title {
+    margin: 0 0 15px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 35px;
+    font-weight: $font-700;
+    line-height: 42px;
+    letter-spacing: -0.7px;
+    color: #000;
+  }
+
+  &__body {
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 15px;
+    font-weight: $font-300;
+    line-height: 25px;
+    color: rgba(0, 0, 0, 0.75);
+
+    // p/li/span carry the theme's base 16/22, which beats inheritance.
+    p,
+    li {
+      margin: 0;
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+    }
+
+    p + p {
+      margin-top: 25px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-position: from-font;
+
+      &:hover,
+      &:focus-visible {
+        color: #000;
+      }
+    }
+
+    ul,
+    ol {
+      margin: 25px 0 0;
+      padding-left: 20px;
+    }
+
+    li + li {
+      margin-top: 5px;
+    }
+  }
+}
+
+@media (max-width: $sm - 1px) {
+  .b-section-text__title {
+    font-size: 28px;
+    line-height: 34px;
+    letter-spacing: -0.6px;
+  }
+}

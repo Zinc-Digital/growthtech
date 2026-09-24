@@ -1,0 +1,324 @@
+// ---------------------------------------------------------------------------
+// Block: Timeline — Figma 384:2551 (Frame 241)
+//
+// Heading and arrows on one row at the 75px gutter, then the rail: a hairline
+// with a 15px marker per milestone, 30 above items 350 wide and 75 apart
+// (year 90px serif + tag, 35 to the 18px title, 15 to the copy, 35 to a
+// 350 x 200 image). The progress bar and its labels close the block 60 below.
+// ---------------------------------------------------------------------------
+
+$tl-font: "DM Sans", #{$primary_font};
+$tl-line: rgba(0, 0, 0, 0.1);
+
+.b-timeline {
+  padding: 102px 0 80px;
+
+  &__inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    // The rail runs to the edge of the viewport, so the gutter is applied to
+    // the head, the items and the footer rather than to this wrapper.
+    padding: 0;
+  }
+
+  &__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 0 100px 0 75px;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 60px;
+    font-weight: $font-700;
+    line-height: 65px;
+    letter-spacing: -1.2px;
+    color: #000;
+  }
+
+  &__arrows {
+    flex: 0 0 auto;
+
+    // These are buttons, so they carry the theme's btn-flat arrow.
+    .btn-flat__arrow {
+      display: block;
+      width: 18px;
+      height: 15px;
+    }
+
+    .slick-prev .btn-flat__arrow {
+      transform: rotate(180deg);
+    }
+  }
+
+  // -- rail ---------------------------------------------------------------------
+  &__rail {
+    position: relative;
+    margin-top: 48px;
+    padding: 0 75px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    cursor: grab;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    &.is-dragging {
+      cursor: grabbing;
+      user-select: none;
+    }
+  }
+
+  // The hairline the markers sit on, drawn behind them across the whole rail.
+  &__rail-line {
+    position: absolute;
+    top: 7px;
+    left: 75px;
+    right: 0;
+    height: 1px;
+    background-color: $tl-line;
+  }
+
+  &__items {
+    position: relative;
+    display: flex;
+    gap: 75px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    display: flex;
+    flex: 0 0 350px;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 350px;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__marker {
+    display: block;
+    width: 15px;
+    height: 15px;
+    margin-bottom: 30px;
+    background-color: #000;
+  }
+
+  &__year {
+    display: flex;
+    align-items: baseline;
+    gap: 15px;
+    margin: 0 0 35px;
+  }
+
+  &__year-num {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 90px;
+    font-weight: $font-700;
+    line-height: 65px;
+    letter-spacing: -1.8px;
+    color: #000;
+  }
+
+  &__year-tag {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 18px;
+    font-weight: $font-600;
+    line-height: 33px;
+    letter-spacing: -0.36px;
+    color: rgba(0, 0, 0, 0.25);
+  }
+
+  // The items already stretch to the tallest in the row, so letting the copy
+  // absorb that slack keeps every image starting on the same line however
+  // long each milestone's text runs.
+  &__copy {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  &__item-title {
+    margin: 0;
+    font-family: $tl-font;
+    font-size: 18px;
+    font-weight: $font-700;
+    line-height: 23.4px;
+    letter-spacing: -0.36px;
+    color: #000;
+  }
+
+  &__item-text {
+    margin: 0;
+    font-family: $tl-font;
+    font-size: 15px;
+    font-weight: $font-300;
+    line-height: 25px;
+    color: rgba(0, 0, 0, 0.75);
+  }
+
+  &__img {
+    display: block;
+    width: 350px;
+    height: 200px;
+    margin-top: 35px;
+    object-fit: cover;
+  }
+
+  // -- progress ------------------------------------------------------------------
+  &__footer {
+    margin-top: 60px;
+    padding: 0 100px 0 75px;
+  }
+
+  &__progress {
+    position: relative;
+    height: 2px;
+    background-color: $tl-line;
+  }
+
+  // A scrollbar thumb: timeline.js sets its width from the share of the rail
+  // on screen and slides it with the scroll. 20% is the design's resting draw.
+  &__progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 2px;
+    width: 20%;
+    background-color: #000;
+    transition: width 0.2s ease, left 0.2s ease;
+  }
+
+  &__labels {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 15px;
+  }
+
+  &__label {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 20px;
+    font-weight: $font-700;
+    line-height: 24.2px;
+    letter-spacing: -0.4px;
+    color: #000;
+  }
+
+  &__hint {
+    font-family: $tl-font;
+    font-size: 10px;
+    font-weight: $font-400;
+    line-height: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+@media (max-width: $xl - 1px) {
+  .b-timeline {
+    padding: 70px 0 60px;
+
+    &__head,
+    &__footer {
+      padding: 0 50px;
+    }
+
+    &__rail {
+      padding: 0 50px;
+    }
+
+    &__rail-line {
+      left: 50px;
+    }
+  }
+}
+
+@media (max-width: $md - 1px) {
+  .b-timeline {
+    padding: 60px 0 50px;
+
+    &__head,
+    &__footer {
+      padding: 0 25px;
+    }
+
+    &__rail {
+      padding: 0 25px;
+    }
+
+    &__rail-line {
+      left: 25px;
+    }
+
+    &__title {
+      font-size: 44px;
+      line-height: 48px;
+      letter-spacing: -0.9px;
+    }
+
+    &__year-num {
+      font-size: 64px;
+      line-height: 56px;
+      letter-spacing: -1.3px;
+    }
+  }
+}
+
+@media (max-width: $sm - 1px) {
+  .b-timeline {
+    &__head {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 25px;
+    }
+
+    &__arrows {
+      align-self: flex-end;
+    }
+
+    &__title {
+      font-size: 36px;
+      line-height: 40px;
+      letter-spacing: -0.7px;
+    }
+
+    &__items {
+      gap: 40px;
+    }
+
+    &__item {
+      flex-basis: 280px;
+      width: 280px;
+    }
+
+    &__img {
+      width: 280px;
+      height: 170px;
+    }
+
+    &__hint {
+      display: none;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .b-timeline__progress-bar {
+    transition: none;
+  }
+
+  .b-timeline__rail {
+    scroll-behavior: auto;
+  }
+}

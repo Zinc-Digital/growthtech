@@ -1,0 +1,22 @@
+{
+    "key": "group_gt_block_image_copy",
+    "title": "Block: Image & Copy",
+    "fields": [
+        { "key": "field_gt_imc_heading", "label": "Heading", "name": "heading", "type": "textarea", "instructions": "Press Enter for a deliberate line break.", "rows": 2, "new_lines": "" },
+        { "key": "field_gt_imc_text", "label": "Text", "name": "text", "type": "wysiwyg", "tabs": "visual", "toolbar": "basic", "media_upload": 0, "delay": 0 },
+        { "key": "field_gt_imc_image", "label": "Image", "name": "image", "type": "image", "return_format": "id", "library": "all", "preview_size": "medium", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_imc_side", "label": "Image side", "name": "image_side", "type": "button_group", "choices": { "left": "Left", "right": "Right" }, "default_value": "left", "return_format": "value", "wrapper": { "width": "25", "class": "", "id": "" } },
+        { "key": "field_gt_imc_align", "label": "Align", "name": "align_items", "type": "button_group", "choices": { "top": "Top", "center": "Middle" }, "default_value": "top", "return_format": "value", "wrapper": { "width": "25", "class": "", "id": "" } },
+        { "key": "field_gt_imc_bg", "label": "Background", "name": "background", "type": "color_picker", "instructions": "Leave empty for no band. The design uses #F4F4F4 where a band is wanted.", "enable_opacity": 0, "return_format": "string", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_imc_space_top", "label": "Space above (px)", "name": "space_top", "type": "number", "instructions": "The design uses 110 after the banner and 70 after a dark band.", "default_value": 110, "min": 0, "max": 200, "step": 5, "wrapper": { "width": "25", "class": "", "id": "" } },
+        { "key": "field_gt_imc_space_bottom", "label": "Space below (px)", "name": "space_bottom", "type": "number", "instructions": "Usually 0 — the next section brings its own space.", "default_value": 0, "min": 0, "max": 200, "step": 5, "wrapper": { "width": "25", "class": "", "id": "" } },
+        { "key": "field_gt_imc_quote_tab", "label": "Quote card", "name": "", "type": "tab", "placement": "top" },
+        { "key": "field_gt_imc_quote", "label": "Quote", "name": "quote", "type": "textarea", "instructions": "Optional black card under the copy. Leave empty to hide it.", "rows": 3, "new_lines": "" },
+        { "key": "field_gt_imc_quote_tag", "label": "Card eyebrow", "name": "quote_eyebrow", "type": "text", "instructions": "Small capitalised line in the bottom right of the card.", "placeholder": "What growers ask us most" },
+        { "key": "field_gt_imc_cta_tab", "label": "Buttons", "name": "", "type": "tab", "placement": "top" },
+        { "key": "field_gt_imc_cta", "label": "Button", "name": "cta_link", "type": "link", "return_format": "array", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_imc_link", "label": "Text link", "name": "text_link", "type": "link", "return_format": "array", "wrapper": { "width": "50", "class": "", "id": "" } }
+    ],
+    "location": [ [ { "param": "block", "operator": "==", "value": "acf/image-copy" } ] ],
+    "menu_order": 0, "position": "normal", "style": "default", "label_placement": "top", "instruction_placement": "label", "hide_on_screen": "", "active": true, "description": "", "show_in_rest": 0
+}

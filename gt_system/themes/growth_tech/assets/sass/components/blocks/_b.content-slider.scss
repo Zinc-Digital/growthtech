@@ -493,3 +493,82 @@ $cs-muted: rgba(0, 0, 0, 0.1);
     }
   }
 }
+
+
+// ---------------------------------------------------------------------------
+// Dark instance — Figma 384:2551 on About Us. The same component on black,
+// drawn there with a wider copy column (555) and a 77 gap.
+// ---------------------------------------------------------------------------
+.b-content-slider--dark {
+  background-color: #000;
+
+  .b-content-slider__inner {
+    gap: 77px;
+  }
+
+  .b-content-slider__content {
+    flex-basis: 555px;
+    max-width: 555px;
+  }
+
+  .b-content-slider__title {
+    color: color(white);
+  }
+
+  .b-content-slider__text {
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  // The text link beside the button sits on black here.
+  .b-content-slider__link {
+    color: color(white);
+
+    &:hover,
+    &:focus-visible {
+      color: color(white);
+    }
+  }
+
+  // Arrows invert: the muted one goes white-on-dark rather than grey-on-white.
+  .b-content-slider__arrows {
+    .slick-prev,
+    .slick-next {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: color(white);
+    }
+
+    .slick-next {
+      background-color: color(white);
+      color: #000;
+    }
+
+    .slick-prev:not(.slick-disabled):hover,
+    .slick-next:not(.slick-disabled):hover,
+    .slick-prev:not(.slick-disabled):focus-visible,
+    .slick-next:not(.slick-disabled):focus-visible {
+      background-color: color(white);
+      color: #000;
+    }
+
+    .slick-prev.slick-disabled,
+    .slick-next.slick-disabled {
+      background-color: color(white);
+      color: #000;
+      opacity: 0.3;
+    }
+
+    &:focus-visible {
+      outline-color: color(white);
+    }
+  }
+
+  .b-content-slider__progress {
+    .slick-dots li button {
+      background-color: rgba(255, 255, 255, 0.35);
+    }
+
+    .slick-dots li.slick-active button {
+      background-color: color(white);
+    }
+  }
+}

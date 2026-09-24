@@ -69,6 +69,22 @@ function gt_theme_support() {
 	add_image_size( 'gt-brand-pair', 2680, 578, true );
 	add_image_size( 'gt-brand-pair-sm', 1340, 289, true );
 
+	// News card: 380 x 402 in the design, plus a 2x version.
+	add_image_size( 'gt-news-card', 760, 804, true );
+	add_image_size( 'gt-news-card-sm', 380, 402, true );
+
+	// News article hero: 1240 x 360, cropped, plus 2x.
+	add_image_size( 'gt-news-hero', 2480, 720, true );
+	add_image_size( 'gt-news-hero-sm', 1240, 360, true );
+
+	// News media-list thumbnail: 250 x 150, cropped, plus 2x.
+	add_image_size( 'gt-news-thumb', 500, 300, true );
+	add_image_size( 'gt-news-thumb-sm', 250, 150, true );
+
+	// Our Brands page tile: 291 x 400, cropped, plus 2x.
+	add_image_size( 'gt-brand-tile', 584, 800, true );
+	add_image_size( 'gt-brand-tile-sm', 292, 400, true );
+
 	// "Better knowledge" band on the product page: 1340 x 300, plus 2x.
 	add_image_size( 'gt-knowledge', 2680, 600, true );
 	add_image_size( 'gt-knowledge-sm', 1340, 300, true );
@@ -190,6 +206,7 @@ function news_register_taxonomy_for_object_type() {
     register_taxonomy_for_object_type( 'post_tag', 'news' );
 }; */
 
+include_once __DIR__ . '/inc/admin.php';
 include_once __DIR__ . '/inc/header.php';
 include_once __DIR__ . '/inc/post-types.php';
 include_once __DIR__ . '/inc/register-blocks.php';
@@ -199,4 +216,5 @@ include_once __DIR__ . '/inc/woocommerce-helpers.php';
 include_once __DIR__ . '/inc/woocommerce-shop.php';
 include_once __DIR__ . '/inc/woocommerce-ajax.php';
 include_once __DIR__ . '/inc/stockists.php';
+include_once __DIR__ . '/inc/contact.php';
 include_once __DIR__ . '/inc/stockists-import-export.php';

@@ -30,6 +30,16 @@
 @import "components/blocks/b.guide-cards";
 @import "components/blocks/b.split-band";
 @import "components/blocks/b.content-slider";
+@import "components/blocks/b.section-text";
+@import "components/blocks/b.info-band";
+@import "components/blocks/b.media-list";
+@import "components/blocks/b.media-gallery";
+@import "components/blocks/b.page-hero";
+@import "components/blocks/b.image-copy";
+@import "components/blocks/b.stats-row";
+@import "components/blocks/b.statement-band";
+@import "components/blocks/b.fact-list";
+@import "components/blocks/b.timeline";
 
 
 //Shop
@@ -53,3 +63,6 @@
 
 //Pages
 @import "pages/p.home";
+@import "pages/p.brands";
+@import "pages/p.contact";
+@import "pages/p.news";

@@ -1,0 +1,12 @@
+{
+    "key": "group_gt_block_statement_band",
+    "title": "Block: Statement Band",
+    "fields": [
+        { "key": "field_gt_stb_eyebrow", "label": "Eyebrow", "name": "eyebrow", "type": "text", "placeholder": "Our goal", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_stb_image", "label": "Background image", "name": "image", "type": "image", "instructions": "Optional, behind the black band.", "return_format": "id", "library": "all", "preview_size": "medium", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_stb_heading", "label": "Statement", "name": "heading", "type": "textarea", "instructions": "Press Enter for a deliberate line break.", "rows": 3, "new_lines": "" },
+        { "key": "field_gt_stb_text", "label": "Text", "name": "text", "type": "textarea", "rows": 2, "new_lines": "" }
+    ],
+    "location": [ [ { "param": "block", "operator": "==", "value": "acf/statement-band" } ] ],
+    "menu_order": 0, "position": "normal", "style": "default", "label_placement": "top", "instruction_placement": "label", "hide_on_screen": "", "active": true, "description": "", "show_in_rest": 0
+}

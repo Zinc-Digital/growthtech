@@ -1,0 +1,10 @@
+{
+    "key": "group_gt_block_section_text",
+    "title": "Block: Section Text",
+    "fields": [
+        { "key": "field_gt_stx_heading", "label": "Heading", "name": "heading", "type": "text", "instructions": "Optional serif sub-heading.", "placeholder": "Sub Title" },
+        { "key": "field_gt_stx_text", "label": "Text", "name": "text", "type": "wysiwyg", "tabs": "visual", "toolbar": "basic", "media_upload": 0, "delay": 0 }
+    ],
+    "location": [ [ { "param": "block", "operator": "==", "value": "acf/section-text" } ] ],
+    "menu_order": 0, "position": "normal", "style": "default", "label_placement": "top", "instruction_placement": "label", "hide_on_screen": "", "active": true, "description": "", "show_in_rest": 0
+}

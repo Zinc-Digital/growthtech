@@ -1,0 +1,11 @@
+{
+    "key": "group_gt_block_news_carousel",
+    "title": "Block: News Carousel",
+    "fields": [
+        { "key": "field_gt_nwc_heading", "label": "Heading", "name": "heading", "type": "text", "instructions": "Leave empty to use the default in Theme Settings → News Settings.", "placeholder": "Catch up on other news stories.", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_nwc_limit", "label": "Stories to show", "name": "limit", "type": "number", "instructions": "How many of the most recent stories go into the slider.", "default_value": 9, "min": 1, "max": 24, "step": 1, "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_nwc_text", "label": "Text", "name": "text", "type": "textarea", "instructions": "Leave empty to use the default in Theme Settings → News Settings.", "rows": 2, "new_lines": "" }
+    ],
+    "location": [ [ { "param": "block", "operator": "==", "value": "acf/news-carousel" } ] ],
+    "menu_order": 0, "position": "normal", "style": "default", "label_placement": "top", "instruction_placement": "label", "hide_on_screen": "", "active": true, "description": "", "show_in_rest": 0
+}

@@ -64,6 +64,12 @@ $title_id = $block_id . '-title';
 
 $classes = array( 'b-content-slider' );
 
+// The dark instance — Figma 384:2551 on About Us — is the same component on
+// black, with a wider copy column than the light one on the homepage.
+if ( 'dark' === get_field( 'theme' ) ) {
+	$classes[] = 'b-content-slider--dark';
+}
+
 if ( ! empty( $block['className'] ) ) {
 	$classes[] = $block['className'];
 }

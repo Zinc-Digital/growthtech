@@ -2,6 +2,8 @@
     "key": "group_gt_block_content_slider",
     "title": "Block: Content Slider",
     "fields": [
+        { "key": "field_gt_cs_theme", "label": "Theme", "name": "theme", "type": "button_group", "instructions": "Dark puts the section on black, as on About Us.", "choices": { "light": "Light", "dark": "Dark" }, "default_value": "light", "return_format": "value" },
+
         {
             "key": "field_gt_cs_heading",
             "label": "Heading",

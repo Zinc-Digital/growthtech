@@ -1,0 +1,23 @@
+{
+    "key": "group_gt_block_timeline",
+    "title": "Block: Timeline",
+    "fields": [
+        { "key": "field_gt_tml_heading", "label": "Heading", "name": "heading", "type": "text", "placeholder": "Forty years, one obsession.", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_tml_end", "label": "End label", "name": "end_label", "type": "text", "instructions": "Right-hand end of the progress bar. The left label is the first milestone's year.", "placeholder": "Today", "wrapper": { "width": "25", "class": "", "id": "" } },
+        { "key": "field_gt_tml_hint", "label": "Hint", "name": "hint", "type": "text", "placeholder": "Drag, scroll or use the arrows", "wrapper": { "width": "25", "class": "", "id": "" } },
+        {
+            "key": "field_gt_tml_items", "label": "Milestones", "name": "milestones", "type": "repeater",
+            "instructions": "Shown in order along the rail.",
+            "layout": "block", "button_label": "Add milestone", "min": 1,
+            "sub_fields": [
+                { "key": "field_gt_tml_year", "label": "Year", "name": "year", "type": "text", "placeholder": "1985", "wrapper": { "width": "25", "class": "", "id": "" } },
+                { "key": "field_gt_tml_tag", "label": "Tag", "name": "tag", "type": "text", "instructions": "Small serif note beside the year.", "placeholder": "The beginning", "wrapper": { "width": "25", "class": "", "id": "" } },
+                { "key": "field_gt_tml_image", "label": "Image", "name": "image", "type": "image", "return_format": "id", "library": "all", "preview_size": "medium", "wrapper": { "width": "50", "class": "", "id": "" } },
+                { "key": "field_gt_tml_title", "label": "Title", "name": "title", "type": "text", "placeholder": "Founded in Somerset" },
+                { "key": "field_gt_tml_text", "label": "Text", "name": "text", "type": "textarea", "rows": 3, "new_lines": "" }
+            ]
+        }
+    ],
+    "location": [ [ { "param": "block", "operator": "==", "value": "acf/timeline" } ] ],
+    "menu_order": 0, "position": "normal", "style": "default", "label_placement": "top", "instruction_placement": "label", "hide_on_screen": "", "active": true, "description": "", "show_in_rest": 0
+}

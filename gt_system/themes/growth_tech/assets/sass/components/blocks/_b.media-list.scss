@@ -1,0 +1,161 @@
+// ---------------------------------------------------------------------------
+// Media List block — Figma 387:5948 (Frame 174)
+//
+// Optional 35px serif heading, then rows 25 apart: a 250 x 150 thumbnail with
+// the 35px enlarge button inset 10 from its bottom left, and the copy 25 to
+// its right (eyebrow / 18px black title / 15-25 body, 5 apart).
+// ---------------------------------------------------------------------------
+
+$ml-font: "DM Sans", #{$primary_font};
+
+.b-media-list {
+  &__title {
+    margin: 0 0 25px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 35px;
+    font-weight: $font-700;
+    line-height: 42px;
+    letter-spacing: -0.7px;
+    color: #000;
+  }
+
+  &__rows {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__row {
+    display: flex;
+    align-items: flex-start;
+    gap: 25px;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__media {
+    position: relative;
+    flex: 0 0 250px;
+    width: 250px;
+    height: 150px;
+    overflow: hidden;
+    background-color: #f4f4f4;
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__copy {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  &__eyebrow {
+    margin: 0;
+    font-family: $ml-font;
+    font-size: 12px;
+    font-weight: $font-400;
+    line-height: 15.6px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  &__row-title {
+    margin: 0;
+    font-family: $ml-font;
+    font-size: 18px;
+    font-weight: $font-900;
+    line-height: 25px;
+    color: #000;
+  }
+
+  &__text {
+    font-family: $ml-font;
+    font-size: 15px;
+    font-weight: $font-300;
+    line-height: 25px;
+    color: rgba(0, 0, 0, 0.75);
+
+    // p carries the theme's base 16/22, which beats inheritance.
+    p {
+      margin: 0;
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+
+      & + p {
+        margin-top: 25px;
+      }
+    }
+  }
+}
+
+// The enlarge button, shared by both media blocks.
+.media-zoom {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  padding: 0;
+  border: 0;
+  background-color: #000;
+  color: color(white);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  svg {
+    display: block;
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover,
+  &:focus-visible {
+    background-color: #393536;
+    color: color(white);
+  }
+
+  &:focus-visible {
+    outline: 2px solid color(white);
+    outline-offset: -4px;
+  }
+}
+
+.b-media-list__zoom {
+  left: 10px;
+  bottom: 10px;
+}
+
+@media (max-width: $sm - 1px) {
+  .b-media-list {
+    &__title {
+      font-size: 28px;
+      line-height: 34px;
+      letter-spacing: -0.6px;
+    }
+
+    &__row {
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    &__media {
+      flex-basis: auto;
+      width: 100%;
+      height: 200px;
+    }
+  }
+}

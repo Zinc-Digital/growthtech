@@ -1,0 +1,14 @@
+{
+    "key": "group_gt_block_page_hero",
+    "title": "Block: Page Hero",
+    "fields": [
+        { "key": "field_gt_phe_heading", "label": "Heading", "name": "heading", "type": "textarea", "instructions": "Press Enter for a deliberate line break.", "rows": 2, "new_lines": "" },
+        { "key": "field_gt_phe_text", "label": "Text", "name": "text", "type": "textarea", "rows": 4, "new_lines": "" },
+        { "key": "field_gt_phe_image", "label": "Background image", "name": "image", "type": "image", "instructions": "Full-bleed behind the copy; a dark scrim keeps the text readable.", "return_format": "id", "library": "all", "preview_size": "medium", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_phe_height", "label": "Height (px)", "name": "height", "type": "number", "instructions": "The design is 690.", "default_value": 690, "min": 300, "max": 1000, "step": 10, "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_phe_cta", "label": "Button", "name": "cta_link", "type": "link", "return_format": "array", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_phe_link", "label": "Text link", "name": "text_link", "type": "link", "return_format": "array", "wrapper": { "width": "50", "class": "", "id": "" } }
+    ],
+    "location": [ [ { "param": "block", "operator": "==", "value": "acf/page-hero" } ] ],
+    "menu_order": 0, "position": "normal", "style": "default", "label_placement": "top", "instruction_placement": "label", "hide_on_screen": "", "active": true, "description": "", "show_in_rest": 0
+}

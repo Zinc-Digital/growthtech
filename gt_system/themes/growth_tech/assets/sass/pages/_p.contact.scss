@@ -1,0 +1,698 @@
+// ---------------------------------------------------------------------------
+// Contact page — Figma 384:2873
+//
+// 75px gutters / 1287 content. Title 60 under the header; the two columns 40
+// below it (542 info + 145 gap + 600 form panel, top aligned). The info column
+// stacks intro / details / callout 30 apart; the map band follows 65 below and
+// clears the footer by 70. Every text element sets its own face and size —
+// the theme's base rules would win otherwise.
+// ---------------------------------------------------------------------------
+
+$ct-font: "DM Sans", #{$primary_font};
+$ct-serif: "Cormorant Garamond", serif;
+$ct-line: rgba(0, 0, 0, 0.1);
+$ct-muted: rgba(0, 0, 0, 0.5);
+$ct-field-line: rgba(35, 31, 32, 0.1);
+// The btn-flat arrow in white, for the submit button Gravity renders.
+$arrow-white: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 21 18'%3E%3Cpath fill='%23ffffff' d='M20.6531 9.81831C20.8734 9.60737 21 9.31205 21 9.00268C21 8.6933 20.8734 8.40268 20.6531 8.18706L12.4031 0.312055C11.9531-0.119195 11.2406-0.100445 10.8141 0.349555C10.3875 0.799555 10.4016 1.51206 10.8516 1.93862L17.0672 7.87768H1.125C0.501562 7.87768 0 8.37924 0 9.00268C0 9.62612 0.501562 10.1277 1.125 10.1277H17.0672L10.8469 16.0621C10.3969 16.4933 10.3828 17.2012 10.8094 17.6512C11.2359 18.1012 11.9484 18.1152 12.3984 17.6887L20.6484 9.81362L20.6531 9.81831Z'/%3E%3C/svg%3E";
+
+@mixin ct-card-title {
+  margin: 0;
+  font-family: $ct-serif;
+  font-size: 30px;
+  font-weight: $font-700;
+  line-height: 36.3px;
+  letter-spacing: -0.6px;
+}
+
+@mixin ct-underline-link($colour) {
+  font-family: $ct-font;
+  font-size: 14px;
+  font-weight: $font-700;
+  line-height: 18.2px;
+  color: $colour;
+  text-decoration: underline;
+  text-underline-position: from-font;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-thickness 0.2s ease;
+
+  // The theme's global a:hover recolours every link; these sit on black.
+  &:hover,
+  &:focus-visible {
+    color: $colour;
+    text-decoration-thickness: 2px;
+  }
+}
+
+.contact-page {
+  padding: 60px 0 0;
+
+  &__inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 75px 70px;
+  }
+
+  &__title {
+    max-width: 717px;
+    margin: 0;
+    font-family: $ct-serif;
+    font-size: 60px;
+    font-weight: $font-700;
+    line-height: 65px;
+    letter-spacing: -1.2px;
+    color: #000;
+  }
+
+  &__cols {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 145px;
+    margin-top: 40px;
+  }
+
+  // Both columns shrink but never grow: at 1440 they sit at the design's 542
+  // and 600 with the 145 between them, and narrower viewports take the
+  // difference off both in proportion rather than overflowing the gutter.
+  &__col--info {
+    display: flex;
+    flex: 0 1 542px;
+    flex-direction: column;
+    gap: 30px;
+    max-width: 542px;
+  }
+
+  &__col--form {
+    flex: 0 1 600px;
+    max-width: 600px;
+    min-width: 0;
+  }
+
+  &__intro {
+    margin: 0;
+    font-family: $ct-font;
+    font-size: 15px;
+    font-weight: $font-400;
+    line-height: 25px;
+    color: #000;
+  }
+}
+
+// -- details ---------------------------------------------------------------------
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 20px;
+
+  &__row {
+    display: flex;
+    align-items: flex-start;
+    gap: 100px;
+
+    & + & {
+      margin-top: 15px;
+      // 15 + 14 + the 1px rule = the design's 30 between rows.
+      padding-top: 14px;
+      border-top: 1px solid $ct-line;
+    }
+  }
+
+  &__label {
+    flex: 0 0 46px;
+    margin: 0;
+    font-family: $ct-font;
+    font-size: 12px;
+    font-weight: $font-400;
+    line-height: 15.6px;
+    color: $ct-muted;
+  }
+
+  &__value {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    font-family: $ct-font;
+    font-size: 15px;
+    font-weight: $font-400;
+    line-height: 25px;
+    color: #000;
+
+    a {
+      color: inherit;
+      text-decoration: none;
+
+      &:hover,
+      &:focus-visible {
+        color: inherit;
+        text-decoration: underline;
+        text-underline-position: from-font;
+      }
+    }
+  }
+
+  &__note {
+    display: block;
+    font-size: 12px;
+    line-height: 16px;
+    color: $ct-muted;
+  }
+}
+
+// -- stockist callout ------------------------------------------------------------
+.contact-callout {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 30px;
+  background-color: #000;
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  &__title {
+    @include ct-card-title;
+    color: color(white);
+  }
+
+  &__text {
+    margin: 0;
+    font-family: $ct-font;
+    font-size: 15px;
+    font-weight: $font-400;
+    line-height: 25px;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  &__link {
+    @include ct-underline-link(color(white));
+  }
+}
+
+// -- form panel ------------------------------------------------------------------
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 40px;
+  // outline, not border: Figma draws the stroke inside the 600 frame without
+  // eating into it, so the fields stay 520 wide (2 x 255 + 10).
+  outline: 1px solid $ct-field-line;
+  outline-offset: -1px;
+
+  &__title {
+    @include ct-card-title;
+    color: #000;
+  }
+
+  &__hint {
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    font-family: $ct-font;
+    font-size: 14px;
+    line-height: 22px;
+    color: $ct-muted;
+  }
+}
+
+// -- Gravity Forms skin ------------------------------------------------------------
+//
+// Gravity's "orbital" theme prints a <style> block of custom properties on the
+// wrapper itself (#gform_wrapper_N[data-form-index].gform-theme) that no
+// class-only selector can outrank, so those are set with !important. Its
+// stylesheet also loads after main.css, so every other rule here is nested
+// under .gform_wrapper.gform-theme to win the ties outright.
+.contact-form {
+  .gform_wrapper.gform-theme {
+    --gf-radius: 0 !important;
+    --gf-ctrl-size: 49px !important;
+    --gf-ctrl-border-color: #{$ct-field-line} !important;
+    --gf-color-primary: #000 !important;
+    --gf-color-primary-rgb: 0, 0, 0 !important;
+    --gf-color-primary-contrast: #fff !important;
+    --gf-color-in-ctrl-primary: #000 !important;
+    --gf-ctrl-btn-size: 49px !important;
+    --gf-ctrl-btn-font-size: 15px !important;
+    --gf-ctrl-textarea-height: 125px !important;
+
+    margin: 0;
+    font-family: $ct-font;
+
+    // Rows 10 apart; halves sit side by side in Gravity's 12-column grid.
+    .gform_fields {
+      grid-column-gap: 10px;
+      grid-row-gap: 10px;
+    }
+
+    .gfield {
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .gfield_label {
+      display: block;
+      margin: 0 0 5px;
+      padding: 0;
+      font-family: $ct-font;
+      font-size: 15px;
+      font-weight: $font-400;
+      line-height: 25px;
+      color: #000;
+    }
+
+    // The design marks required fields with an asterisk, not "(Required)".
+    .gfield_required_text {
+      display: none;
+    }
+
+    .gfield_label > .gfield_required {
+      // Pulls the asterisk up against the label: Gravity leaves whitespace
+      // between the two spans, the design has none.
+      margin-left: -0.28em;
+      color: #000;
+
+      &::after {
+        content: "*";
+        font-family: $ct-font;
+        font-size: 15px;
+        font-weight: $font-400;
+      }
+    }
+
+    // …and the consent tick carries its own wording, so it needs neither.
+    .gfield--type-consent .gfield_required {
+      display: none;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="number"],
+    input[type="password"],
+    select,
+    textarea {
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 100%;
+      height: 49px;
+      min-height: 49px;
+      margin: 0;
+      padding: 0 16px;
+      border: 1px solid $ct-field-line;
+      border-radius: 0;
+      background-color: color(white);
+      box-shadow: none;
+      font-family: $ct-font;
+      font-size: 13px;
+      font-weight: $font-400;
+      line-height: 17px;
+      color: #231f20;
+
+      &::placeholder {
+        opacity: 1;
+        font-family: $ct-font;
+        font-size: 13px;
+        font-weight: $font-300;
+        color: rgba(35, 31, 32, 0.35);
+      }
+
+      &:focus {
+        border-color: rgba(35, 31, 32, 0.4);
+        outline: none;
+      }
+    }
+
+    // Gravity sizes the textarea from --gf-ctrl-textarea-height through a
+    // min-block-size its own stylesheet applies later, so this one needs the
+    // flag to land at the design's 125.
+    textarea {
+      height: 125px !important;
+      min-height: 125px !important;
+      max-height: none;
+      padding: 16px;
+      line-height: 20px;
+      resize: vertical;
+    }
+
+    // A select ignores vertical centring, so the line box does it instead.
+    // The flags clear the theme's own legacy `form select` rule in
+    // _c.forms.scss, which sets its arrow and colour with !important.
+    select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      min-width: 0;
+      padding-right: 42px;
+      line-height: 47px;
+      color: #231f20 !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23808080' d='M.293.293a1 1 0 0 1 1.414 0L5 3.586 8.293.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4A1 1 0 0 1 .293.293Z'/%3E%3C/svg%3E") !important;
+      background-repeat: no-repeat !important;
+      background-position: right 16px center !important;
+      background-size: 10px 6px !important;
+
+      option {
+        color: #231f20 !important;
+        font-size: 13px;
+      }
+    }
+
+    // Consent: the checkbox label carries the wording, so the field's own
+    // legend is left for screen readers only.
+    .gfield--type-consent > .gfield_label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .ginput_container_consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .ginput_container_consent input[type="checkbox"] {
+      flex: 0 0 25px;
+      width: 25px;
+      height: 25px;
+      min-height: 25px;
+      margin: 0;
+      padding: 0;
+      appearance: none;
+      -webkit-appearance: none;
+      border: 1px solid $ct-field-line;
+      border-radius: 0;
+      background-color: color(white);
+      cursor: pointer;
+
+      &:checked {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='9' viewBox='0 0 12 9'%3E%3Cpath fill='none' stroke='%23000' stroke-width='2' d='m1 4.5 3.2 3L11 1'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+      &:focus-visible {
+        outline: 2px solid #000;
+        outline-offset: 2px;
+      }
+    }
+
+    .gfield_consent_label,
+    .ginput_container_consent label {
+      margin: 0;
+      font-family: $ct-font;
+      font-size: 12px;
+      font-weight: $font-400;
+      line-height: 21px;
+      color: #000;
+
+      a {
+        color: inherit;
+        text-decoration: underline;
+        text-underline-position: from-font;
+
+        &:hover,
+        &:focus-visible {
+          color: inherit;
+        }
+      }
+    }
+
+    // Submit — the dark flat button. The arrow is a background image rather
+    // than a pseudo-element, which Gravity's reset removes.
+    .gform_footer {
+      margin: 20px 0 0;
+      padding: 0;
+    }
+
+    .gform_footer .gform_button,
+    .gform_footer input[type="submit"] {
+      display: inline-flex;
+      align-items: center;
+      width: auto;
+      height: 49px;
+      margin: 0;
+      // 20 + label + 10 gap + 18 arrow + 20. Flagged because Gravity sets the
+      // button's padding from --gf-ctrl-btn-padding-x further down its sheet.
+      padding: 0 48px 0 20px !important;
+      border: 0;
+      border-radius: 0;
+      background-color: #000;
+      background-image: url("#{$arrow-white}");
+      background-repeat: no-repeat;
+      background-position: right 20px center;
+      background-size: 21px 18px;
+      font-family: $ct-font;
+      font-size: 15px;
+      font-weight: $font-400;
+      line-height: normal;
+      color: color(white);
+      cursor: pointer;
+      transition: background-color 0.3s ease, background-position 0.3s ease;
+
+      &:hover,
+      &:focus-visible {
+        background-color: #231f20;
+        background-position: right 16px center;
+        color: color(white);
+      }
+    }
+
+    // Validation, kept in the page's own voice rather than Gravity's panel.
+    .gform_validation_errors {
+      margin: 0 0 15px;
+      padding: 15px 20px;
+      border: 1px solid rgba(216, 22, 42, 0.4);
+      border-radius: 0;
+      background-color: rgba(216, 22, 42, 0.06);
+      box-shadow: none;
+      font-family: $ct-font;
+      font-size: 14px;
+      line-height: 22px;
+    }
+
+    .gfield_validation_message,
+    .validation_message {
+      margin: 5px 0 0;
+      padding: 0;
+      border: 0;
+      background: none;
+      font-family: $ct-font;
+      font-size: 12px;
+      line-height: 18px;
+      color: color(red);
+    }
+
+    .gfield_error input,
+    .gfield_error select,
+    .gfield_error textarea {
+      border-color: rgba(216, 22, 42, 0.5);
+    }
+  }
+
+  .gform_confirmation_message {
+    margin: 0;
+    font-family: $ct-font;
+    font-size: 15px;
+    line-height: 25px;
+    color: #000;
+  }
+}
+
+// -- map band ----------------------------------------------------------------------
+.contact-map {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  min-height: 350px;
+  margin-top: 65px;
+  padding: 50px;
+  overflow: hidden;
+  background-color: #f4f4f4;
+
+  &__canvas {
+    position: absolute;
+    inset: 0;
+  }
+
+  &__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__hint {
+    max-width: 320px;
+    margin: 0 0 0 auto;
+    font-family: $ct-font;
+    font-size: 14px;
+    line-height: 22px;
+    text-align: center;
+    color: $ct-muted;
+  }
+
+  &__card {
+    position: relative;
+    display: flex;
+    flex: 0 0 285px;
+    flex-direction: column;
+    gap: 20px;
+    width: 285px;
+    padding: 25px;
+    background-color: #000;
+  }
+
+  &__title {
+    @include ct-card-title;
+    color: color(white);
+  }
+
+  &__address {
+    margin: 0;
+    font-family: $ct-font;
+    font-size: 15px;
+    font-weight: $font-400;
+    line-height: 25px;
+    color: color(white);
+  }
+
+  &__link {
+    @include ct-underline-link(color(white));
+  }
+}
+
+// -- responsive ----------------------------------------------------------------------
+// The two-column row only holds its drawn measurements at the full 1440
+// (75 + 542 + 145 + 600 + 75), so everything below that is the fluid version.
+@media (max-width: 1439px) {
+  .contact-page {
+    &__inner {
+      padding: 0 50px 60px;
+    }
+
+    &__cols {
+      gap: 60px;
+    }
+  }
+
+  .contact-details__row {
+    gap: 60px;
+  }
+
+  .contact-form {
+    padding: 30px;
+  }
+
+  .contact-map {
+    padding: 40px;
+  }
+}
+
+@media (max-width: $md - 1px) {
+  .contact-page {
+    &__inner {
+      padding: 0 25px 50px;
+    }
+
+    &__title {
+      max-width: none;
+      font-size: 44px;
+      line-height: 48px;
+      letter-spacing: -0.9px;
+    }
+
+    &__cols {
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    &__col--info,
+    &__col--form {
+      flex: 0 0 auto;
+      width: 100%;
+    }
+  }
+
+  .contact-map {
+    min-height: 320px;
+    margin-top: 50px;
+    padding: 30px;
+  }
+}
+
+@media (max-width: $sm - 1px) {
+  .contact-page {
+    padding-top: 45px;
+
+    &__title {
+      font-size: 36px;
+      line-height: 40px;
+      letter-spacing: -0.7px;
+    }
+  }
+
+  .contact-details {
+    padding: 20px 0;
+
+    &__row {
+      gap: 30px;
+    }
+  }
+
+  .contact-form {
+    padding: 25px 20px;
+  }
+
+  .contact-map {
+    min-height: 300px;
+    padding: 25px;
+
+    &__card {
+      flex-basis: auto;
+      width: 100%;
+      max-width: 285px;
+    }
+  }
+}
+
+@media (max-width: $xs - 1px) {
+  .contact-details__row {
+    flex-direction: column;
+    gap: 4px;
+
+    .contact-details__label {
+      flex: 0 0 auto;
+    }
+  }
+
+  .contact-callout {
+    gap: 25px;
+    padding: 25px 20px;
+  }
+
+  // At phone widths the card is as wide as the band, so the map needs the
+  // extra height to still read as a map underneath it.
+  .contact-map {
+    min-height: 380px;
+
+    &__card {
+      width: 100%;
+      max-width: none;
+    }
+  }
+}

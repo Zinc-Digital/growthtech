@@ -1,0 +1,42 @@
+{
+    "key": "group_gt_brands_page",
+    "title": "Our Brands page",
+    "fields": [
+        { "key": "field_gt_brands_heading", "label": "Heading", "name": "heading", "type": "text", "instructions": "Shown as the page title. Leave empty to use the page's own title.", "placeholder": "Formulated by Growth Technology." },
+        { "key": "field_gt_brands_intro", "label": "Intro", "name": "intro", "type": "textarea", "instructions": "Short paragraph under the heading.", "rows": 3, "new_lines": "" },
+        { "key": "field_gt_brands_own_only", "label": "Growth Technology brands only", "name": "own_only", "type": "true_false", "instructions": "Ticked: only brands flagged as ours (Brand > Identity) are listed. Unticked: every brand, ours first.", "default_value": 0, "ui": 1, "ui_on_text": "Ours only", "ui_off_text": "All brands" },
+        { "key": "field_gt_brands_guides_tab", "label": "\"Better knowledge\" band", "name": "", "type": "tab", "placement": "top" },
+        { "key": "field_gt_brands_guides_heading", "label": "Heading", "name": "guides_heading", "type": "text", "placeholder": "Better knowledge.", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_brands_guides_accent", "label": "Accent line", "name": "guides_accent_line", "type": "text", "placeholder": "Stronger roots.", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_brands_guides_colour", "label": "Accent colour", "name": "guides_accent_colour", "type": "color_picker", "instructions": "Colour of the accent line.", "default_value": "#FFC400", "enable_opacity": 0, "return_format": "string", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_brands_guides_text", "label": "Text", "name": "guides_text", "type": "textarea", "rows": 3, "new_lines": "" },
+        { "key": "field_gt_brands_guides_cta1", "label": "Button", "name": "guides_cta_1", "type": "link", "return_format": "array", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_brands_guides_cta2", "label": "Text link", "name": "guides_cta_2", "type": "link", "return_format": "array", "wrapper": { "width": "50", "class": "", "id": "" } },
+        {
+            "key": "field_gt_brands_guides",
+            "label": "Guide cards",
+            "name": "guides",
+            "type": "repeater",
+            "instructions": "Two cards in the design.",
+            "layout": "block",
+            "button_label": "Add guide",
+            "max": 2,
+            "sub_fields": [
+                { "key": "field_gt_brands_guide_image", "label": "Image", "name": "image", "type": "image", "return_format": "id", "library": "all", "preview_size": "medium", "wrapper": { "width": "50", "class": "", "id": "" } },
+                { "key": "field_gt_brands_guide_link", "label": "Link", "name": "link", "type": "link", "return_format": "array", "wrapper": { "width": "50", "class": "", "id": "" } },
+                { "key": "field_gt_brands_guide_lead", "label": "Lead (bold)", "name": "lead", "type": "text", "placeholder": "From Seed to Sprout:", "wrapper": { "width": "50", "class": "", "id": "" } },
+                { "key": "field_gt_brands_guide_title", "label": "Title", "name": "title", "type": "text", "placeholder": "The Beginner’s Guide to Perfect Germination", "wrapper": { "width": "50", "class": "", "id": "" } }
+            ]
+        }
+    ],
+    "location": [ [ { "param": "page_template", "operator": "==", "value": "page-templates/page-brands.php" } ] ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0
+}

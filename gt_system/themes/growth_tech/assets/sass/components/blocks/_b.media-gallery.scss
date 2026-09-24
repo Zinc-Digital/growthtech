@@ -1,0 +1,73 @@
+// ---------------------------------------------------------------------------
+// Media Gallery block — Figma 387:5948 (Frame 181)
+//
+// A 5:3 image at the width of the article column, the enlarge button inset 20
+// from its bottom left and, when there is more than one image, the shared
+// arrow pair inset 20 from its bottom right.
+// ---------------------------------------------------------------------------
+
+.b-media-gallery {
+  position: relative;
+
+  &__slides {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    // Before slick runs, only the first image should be visible.
+    &:not(.slick-initialized) .b-media-gallery__slide + .b-media-gallery__slide {
+      display: none;
+    }
+  }
+
+  // The ratio lives on the slide: WordPress prints width/height attributes on
+  // the image, so sizing it by aspect-ratio alone leaves it at its own shape.
+  &__slide {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    aspect-ratio: 5 / 3;
+    overflow: hidden;
+    background-color: #f4f4f4;
+
+    .slick-initialized &.slick-slide {
+      display: block;
+    }
+  }
+
+  &__img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__zoom {
+    left: 20px;
+    bottom: 20px;
+    z-index: 2;
+  }
+
+  &__arrows {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    z-index: 2;
+  }
+}
+
+@media (max-width: $sm - 1px) {
+  .b-media-gallery {
+    &__zoom {
+      left: 10px;
+      bottom: 10px;
+    }
+
+    &__arrows {
+      right: 10px;
+      bottom: 10px;
+    }
+  }
+}

@@ -94,6 +94,18 @@
             "conditional_logic": [ [ { "field": "field_gt_brand_promo_enabled", "operator": "==", "value": "1" } ] ]
         },
         {
+            "key": "field_gt_brand_tile_tab",
+            "label": "Brands page tile",
+            "name": "",
+            "type": "tab",
+            "placement": "top"
+        },
+        { "key": "field_gt_brand_tile_image", "label": "Tile image", "name": "tile_image", "type": "image", "instructions": "Lifestyle shot behind the logo on the Our Brands page; cropped to 291 x 400 at desktop. Falls back to the shop promo tile image, then the landing hero image.", "return_format": "id", "library": "all", "preview_size": "medium", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_brand_tile_logo", "label": "Tile logo (white)", "name": "tile_logo", "type": "image", "instructions": "White version of the logo for the dark tile. Falls back to the Identity logo.", "return_format": "id", "library": "all", "preview_size": "medium", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_brand_tile_tagline", "label": "Tagline", "name": "tile_tagline", "type": "text", "instructions": "One line under the logo. Falls back to the shop promo tagline.", "placeholder": "The original rooting gel", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_brand_tile_link_text", "label": "Link text", "name": "tile_link_text", "type": "text", "instructions": "Defaults to \"Explore the <brand> Range\".", "placeholder": "Explore the Clonex Range", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_brand_tile_hidden", "label": "Hide from the Our Brands page", "name": "tile_hidden", "type": "true_false", "default_value": 0, "ui": 1, "ui_on_text": "Hidden", "ui_off_text": "Shown" },
+        {
             "key": "field_gt_brand_lp_tab_hero",
             "label": "Landing: hero",
             "name": "",

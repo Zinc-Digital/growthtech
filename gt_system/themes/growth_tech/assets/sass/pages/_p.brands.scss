@@ -1,0 +1,278 @@
+// ---------------------------------------------------------------------------
+// Our Brands page — Figma 385:5006
+//
+// Centred head 60 under the header (1159 title / 765 intro, 40 apart); the
+// grid 50 below inside 100px gutters: 4 tiles of 291.25 x 400, 25 column gap,
+// 50 row gap. Each tile fades to rgba(0,0,0,.85) from the halfway point with
+// the logo (≤160 wide), a 12/20 tagline and a bold underlined link stacked
+// in the middle, 20 apart. 125 below the grid comes the guides band, or the
+// footer's club band when the guides band has no content.
+// ---------------------------------------------------------------------------
+
+$brands-font: "DM Sans", #{$primary_font};
+
+.brands-page {
+  padding: 60px 0 0;
+
+  &__inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 100px 125px;
+  }
+
+  // -- head --------------------------------------------------------------------
+  &__head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    text-align: center;
+  }
+
+  &__title {
+    max-width: 1159px;
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 60px;
+    font-weight: $font-700;
+    // Figma sets 85px leading but trims the text box to 63px; 65px keeps the
+    // 40px gap to the intro and the grid at the design's 203px offset.
+    line-height: 65px;
+    letter-spacing: -1.2px;
+    color: #000;
+  }
+
+  &__intro {
+    max-width: 765px;
+    margin: 0;
+    font-family: $brands-font;
+    font-size: 15px;
+    font-weight: $font-400;
+    line-height: 25px;
+    color: #000;
+  }
+
+  &__empty {
+    margin: 50px 0 0;
+    font-family: $brands-font;
+    font-size: 15px;
+    line-height: 25px;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  // The inner wrapper's bottom padding provides the 125 gap (59 on brand pages).
+  .brand-guides {
+    margin-top: 0;
+  }
+}
+
+// -- grid ------------------------------------------------------------------------
+.brands-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 50px 25px;
+  margin: 50px 0 0;
+  padding: 0;
+  list-style: none;
+
+  &__item {
+    margin: 0;
+    padding: 0;
+  }
+
+  &__tile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    padding: 30px;
+    overflow: hidden;
+    background-color: #231f20;
+    color: color(white);
+    text-decoration: none;
+
+    // The theme's global a:hover recolours links; every piece of text inside
+    // sets its own colour so the tile stays white.
+    &:hover,
+    &:focus-visible {
+      color: color(white);
+    }
+
+    &:focus-visible {
+      outline: 2px solid #000;
+      outline-offset: 2px;
+    }
+  }
+
+  &__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+
+    .brands-grid__tile:hover & {
+      transform: scale(1.04);
+    }
+  }
+
+  &__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.85) 50.114%);
+  }
+
+  &__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    text-align: center;
+  }
+
+  &__logo {
+    display: block;
+    width: auto;
+    max-width: 160px;
+    height: auto;
+    max-height: 72px;
+    object-fit: contain;
+  }
+
+  &__name {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 34px;
+    font-weight: $font-700;
+    line-height: 1.1;
+    letter-spacing: -0.7px;
+    color: color(white);
+  }
+
+  &__tagline {
+    font-family: $brands-font;
+    font-size: 12px;
+    font-weight: $font-400;
+    line-height: 20px;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  &__link {
+    position: relative;
+    font-family: $brands-font;
+    font-size: 14px;
+    font-weight: $font-700;
+    line-height: normal;
+    color: color(white);
+    text-decoration: underline;
+    text-underline-position: from-font;
+    text-decoration-thickness: 1px;
+    transition: text-decoration-thickness 0.2s ease;
+
+    .brands-grid__tile:hover &,
+    .brands-grid__tile:focus-visible & {
+      text-decoration-thickness: 2px;
+    }
+  }
+}
+
+// -- responsive ------------------------------------------------------------------
+@media (max-width: $xl - 1px) {
+  .brands-page {
+    &__inner {
+      padding: 0 50px 90px;
+    }
+  }
+
+  // Four 200px columns would wrap every link; three keep the tile ~290 wide.
+  .brands-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 25px;
+  }
+}
+
+@media (max-width: $md - 1px) {
+  .brands-page {
+    &__inner {
+      padding: 0 25px 70px;
+    }
+
+    &__title {
+      font-size: 44px;
+      line-height: 48px;
+      letter-spacing: -0.9px;
+    }
+  }
+
+  .brands-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 25px;
+
+    &__tile {
+      height: 360px;
+    }
+  }
+}
+
+@media (max-width: $sm - 1px) {
+  .brands-page {
+    padding-top: 45px;
+
+    &__head {
+      gap: 25px;
+    }
+
+    &__inner {
+      padding-bottom: 50px;
+    }
+
+    &__title {
+      font-size: 36px;
+      line-height: 40px;
+      letter-spacing: -0.7px;
+    }
+  }
+
+  .brands-grid {
+    margin-top: 40px;
+    gap: 20px;
+
+    &__tile {
+      height: 300px;
+      padding: 20px;
+    }
+
+    &__logo {
+      max-width: 130px;
+      max-height: 60px;
+    }
+  }
+}
+
+@media (max-width: $xs - 1px) {
+  .brands-grid {
+    grid-template-columns: minmax(0, 1fr);
+
+    &__tile {
+      height: 320px;
+    }
+
+    &__logo {
+      max-width: 160px;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brands-grid__img {
+    transition: none;
+
+    .brands-grid__tile:hover & {
+      transform: none;
+    }
+  }
+}

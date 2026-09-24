@@ -1,0 +1,11 @@
+{
+    "key": "group_gt_block_info_band",
+    "title": "Block: Info Band",
+    "fields": [
+        { "key": "field_gt_ifb_label", "label": "Label", "name": "label", "type": "text", "instructions": "The serif label on the left, e.g. Top Tip or Quote.", "placeholder": "Top Tip", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_ifb_cite", "label": "Attribution", "name": "attribution", "type": "text", "instructions": "Fill this in for a quote — it is added after the text and marks the band up as a quotation.", "placeholder": "Name, title", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_ifb_text", "label": "Text", "name": "text", "type": "textarea", "rows": 3, "new_lines": "" }
+    ],
+    "location": [ [ { "param": "block", "operator": "==", "value": "acf/info-band" } ] ],
+    "menu_order": 0, "position": "normal", "style": "default", "label_placement": "top", "instruction_placement": "label", "hide_on_screen": "", "active": true, "description": "", "show_in_rest": 0
+}

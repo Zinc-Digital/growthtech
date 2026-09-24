@@ -1,0 +1,20 @@
+{
+    "key": "group_gt_news",
+    "title": "News story",
+    "fields": [
+        { "key": "field_gt_news_standfirst", "label": "Standfirst", "name": "standfirst", "type": "textarea", "instructions": "The sentence under the title on the article, and the rest of the sentence on the listing card (which reads \"<strong>Title:</strong> standfirst\"). Falls back to the excerpt.", "rows": 3, "new_lines": "" },
+        { "key": "field_gt_news_byline", "label": "Byline", "name": "byline", "type": "text", "instructions": "Shown as \"Written by …\". Falls back to the default in Theme Settings.", "placeholder": "the Growth Tech Lab team", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_news_read", "label": "Read time (minutes)", "name": "read_time", "type": "number", "instructions": "Leave empty to work it out from the content.", "min": 1, "step": 1, "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_news_hide_related", "label": "Hide \"Catch up on other news stories\"", "name": "hide_related", "type": "true_false", "instructions": "The carousel of other stories shows at the end of every story unless this is ticked.", "default_value": 0, "ui": 1, "ui_on_text": "Hidden", "ui_off_text": "Shown" }
+    ],
+    "location": [ [ { "param": "post_type", "operator": "==", "value": "news" } ] ],
+    "menu_order": 0,
+    "position": "side",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0
+}

@@ -1,0 +1,16 @@
+{
+    "key": "group_gt_block_media_gallery",
+    "title": "Block: Media Gallery",
+    "fields": [
+        {
+            "key": "field_gt_mdg_images", "label": "Images", "name": "images", "type": "repeater",
+            "instructions": "One image shows on its own; two or more become a slider with arrows. Every image can be opened full size.",
+            "layout": "table", "button_label": "Add image", "min": 1,
+            "sub_fields": [
+                { "key": "field_gt_mdg_image", "label": "Image", "name": "image", "type": "image", "return_format": "id", "library": "all", "preview_size": "medium" }
+            ]
+        }
+    ],
+    "location": [ [ { "param": "block", "operator": "==", "value": "acf/media-gallery" } ] ],
+    "menu_order": 0, "position": "normal", "style": "default", "label_placement": "top", "instruction_placement": "label", "hide_on_screen": "", "active": true, "description": "", "show_in_rest": 0
+}

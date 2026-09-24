@@ -1,0 +1,42 @@
+{
+    "key": "group_gt_contact_page",
+    "title": "Contact page",
+    "fields": [
+        { "key": "field_gt_contact_heading", "label": "Title", "name": "heading", "type": "textarea", "instructions": "The big heading. Press Enter for the line break shown in the design. Leave empty to use the page title.", "placeholder": "Got a question?\nAsk the people who make it.", "rows": 2, "new_lines": "" },
+        { "key": "field_gt_contact_intro", "label": "Intro", "name": "intro", "type": "textarea", "instructions": "Short paragraph above the contact details.", "rows": 3, "new_lines": "" },
+
+        { "key": "field_gt_contact_tab_details", "label": "Contact details", "name": "", "type": "tab", "placement": "top" },
+        { "key": "field_gt_contact_address", "label": "Address", "name": "address", "type": "textarea", "instructions": "One line per row, as it should read on the page.", "placeholder": "Growth Technology Ltd.\nGreat Western Way\nTaunton, Somerset TA2 6BX", "rows": 3, "new_lines": "" },
+        { "key": "field_gt_contact_phone", "label": "Phone", "name": "phone", "type": "text", "placeholder": "+44 1823 325291", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_contact_email", "label": "Email", "name": "email", "type": "email", "placeholder": "enquiries@growthtechnology.com", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_contact_hours", "label": "Opening hours", "name": "hours", "type": "textarea", "instructions": "One line per row.", "placeholder": "Monday – Friday, 8.30am – 5.00pm", "rows": 2, "new_lines": "", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_contact_hours_note", "label": "Opening hours note", "name": "hours_note", "type": "text", "instructions": "Smaller grey line under the hours.", "placeholder": "Closed bank holidays", "wrapper": { "width": "50", "class": "", "id": "" } },
+
+        { "key": "field_gt_contact_tab_form", "label": "Form", "name": "", "type": "tab", "placement": "top" },
+        { "key": "field_gt_contact_form", "label": "Form", "name": "form_id", "type": "select", "instructions": "Which Gravity Form appears in the panel.", "choices": {}, "allow_null": 1, "ui": 1, "return_format": "value", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_contact_form_heading", "label": "Panel heading", "name": "form_heading", "type": "text", "instructions": "Shown above the form. Defaults to \"Send us a message\".", "placeholder": "Send us a message", "wrapper": { "width": "50", "class": "", "id": "" } },
+
+        { "key": "field_gt_contact_tab_map", "label": "Map", "name": "", "type": "tab", "placement": "top" },
+        { "key": "field_gt_contact_map", "label": "Location", "name": "map_location", "type": "google_map", "instructions": "Search for the address or drag the pin. Leave empty to hide the map. Needs the Google Maps key in Theme Settings → Shop Settings.", "center_lat": "51.0286", "center_lng": "-3.1129", "zoom": 14 },
+        { "key": "field_gt_contact_map_zoom", "label": "Zoom", "name": "map_zoom", "type": "number", "instructions": "1 (world) to 20 (building). The design sits at 13.", "default_value": 13, "min": 1, "max": 20, "step": 1, "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_contact_map_image", "label": "Fallback image", "name": "map_image", "type": "image", "instructions": "Shown instead of the live map when no Google Maps key or location is set.", "return_format": "id", "library": "all", "preview_size": "medium", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_contact_map_title", "label": "Card title", "name": "map_card_title", "type": "text", "instructions": "Heading on the black card over the map.", "placeholder": "Growth Technology Head Office", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_contact_map_address", "label": "Card address", "name": "map_card_address", "type": "textarea", "instructions": "One line per row. Defaults to the address above.", "placeholder": "Great Western Way, Taunton,\nSomerset TA2 6BX", "rows": 2, "new_lines": "", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_contact_map_link", "label": "Card link", "name": "map_card_link", "type": "link", "instructions": "Leave empty to link to Google directions for the location above.", "return_format": "array" },
+
+        { "key": "field_gt_contact_tab_callout", "label": "Callout card", "name": "", "type": "tab", "placement": "top" },
+        { "key": "field_gt_contact_callout_title", "label": "Title", "name": "callout_title", "type": "text", "instructions": "Leave empty to hide the whole card.", "placeholder": "Looking for a product near you?" },
+        { "key": "field_gt_contact_callout_text", "label": "Text", "name": "callout_text", "type": "textarea", "placeholder": "Our stockist locator searches by place and by product.", "rows": 2, "new_lines": "" },
+        { "key": "field_gt_contact_callout_link", "label": "Button", "name": "callout_link", "type": "link", "instructions": "The link text and URL for the card.", "return_format": "array" }
+    ],
+    "location": [ [ { "param": "page_template", "operator": "==", "value": "page-templates/page-contact.php" } ] ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0
+}

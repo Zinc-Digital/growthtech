@@ -1,0 +1,17 @@
+{
+    "key": "group_gt_block_stats_row",
+    "title": "Block: Stats Row",
+    "fields": [
+        {
+            "key": "field_gt_str_stats", "label": "Stats", "name": "stats", "type": "repeater",
+            "instructions": "Four in the design; the row divides evenly however many are added.",
+            "layout": "table", "button_label": "Add stat", "min": 1,
+            "sub_fields": [
+                { "key": "field_gt_str_value", "label": "Figure", "name": "value", "type": "text", "placeholder": "40+" },
+                { "key": "field_gt_str_label", "label": "Label", "name": "label", "type": "text", "placeholder": "Years of formulation" }
+            ]
+        }
+    ],
+    "location": [ [ { "param": "block", "operator": "==", "value": "acf/stats-row" } ] ],
+    "menu_order": 0, "position": "normal", "style": "default", "label_placement": "top", "instruction_placement": "label", "hide_on_screen": "", "active": true, "description": "", "show_in_rest": 0
+}

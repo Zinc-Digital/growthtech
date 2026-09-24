@@ -1,0 +1,20 @@
+{
+    "key": "group_gt_block_fact_list",
+    "title": "Block: Fact List",
+    "fields": [
+        { "key": "field_gt_ftl_heading", "label": "Heading", "name": "heading", "type": "textarea", "instructions": "Press Enter for a deliberate line break.", "rows": 2, "new_lines": "" },
+        { "key": "field_gt_ftl_image", "label": "Image", "name": "image", "type": "image", "return_format": "id", "library": "all", "preview_size": "medium", "wrapper": { "width": "50", "class": "", "id": "" } },
+        { "key": "field_gt_ftl_side", "label": "Image side", "name": "image_side", "type": "button_group", "choices": { "left": "Left", "right": "Right" }, "default_value": "left", "return_format": "value", "wrapper": { "width": "25", "class": "", "id": "" } },
+        { "key": "field_gt_ftl_bg", "label": "Background", "name": "background", "type": "color_picker", "instructions": "The design uses #F4F4F4.", "default_value": "#F4F4F4", "enable_opacity": 0, "return_format": "string", "wrapper": { "width": "25", "class": "", "id": "" } },
+        {
+            "key": "field_gt_ftl_facts", "label": "Facts", "name": "facts", "type": "repeater",
+            "layout": "block", "button_label": "Add fact", "min": 1,
+            "sub_fields": [
+                { "key": "field_gt_ftl_title", "label": "Claim", "name": "title", "type": "text", "placeholder": "In-house nutrient chemists formulate every product" },
+                { "key": "field_gt_ftl_text", "label": "Detail", "name": "text", "type": "text", "placeholder": "Nothing white-labelled, nothing borrowed — every bottle starts in our own lab." }
+            ]
+        }
+    ],
+    "location": [ [ { "param": "block", "operator": "==", "value": "acf/fact-list" } ] ],
+    "menu_order": 0, "position": "normal", "style": "default", "label_placement": "top", "instruction_placement": "label", "hide_on_screen": "", "active": true, "description": "", "show_in_rest": 0
+}

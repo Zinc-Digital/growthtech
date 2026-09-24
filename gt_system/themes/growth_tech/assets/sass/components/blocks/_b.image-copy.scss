@@ -1,0 +1,235 @@
+// ---------------------------------------------------------------------------
+// Block: Image & Copy — Figma 384:2551 (Frames 183 and 207)
+//
+// 100px gutters / 1240 content: a 544 image column, an 80 gap and a 616 copy
+// column set 40 apart. The quote card is a black panel, 30 padding, with its
+// eyebrow tucked into the bottom right.
+// ---------------------------------------------------------------------------
+
+$ic-font: "DM Sans", #{$primary_font};
+
+.b-image-copy {
+  // Sections are spaced from above in this design, and each instance can set
+  // its own in the editor; a band pads itself top and bottom instead.
+  padding: var(--ic-space-top, 110px) 0 var(--ic-space-bottom, 0);
+
+  // Only a banded instance paints a background, so the default stays on the page.
+  &--banded {
+    padding: var(--ic-space-top, 100px) 0 var(--ic-space-bottom, 100px);
+    background-color: var(--ic-bg, transparent);
+  }
+
+  // stretch, not flex-start: the image column takes the height of the taller
+  // column, which is how the design draws it (544 x 653 beside a 653 copy).
+  &__inner {
+    display: flex;
+    align-items: stretch;
+    gap: 80px;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 100px;
+  }
+
+  &--center &__inner {
+    align-items: center;
+  }
+
+  &--image-right &__inner {
+    flex-direction: row-reverse;
+  }
+
+  &__media {
+    flex: 0 1 544px;
+    max-width: 544px;
+  }
+
+  // Fills the stretched column, cropping rather than letterboxing. Where the
+  // row is shorter than the image (a centred instance, or a stacked one) the
+  // percentage resolves to auto and the image keeps its own height.
+  &__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__content {
+    display: flex;
+    flex: 1 1 616px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+    min-width: 0;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 60px;
+    font-weight: $font-700;
+    line-height: 65px;
+    letter-spacing: -1.2px;
+    color: #000;
+  }
+
+  &__text {
+    font-family: $ic-font;
+    font-size: 15px;
+    font-weight: $font-400;
+    line-height: 25px;
+    color: rgba(0, 0, 0, 0.75);
+
+    // p/li carry the theme's base 16/22, which beats inheritance.
+    p,
+    li {
+      margin: 0;
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+    }
+
+    p + p {
+      margin-top: 25px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-position: from-font;
+
+      &:hover,
+      &:focus-visible {
+        color: #000;
+      }
+    }
+  }
+
+  // -- quote card -------------------------------------------------------------
+  &__quote {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 100%;
+    margin: 0;
+    padding: 30px;
+    background-color: #000;
+  }
+
+  &__quote-text {
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+    p {
+      margin: 0;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 30px;
+      font-weight: $font-700;
+      line-height: 40px;
+      letter-spacing: 0.6px;
+      color: color(white);
+    }
+  }
+
+  &__quote-tag {
+    font-family: $ic-font;
+    font-size: 10px;
+    font-weight: $font-500;
+    line-height: 13px;
+    letter-spacing: 1px;
+    text-align: right;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 25px;
+  }
+
+  &__link {
+    font-family: $ic-font;
+    font-size: 14px;
+    font-weight: $font-700;
+    line-height: 18.2px;
+    color: #000;
+    text-decoration: underline;
+    text-underline-position: from-font;
+    text-decoration-thickness: 1px;
+    transition: text-decoration-thickness 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      color: #000;
+      text-decoration-thickness: 2px;
+    }
+  }
+}
+
+@media (max-width: $xl - 1px) {
+  .b-image-copy {
+    padding-top: min(var(--ic-space-top, 110px), 70px);
+
+    &__inner {
+      gap: 50px;
+      padding: 0 50px;
+    }
+
+    &__media {
+      flex-basis: 460px;
+    }
+  }
+}
+
+@media (max-width: $md - 1px) {
+  .b-image-copy {
+    padding-top: min(var(--ic-space-top, 110px), 60px);
+
+    &__inner,
+    &--image-right &__inner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 40px;
+      padding: 0 25px;
+    }
+
+    &__media {
+      flex-basis: auto;
+      width: 100%;
+      max-width: none;
+    }
+
+    &__img {
+      height: auto;
+    }
+
+    &__title {
+      font-size: 44px;
+      line-height: 48px;
+      letter-spacing: -0.9px;
+    }
+  }
+}
+
+@media (max-width: $sm - 1px) {
+  .b-image-copy {
+    padding-top: min(var(--ic-space-top, 110px), 45px);
+
+    &__title {
+      font-size: 36px;
+      line-height: 40px;
+      letter-spacing: -0.7px;
+    }
+
+    &__quote {
+      padding: 25px 20px;
+    }
+
+    &__quote-text p {
+      font-size: 24px;
+      line-height: 32px;
+    }
+  }
+}
