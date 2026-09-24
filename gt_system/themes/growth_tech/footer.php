@@ -170,8 +170,9 @@ $gt_socials = gt_social_links();
 							?>
 						</li>
 
-						<?php if ( $gt_credit ) : ?>
-							<li><?php echo esc_html( $gt_credit ); ?></li>
+						<?php if ( trim( (string) $gt_credit ) ) : ?>
+							<?php // Markup is allowed here so the credit can carry a link. ?>
+							<li><?php echo wp_kses_post( $gt_credit ); ?></li>
 						<?php endif; ?>
 					</ul>
 				</div>

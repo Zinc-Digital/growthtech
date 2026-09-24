@@ -31,7 +31,10 @@ function gt_academy_register() {
 		'guide',
 		array(
 			'labels'            => array(
-				'name'          => __( 'Categories', 'gt' ),
+				// `name` titles the box on Appearance > Menus, where a bare
+				// "Categories" is indistinguishable from the posts one;
+				// `menu_name` keeps the submenu under Plant Academy short.
+				'name'          => __( 'Plant Academy categories', 'gt' ),
 				'singular_name' => __( 'Category', 'gt' ),
 				'menu_name'     => __( 'Categories', 'gt' ),
 				'add_new_item'  => __( 'Add category', 'gt' ),

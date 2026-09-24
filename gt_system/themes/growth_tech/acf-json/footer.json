@@ -11,7 +11,11 @@
             "instructions": "The band above the footer. It can be hidden on individual pages from the page editor.",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "", "class": "", "id": "" },
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
             "placement": "top",
             "endpoint": 0
         },
@@ -24,7 +28,11 @@
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "50", "class": "", "id": "" },
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
             "default_value": "",
             "maxlength": "",
             "placeholder": "Join the growth club.",
@@ -40,7 +48,11 @@
             "instructions": "Leave empty to hide the button.",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "50", "class": "", "id": "" },
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
             "return_format": "array"
         },
         {
@@ -52,7 +64,11 @@
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "", "class": "", "id": "" },
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
             "default_value": "",
             "maxlength": "",
             "rows": 3,
@@ -68,7 +84,11 @@
             "instructions": "Fades to black at the bottom so it blends into the footer.",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "", "class": "", "id": "" },
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
             "return_format": "id",
             "library": "all",
             "preview_size": "medium"
@@ -82,7 +102,11 @@
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "", "class": "", "id": "" },
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
             "placement": "top",
             "endpoint": 0
         },
@@ -95,7 +119,11 @@
             "instructions": "One line per line, as it should appear.",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "50", "class": "", "id": "" },
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
             "default_value": "",
             "maxlength": "",
             "rows": 5,
@@ -107,16 +135,19 @@
             "label": "Credit line",
             "name": "footer_credit",
             "aria-label": "",
-            "type": "text",
-            "instructions": "Shown under the copyright. The copyright line itself is generated automatically.",
+            "type": "textarea",
+            "instructions": "Shown under the copyright. Links and basic HTML are allowed \u2014 e.g. Website by &lt;a href=\"https://zinc.digital\"&gt;Zinc Digital&lt;/a&gt;. The copyright line itself is generated automatically.",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "50", "class": "", "id": "" },
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
             "default_value": "",
-            "maxlength": "",
             "placeholder": "Website by Zinc Digital",
-            "prepend": "",
-            "append": ""
+            "rows": 2,
+            "new_lines": ""
         }
     ],
     "location": [
