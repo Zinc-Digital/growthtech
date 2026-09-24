@@ -1,0 +1,18 @@
+{
+    "key": "group_gt_block_page_content",
+    "title": "Block: Page Content",
+    "fields": [
+        { "key": "field_gt_pgc_title", "label": "Page title", "name": "title", "type": "text", "instructions": "Leave empty to use the page's own title.", "placeholder": "Terms and Conditions" },
+        {
+            "key": "field_gt_pgc_sections", "label": "Sections", "name": "sections", "type": "repeater",
+            "instructions": "One per sub-heading. Either part can be left empty — a section with copy alone runs straight on.",
+            "layout": "row", "button_label": "Add section", "min": 0,
+            "sub_fields": [
+                { "key": "field_gt_pgc_heading", "label": "Sub-heading", "name": "heading", "type": "text", "instructions": "Optional serif sub-heading.", "placeholder": "Sub header titles" },
+                { "key": "field_gt_pgc_text", "label": "Copy", "name": "text", "type": "wysiwyg", "tabs": "visual", "toolbar": "basic", "media_upload": 0, "delay": 0 }
+            ]
+        }
+    ],
+    "location": [ [ { "param": "block", "operator": "==", "value": "acf/page-content" } ] ],
+    "menu_order": 0, "position": "normal", "style": "default", "label_placement": "top", "instruction_placement": "label", "hide_on_screen": "", "active": true, "description": "", "show_in_rest": 0
+}

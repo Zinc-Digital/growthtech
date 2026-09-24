@@ -253,6 +253,20 @@ function register_acf_block_types() {
 		'icon'				=> 'editor-ul'
 	));
 
+	// Terms / Privacy / Cookies — Figma 384:3067. The plain-copy page template.
+	acf_register_block_type(array(
+		'name'				=> 'page-content',
+		'title'				=> __('Page Content', 'gt'),
+		'description'		=> __('A page title over sub-headings and copy — the Terms, Privacy and Cookies template.', 'gt'),
+		'render_template'	=> 'template-parts/blocks/page-content.php',
+		'category'			=> 'formatting',
+		'keywords'			=> array('page', 'content', 'terms', 'privacy', 'legal'),
+		'mode'				=> 'preview',
+		'supports'			=> array('mode' => true, 'anchor' => true, 'align' => false, 'jsx' => false),
+		'example'			=> array('attributes' => array('mode' => 'preview', 'data' => array('is_example' => true))),
+		'icon'				=> 'media-text'
+	));
+
 	acf_register_block_type(array(
 		'name'				=> 'timeline',
 		'title'				=> __('Timeline', 'gt'),
