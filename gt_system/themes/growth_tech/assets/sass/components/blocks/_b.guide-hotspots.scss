@@ -255,11 +255,18 @@
     background-color: #000;
     color: color(white);
     text-decoration: none;
-    transition: background-color 0.3s ease;
 
+    // Hover underlines the label and leaves the chip as it is — the black
+    // ground has to hold against whatever the photo puts behind it.
     &:hover,
     &:focus-visible {
-      background-color: rgba(0, 0, 0, 0.82);
+      color: color(white);
+    }
+
+    &:hover .b-hotspots__pin-label,
+    &:focus-visible .b-hotspots__pin-label {
+      text-decoration: underline;
+      text-underline-position: from-font;
     }
 
     &.is-static {
