@@ -31,10 +31,10 @@ $intl      = 'international' === $pre['region'];
 	</label>
 
 	<label class="stockists-controls__search">
-		<span class="screen-reader-text"><?php esc_html_e( 'Search by town, city or store name', 'gt' ); ?></span>
+		<span class="screen-reader-text"><?php esc_html_e( 'Search by town, city, postcode or store name', 'gt' ); ?></span>
 		<span class="stockists-controls__search-icon" aria-hidden="true"><?php gt_icon_svg( 'search' ); ?></span>
 		<input type="search" class="stockists-controls__input" data-stockists-search value="<?php echo esc_attr( $pre['q'] ); ?>"
-			placeholder="<?php esc_attr_e( 'Search by town, city or store name...', 'gt' ); ?>" autocomplete="off" />
+			placeholder="<?php esc_attr_e( 'Search by town, city, postcode or store name...', 'gt' ); ?>" autocomplete="off" />
 	</label>
 
 	<label class="stockists-controls__product">

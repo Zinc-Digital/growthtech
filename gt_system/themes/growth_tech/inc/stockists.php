@@ -521,8 +521,17 @@ function gt_stockist_is_visible( array $s, array $pre ) {
 	if ( $pre['brand'] && ! in_array( $pre['brand'], $s['brands'], true ) ) {
 		return false;
 	}
-	if ( '' !== $pre['q'] && false === strpos( $s['search'], mb_strtolower( $pre['q'] ) ) ) {
-		return false;
+	if ( '' !== $pre['q'] ) {
+		$q = mb_strtolower( $pre['q'] );
+		// Also compare with the spaces taken out, so "TA11NL" finds a stockist
+		// whose postcode is stored as "TA1 1NL".
+		$compact = function ( $value ) {
+			return preg_replace( '/\s+/u', '', $value );
+		};
+		if ( false === strpos( $s['search'], $q )
+			&& false === strpos( $compact( $s['search'] ), $compact( $q ) ) ) {
+			return false;
+		}
 	}
 	return true;
 }

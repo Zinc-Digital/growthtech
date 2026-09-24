@@ -82,10 +82,20 @@
 		return true;
 	}
 
+	/** Spaces removed, so "TA11NL" finds a stockist stored as "TA1 1NL". */
+	function compact(value) {
+		return String(value).replace(/\s+/g, '');
+	}
+
 	function apply() {
 		var q = state.q.toLowerCase();
+		var qc = compact(q);
 		var pool = cards.filter(function (c) { return inRegion(c) && matchesFilters(c); });
-		var visible = q ? pool.filter(function (c) { return c.search.indexOf(q) !== -1; }) : pool;
+		var visible = q
+			? pool.filter(function (c) {
+				return c.search.indexOf(q) !== -1 || (qc && compact(c.search).indexOf(qc) !== -1);
+			})
+			: pool;
 		var noteText = '';
 
 		if (state.origin) {
