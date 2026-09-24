@@ -1,0 +1,499 @@
+// ---------------------------------------------------------------------------
+// Search results — Figma 384:2947
+//
+// A full-bleed grey band carrying the query and the count, then the tab row
+// and one section per result group at the standard 50px gutter (1340 content).
+// Products use the shop's own .product-card in a four-up grid; every other
+// group uses the 284 x 190 thumbnail row.
+// ---------------------------------------------------------------------------
+
+.search-results {
+  padding-bottom: 70px;
+
+  &__inner {
+    width: 100%;
+    max-width: 1440px; // 1340 content + 2 x 50 gutter
+    margin: 0 auto;
+    padding: 0 50px;
+  }
+
+  &__empty {
+    padding: 70px 0 30px;
+    max-width: 700px;
+  }
+
+  &__empty-title {
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 35px;
+    font-weight: $font-700;
+    line-height: 42px;
+    letter-spacing: -0.7px;
+    color: #000;
+  }
+
+  &__empty-text {
+    margin: 15px 0 0;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 15px;
+    font-weight: $font-300;
+    line-height: 25px;
+    color: rgba(0, 0, 0, 0.75);
+  }
+
+  &__empty-links {
+    margin: 30px 0 0;
+  }
+}
+
+// -- the grey band ----------------------------------------------------------
+
+.search-band {
+  background-color: #f4f4f4;
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 50px;
+  }
+
+  // items-end in the design: the icon sits on the type's baseline box, not
+  // centred on the 50px input.
+  &__form {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  &__submit {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: none;
+    border: 0;
+    color: #000;
+    cursor: pointer;
+
+    svg {
+      display: block;
+      width: 25px;
+      height: 25px;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  &__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 50px;
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    appearance: none;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 35px;
+    font-weight: $font-700;
+    line-height: normal;
+    color: #000;
+
+    &::placeholder {
+      color: rgba(0, 0, 0, 0.3);
+    }
+
+    &:focus {
+      outline: 0;
+    }
+
+    // Safari and Chrome add their own clear button inside type="search".
+    &::-webkit-search-decoration,
+    &::-webkit-search-cancel-button,
+    &::-webkit-search-results-button,
+    &::-webkit-search-results-decoration {
+      appearance: none;
+    }
+  }
+
+  &__count {
+    margin: 0;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 12px;
+    font-weight: $font-400;
+    line-height: normal;
+    color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+// -- the tab row ------------------------------------------------------------
+//
+// The hairline runs the full width and goes black under the chosen tab, so it
+// lives on the list and each link overlaps it by its own 1px border.
+
+.search-tabs {
+  margin-top: 35px;
+
+  &__list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0 25px;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    list-style: none;
+  }
+
+  &__item {
+    margin: 0;
+  }
+
+  &__link {
+    display: block;
+    padding: 10px 5px;
+    margin-bottom: -1px;
+    border-bottom: 1px solid transparent;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 15px;
+    font-weight: $font-500;
+    line-height: normal;
+    color: rgba(0, 0, 0, 0.25);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s ease, border-color 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    &.is-current {
+      border-bottom-color: #000;
+      color: #000;
+    }
+  }
+}
+
+// -- a result group ---------------------------------------------------------
+
+.search-group {
+  margin-top: 35px;
+
+  // 70 between groups, 35 from the tabs to the first — Figma 384:2949.
+  & + & {
+    margin-top: 70px;
+  }
+
+  &__head {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 35px;
+    font-weight: $font-700;
+    line-height: normal;
+    letter-spacing: -0.7px;
+    color: #000;
+  }
+
+  &__count {
+    margin: 0;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 12px;
+    font-weight: $font-500;
+    line-height: 29px;
+    color: rgba(0, 0, 0, 0.25);
+    white-space: nowrap;
+  }
+}
+
+.search-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 45px 20px;
+  margin: 25px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.search-list {
+  margin: 35px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+// -- one thumbnail row ------------------------------------------------------
+
+.search-row {
+  margin: 0;
+
+  & + & {
+    margin-top: 35px;
+    padding-top: 35px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+    color: #000;
+    text-decoration: none;
+  }
+
+  &__media {
+    display: block;
+    flex: 0 0 284px;
+    width: 284px;
+    height: 190px;
+    overflow: hidden;
+    background-color: rgba(35, 31, 32, 0.05);
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  &__link:hover &__img,
+  &__link:focus-visible &__img {
+    transform: scale(1.04);
+  }
+
+  &__body {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  &__kicker {
+    display: block;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 12px;
+    font-weight: $font-400;
+    line-height: normal;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  &__title {
+    display: block;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 35px;
+    font-weight: $font-700;
+    line-height: 42px;
+    letter-spacing: -0.7px;
+    color: #000;
+  }
+
+  &__text {
+    display: block;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 12px;
+    font-weight: $font-300;
+    line-height: 24px;
+    color: rgba(0, 0, 0, 0.75);
+  }
+
+  &__cta {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 15px;
+    color: #000;
+  }
+
+  &__cta-label {
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 12px;
+    font-weight: $font-400;
+    line-height: normal;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  &__cta svg {
+    display: block;
+    flex: 0 0 auto;
+    width: 14px;
+    height: 11px;
+    transition: transform 0.3s ease;
+  }
+
+  &__link:hover &__cta svg,
+  &__link:focus-visible &__cta svg {
+    transform: translateX(4px);
+  }
+}
+
+// -- tablet -----------------------------------------------------------------
+
+@media (max-width: $xl - 1px) {
+  .search-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .search-row {
+    &__link {
+      gap: 35px;
+    }
+
+    &__title {
+      font-size: 30px;
+      line-height: 36px;
+    }
+  }
+}
+
+@media (max-width: $md - 1px) {
+  .search-results {
+    padding-bottom: 50px;
+
+    &__inner {
+      padding: 0 25px;
+    }
+
+    &__empty {
+      padding: 50px 0 20px;
+    }
+  }
+
+  .search-band__inner {
+    padding: 35px 25px;
+  }
+
+  .search-band__input {
+    height: 42px;
+    font-size: 28px;
+  }
+
+  .search-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 35px 20px;
+  }
+
+  .search-group + .search-group {
+    margin-top: 50px;
+  }
+
+  .search-row {
+    &__media {
+      flex-basis: 220px;
+      width: 220px;
+      height: 147px;
+    }
+
+    &__title {
+      font-size: 26px;
+      line-height: 32px;
+    }
+  }
+}
+
+// -- mobile: the row stacks, the CTA drops under the copy -------------------
+
+@media (max-width: $sm - 1px) {
+  .search-band__inner {
+    gap: 20px;
+    padding: 30px 25px;
+  }
+
+  .search-band__submit svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .search-band__input {
+    height: 36px;
+    font-size: 24px;
+  }
+
+  .search-tabs {
+    margin-top: 25px;
+
+    &__list {
+      gap: 0 20px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      // Keeps the hairline under the row while it scrolls sideways.
+      scrollbar-width: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+
+  .search-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 30px;
+  }
+
+  .search-group {
+    &__head {
+      gap: 12px;
+    }
+
+    &__title {
+      font-size: 28px;
+      letter-spacing: -0.6px;
+    }
+  }
+
+  .search-list {
+    margin-top: 25px;
+  }
+
+  .search-row {
+    & + & {
+      margin-top: 25px;
+      padding-top: 25px;
+    }
+
+    &__link {
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    &__media {
+      flex: 0 0 100%;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 284 / 190;
+    }
+
+    &__body {
+      flex: 0 0 100%;
+    }
+
+    &__title {
+      font-size: 24px;
+      line-height: 30px;
+      letter-spacing: -0.5px;
+    }
+  }
+}

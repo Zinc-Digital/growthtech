@@ -88,6 +88,10 @@ function gt_theme_support() {
 	// "Better knowledge" band on the product page: 1340 x 300, plus 2x.
 	add_image_size( 'gt-knowledge', 2680, 600, true );
 	add_image_size( 'gt-knowledge-sm', 1340, 300, true );
+
+	// Search result row thumbnail: 284 x 190, cropped, plus 2x.
+	add_image_size( 'gt-search-thumb', 568, 380, true );
+	add_image_size( 'gt-search-thumb-sm', 284, 190, true );
 }
 add_action('after_setup_theme', 'gt_theme_support');
 
@@ -218,3 +222,4 @@ include_once __DIR__ . '/inc/woocommerce-ajax.php';
 include_once __DIR__ . '/inc/stockists.php';
 include_once __DIR__ . '/inc/contact.php';
 include_once __DIR__ . '/inc/stockists-import-export.php';
+include_once __DIR__ . '/inc/search.php';
