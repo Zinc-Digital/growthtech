@@ -253,6 +253,33 @@ function register_acf_block_types() {
 		'icon'				=> 'editor-ul'
 	));
 
+	// Plant Academy — Figma 384:2106. Both reusable beyond the Academy pages.
+	acf_register_block_type(array(
+		'name'				=> 'academy-categories',
+		'title'				=> __('Academy Categories', 'gt'),
+		'description'		=> __('The Plant Academy categories listed beside a heading, on a grey band.', 'gt'),
+		'render_template'	=> 'template-parts/blocks/academy-categories.php',
+		'category'			=> 'formatting',
+		'keywords'			=> array('academy', 'categories', 'guides', 'topics'),
+		'mode'				=> 'preview',
+		'supports'			=> array('mode' => true, 'anchor' => true, 'align' => false, 'jsx' => false),
+		'example'			=> array('attributes' => array('mode' => 'preview', 'data' => array('is_example' => true))),
+		'icon'				=> 'category'
+	));
+
+	acf_register_block_type(array(
+		'name'				=> 'guide-hotspots',
+		'title'				=> __('Guide Hotspots', 'gt'),
+		'description'		=> __('A wide photo with guides pinned onto it, dragged into place in the editor.', 'gt'),
+		'render_template'	=> 'template-parts/blocks/guide-hotspots.php',
+		'category'			=> 'formatting',
+		'keywords'			=> array('hotspots', 'pins', 'photo', 'guides'),
+		'mode'				=> 'preview',
+		'supports'			=> array('mode' => true, 'anchor' => true, 'align' => false, 'jsx' => false),
+		'example'			=> array('attributes' => array('mode' => 'preview', 'data' => array('is_example' => true))),
+		'icon'				=> 'location'
+	));
+
 	// Terms / Privacy / Cookies — Figma 384:3067. The plain-copy page template.
 	acf_register_block_type(array(
 		'name'				=> 'page-content',
@@ -300,6 +327,14 @@ function gt_block_editor_assets() {
 		get_template_directory_uri() . '/assets/js/admin-tag-map.js',
 		array( 'jquery' ),
 		gt_asset_version( '/assets/js/admin-tag-map.js' ),
+		true
+	);
+
+	wp_enqueue_script(
+		'gt-admin-hotspot-map',
+		get_template_directory_uri() . '/assets/js/admin-hotspot-map.js',
+		array( 'jquery' ),
+		gt_asset_version( '/assets/js/admin-hotspot-map.js' ),
 		true
 	);
 }

@@ -2,19 +2,159 @@
     "key": "group_gt_block_media_list",
     "title": "Block: Media List",
     "fields": [
-        { "key": "field_gt_mdl_heading", "label": "Heading", "name": "heading", "type": "text", "instructions": "Optional serif sub-heading above the rows.", "placeholder": "Sub Title" },
         {
-            "key": "field_gt_mdl_rows", "label": "Rows", "name": "rows", "type": "repeater",
-            "instructions": "Each row is a thumbnail beside its copy. The thumbnail opens full size in a lightbox.",
-            "layout": "block", "button_label": "Add row", "min": 1,
+            "key": "field_gt_mdl_heading",
+            "label": "Heading",
+            "name": "heading",
+            "type": "text",
+            "instructions": "Optional serif sub-heading above the rows.",
+            "placeholder": "Sub Title"
+        },
+        {
+            "key": "field_gt_mdl_rows",
+            "label": "Rows",
+            "name": "rows",
+            "type": "repeater",
+            "instructions": "Each row is a thumbnail beside its copy. The thumbnail opens full size in a lightbox \u2014 or plays, when the row carries a video.",
+            "layout": "block",
+            "button_label": "Add row",
+            "min": 1,
             "sub_fields": [
-                { "key": "field_gt_mdl_image", "label": "Image", "name": "image", "type": "image", "return_format": "id", "library": "all", "preview_size": "medium", "wrapper": { "width": "50", "class": "", "id": "" } },
-                { "key": "field_gt_mdl_eyebrow", "label": "Eyebrow", "name": "eyebrow", "type": "text", "instructions": "Small capitalised line above the title.", "placeholder": "Sub title", "wrapper": { "width": "50", "class": "", "id": "" } },
-                { "key": "field_gt_mdl_title", "label": "Title", "name": "title", "type": "text", "placeholder": "Main title" },
-                { "key": "field_gt_mdl_text", "label": "Text", "name": "text", "type": "textarea", "rows": 3, "new_lines": "" }
+                {
+                    "key": "field_gt_mdl_type",
+                    "label": "Media",
+                    "name": "media",
+                    "type": "button_group",
+                    "instructions": "A video row shows the image with a play control, and plays in the lightbox.",
+                    "choices": {
+                        "image": "Image",
+                        "file": "Upload",
+                        "youtube": "YouTube",
+                        "vimeo": "Vimeo"
+                    },
+                    "default_value": "image",
+                    "return_format": "value",
+                    "allow_null": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    }
+                },
+                {
+                    "key": "field_gt_mdl_image",
+                    "label": "Image",
+                    "name": "image",
+                    "type": "image",
+                    "return_format": "id",
+                    "library": "all",
+                    "preview_size": "medium",
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "instructions": "The thumbnail. On a video row this is the still it shows before playing."
+                },
+                {
+                    "key": "field_gt_mdl_vfile",
+                    "label": "Video file",
+                    "name": "video_file",
+                    "type": "file",
+                    "instructions": "MP4 works everywhere; keep it small enough to stream.",
+                    "return_format": "id",
+                    "library": "all",
+                    "mime_types": "mp4,m4v,webm",
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_gt_mdl_type",
+                                "operator": "==",
+                                "value": "file"
+                            }
+                        ]
+                    ]
+                },
+                {
+                    "key": "field_gt_mdl_vurl",
+                    "label": "Video link",
+                    "name": "video_url",
+                    "type": "url",
+                    "instructions": "Paste the page link \u2014 youtu.be/\u2026, youtube.com/watch?v=\u2026 or vimeo.com/\u2026 \u2014 and the embed is worked out for you.",
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_gt_mdl_type",
+                                "operator": "==",
+                                "value": "youtube"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_gt_mdl_type",
+                                "operator": "==",
+                                "value": "vimeo"
+                            }
+                        ]
+                    ]
+                },
+                {
+                    "key": "field_gt_mdl_eyebrow",
+                    "label": "Eyebrow",
+                    "name": "eyebrow",
+                    "type": "text",
+                    "instructions": "Small capitalised line above the title.",
+                    "placeholder": "Sub title",
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    }
+                },
+                {
+                    "key": "field_gt_mdl_title",
+                    "label": "Title",
+                    "name": "title",
+                    "type": "text",
+                    "placeholder": "Main title"
+                },
+                {
+                    "key": "field_gt_mdl_text",
+                    "label": "Text",
+                    "name": "text",
+                    "type": "textarea",
+                    "rows": 3,
+                    "new_lines": ""
+                }
             ]
         }
     ],
-    "location": [ [ { "param": "block", "operator": "==", "value": "acf/media-list" } ] ],
-    "menu_order": 0, "position": "normal", "style": "default", "label_placement": "top", "instruction_placement": "label", "hide_on_screen": "", "active": true, "description": "", "show_in_rest": 0
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "acf/media-list"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0
 }

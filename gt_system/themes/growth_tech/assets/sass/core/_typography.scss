@@ -57,7 +57,10 @@ li,
 span,
 button,
 label {
-  font-size: rem(16);
+  // No font-size here on purpose: a fixed size on these makes every one of
+  // them ignore the size its component sets on a parent, which is why blocks
+  // kept having to restate `font-size: inherit`. `li` still takes 16 from the
+  // `p, li` rule above; the rest now inherit.
   line-height: rem(22);
   font-weight: $font-400;
   -webkit-font-smoothing: antialiased;

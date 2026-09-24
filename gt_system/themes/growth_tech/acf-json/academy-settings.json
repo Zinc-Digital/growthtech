@@ -1,0 +1,49 @@
+{
+    "key": "group_gt_academy_settings",
+    "title": "Plant Academy",
+    "fields": [
+        {
+            "key": "field_gt_as_byline",
+            "label": "Default byline",
+            "name": "academy_default_byline",
+            "type": "text",
+            "instructions": "Used on guides that name no author of their own.",
+            "placeholder": "The Growth Technology lab team"
+        },
+        {
+            "key": "field_gt_as_rel_heading",
+            "label": "\u201cExplore other guides\u201d heading",
+            "name": "academy_related_heading",
+            "type": "text",
+            "instructions": "The band at the foot of every guide.",
+            "placeholder": "Explore other guides."
+        },
+        {
+            "key": "field_gt_as_rel_text",
+            "label": "\u201cExplore other guides\u201d text",
+            "name": "academy_related_text",
+            "type": "textarea",
+            "rows": 2,
+            "new_lines": "br",
+            "placeholder": "Handpicked resources to help your indoor garden thrive."
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "theme-general-settings"
+            }
+        ]
+    ],
+    "menu_order": 30,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0
+}

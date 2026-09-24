@@ -121,6 +121,26 @@
 				});
 			}
 
+			/**
+			 * Some blocks keep a panel of copy per slide beside the track
+			 * (the Content Slider's heading and text). Show the one belonging
+			 * to the slide on screen; without this the first simply stays put.
+			 */
+			var $copySet = targetFor($slider, '[data-slider-copy]');
+
+			function showCopy(index) {
+				if (!$copySet || !$copySet.length) {
+					return;
+				}
+
+				$copySet.children().each(function (i) {
+					var isCurrent = i === index;
+					$(this)
+						.toggleClass('is-active', isCurrent)
+						.attr('aria-hidden', isCurrent ? null : 'true');
+				});
+			}
+
 			// Cloned slides would otherwise be reachable by keyboard and read out
 			// twice; hide them whenever Slick rebuilds them.
 			$slider.on('init reInit afterChange', function (event, slick, current) {
@@ -129,7 +149,14 @@
 					.find('a, button')
 					.attr('tabindex', '-1');
 
-				markProgress(typeof current === 'number' ? current : (slick.currentSlide || 0));
+				var index = typeof current === 'number' ? current : (slick.currentSlide || 0);
+				markProgress(index);
+				showCopy(index);
+			});
+
+			// Swap the copy as the slide leaves, so the two move together.
+			$slider.on('beforeChange', function (event, slick, from, to) {
+				showCopy(to);
 			});
 
 			if (autoplay && isProgress) {

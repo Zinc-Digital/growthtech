@@ -1,0 +1,376 @@
+// ---------------------------------------------------------------------------
+// Block: Guide Hotspots — Figma 384:2174 (Frame 156)
+//
+// Heading and copy with the slider controls opposite, then a 1340 x 560 photo
+// carrying black chips positioned as percentages so they hold their spot at
+// every width.
+// ---------------------------------------------------------------------------
+
+.b-hotspots {
+  // 90 above and 54 below — the band sits 90 under the category band and its
+  // photo 134 above the products copy, which carries 80 of that itself
+  // (Figma 384:2106: frames end 1662 / 1752 and 2447 / 2581).
+  padding: 90px 0 54px;
+
+  &__inner {
+    position: relative; // the controls sit over the copy column's right
+    width: 100%;
+    max-width: 1440px; // 1340 content + 2 x 50 gutter
+    margin: 0 auto;
+    padding: 0 50px;
+  }
+
+  // One panel per slide, stacked in a single grid cell above the track so the
+  // photo below never moves, whatever length a slide's copy runs to. The copy
+  // is capped at the design's 690, well clear of the controls on the right.
+  &__copy-set {
+    display: grid;
+    margin: 0 0 25px;
+  }
+
+  &__copy {
+    grid-area: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 690px;
+    min-width: 0;
+  }
+
+  &__copy-set[data-slider-copy] > .b-hotspots__copy {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease;
+  }
+
+  &__copy-set[data-slider-copy] > .b-hotspots__copy.is-active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 60px;
+    font-weight: $font-700;
+    line-height: 65px;
+    letter-spacing: -1.2px;
+    color: #000;
+  }
+
+  &__text {
+    margin: 0;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 15px;
+    font-weight: $font-400;
+    line-height: 25px;
+    color: rgba(0, 0, 0, 0.75);
+  }
+
+  &__controls {
+    position: absolute;
+    z-index: 2;
+    top: 75px; // level with the text line, as Figma 384:2179 places it
+    right: 50px;
+    display: flex;
+    align-items: center;
+    gap: 50px;
+  }
+
+  // The progress indicator is built out of Slick's dots — squares for the
+  // slides either side, a bar for the one being read.
+  &__progress {
+    // slick-theme positions the dots absolutely under the slider; here they
+    // sit in the controls row, so put them back in normal flow.
+    .slick-dots {
+      position: static;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: auto;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .slick-dots li {
+      width: 15px;
+      height: 15px;
+      margin: 0;
+      line-height: 0;
+      transition: width 0.3s ease, height 0.3s ease;
+    }
+
+    .slick-dots li button {
+      display: block;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      overflow: hidden;
+      text-indent: -9999px;
+      background-color: rgba(0, 0, 0, 0.15);
+      border: 0;
+      border-radius: 0;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      // slick-theme draws a bullet with an icon font this theme does not ship.
+      &::before {
+        content: none;
+      }
+    }
+
+    .slick-dots li.is-past button {
+      background-color: #000;
+    }
+
+    .slick-dots li.slick-active {
+      width: 80px;
+      height: 3px;
+
+      button {
+        position: relative;
+        background-color: rgba(0, 0, 0, 0.15); // the unfilled track
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          background-color: #000;
+        }
+      }
+    }
+  }
+
+  &__arrows {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .slick-prev,
+    .slick-next {
+      position: static;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 35px;
+      height: 35px;
+      padding: 0;
+      background-color: rgba(0, 0, 0, 0.08);
+      // _p.home.scss declares an unscoped `.slick-prev/.slick-next` rule that
+      // paints arrow.svg as a background; clear it and its text-indent.
+      background-image: none;
+      border: 0;
+      color: #000;
+      cursor: pointer;
+      text-indent: 0;
+      transform: none;
+      transition: background-color 0.3s ease, color 0.3s ease;
+
+      &::before,
+      &::after {
+        content: none;
+      }
+
+      &:not(.slick-disabled):hover,
+      &:not(.slick-disabled):focus-visible {
+        background-color: #393536;
+        color: color(white);
+      }
+
+      &.slick-disabled {
+        background-color: #000;
+        color: color(white);
+        opacity: 0.3;
+        cursor: default;
+      }
+    }
+
+    // The next arrow leads, so it carries the solid treatment the design draws.
+    .slick-next:not(.slick-disabled) {
+      background-color: #000;
+      color: color(white);
+    }
+
+    .slick-prev .block-slider__arrow {
+      transform: rotate(180deg);
+    }
+
+    .block-slider__arrow {
+      display: block;
+      width: 18px;
+      height: 15px;
+    }
+  }
+
+  // Slick lays the track out itself; the slides just need to fill their cell.
+  // slick-theme also hangs a 30px margin off every initialised slider, which
+  // would push the next section down — this block sets its own spacing.
+  &__photos.slick-slider {
+    display: block;
+    margin-bottom: 0;
+  }
+
+  &__photos .slick-slide {
+    height: auto;
+  }
+
+  &__photos {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__photo {
+    margin: 0;
+  }
+
+  &__stage {
+    position: relative;
+    aspect-ratio: 1340 / 560;
+    overflow: hidden;
+    background-color: rgba(35, 31, 32, 0.05);
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  // Positioned by its top-left, matching the editor's drag map and the Feature
+  // Band's tags — so where a chip is dropped is where it lands.
+  &__pin {
+    position: absolute;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    max-width: calc(100% - 20px);
+    padding: 14px 16px 14px 14px;
+    background-color: #000;
+    color: color(white);
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+
+    &:hover,
+    &:focus-visible {
+      background-color: rgba(0, 0, 0, 0.82);
+    }
+
+    &.is-static {
+      pointer-events: none;
+    }
+  }
+
+  &__pin-icon {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 29px;
+    height: 31px;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  &__pin-label {
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 14px;
+    font-weight: $font-400;
+    line-height: normal;
+    text-transform: capitalize;
+  }
+}
+
+@media (max-width: $xl - 1px) {
+  .b-hotspots {
+    &__title {
+      font-size: 48px;
+      line-height: 54px;
+      letter-spacing: -1px;
+    }
+
+    &__controls {
+      gap: 30px;
+    }
+  }
+}
+
+@media (max-width: $md - 1px) {
+  .b-hotspots {
+    padding: 70px 0 40px;
+
+    &__inner {
+      padding: 0 25px;
+    }
+
+    &__controls {
+      position: static;
+      justify-content: flex-end;
+      gap: 30px;
+      margin-bottom: 25px;
+    }
+
+    &__title {
+      font-size: 44px;
+      line-height: 48px;
+      letter-spacing: -0.9px;
+    }
+
+    &__pin {
+      padding: 10px 12px;
+    }
+
+    &__pin-icon {
+      width: 22px;
+      height: 24px;
+    }
+
+    &__pin-label {
+      font-size: 12px;
+    }
+  }
+}
+
+// On a phone the chips would cover the photo, so they become a list beneath it.
+
+@media (max-width: $sm - 1px) {
+  .b-hotspots {
+    padding: 50px 0 30px;
+
+    &__title {
+      font-size: 34px;
+      line-height: 38px;
+      letter-spacing: -0.7px;
+    }
+
+    &__stage {
+      display: flex;
+      flex-direction: column;
+      aspect-ratio: auto;
+      background: none;
+    }
+
+    &__img {
+      aspect-ratio: 284 / 190;
+    }
+
+    &__pin {
+      position: static;
+      width: 100%;
+      max-width: none;
+      margin-top: 2px;
+      transform: none;
+    }
+  }
+}

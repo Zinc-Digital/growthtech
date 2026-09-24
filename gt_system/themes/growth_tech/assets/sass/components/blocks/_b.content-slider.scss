@@ -35,6 +35,34 @@ $cs-muted: rgba(0, 0, 0, 0.1);
     max-width: 465px;
   }
 
+  // The panel carries the column's own rhythm now that the heading, text and
+  // buttons live inside it rather than beside each other in __content.
+  &__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px; // Figma 384:4542
+  }
+
+  // One panel per slide, stacked in the same grid cell so the column keeps its
+  // height and nothing below it shifts as the slides change.
+  &__copy-set[data-slider-copy] {
+    display: grid;
+    width: 100%;
+  }
+
+  &__copy-set[data-slider-copy] > .b-content-slider__copy {
+    grid-area: 1 / 1;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease;
+  }
+
+  &__copy-set[data-slider-copy] > .b-content-slider__copy.is-active {
+    opacity: 1;
+    visibility: visible;
+  }
+
   &__title {
     margin: 0;
     font-family: "Cormorant Garamond", serif;
@@ -206,6 +234,108 @@ $cs-muted: rgba(0, 0, 0, 0.1);
   }
 
   // -- controls --------------------------------------------------------------
+  // -- product tiles — Figma 384:2215 ---------------------------------------
+  //
+  // The same card the shop uses: a solid ground with the shot contained on it,
+  // then the name and its meta line beneath. No photo, no scrim, no overlay.
+
+  // The photo tile centres its overlaid caption; a product tile reads from the
+  // left, like the shop card it mirrors.
+  &--tiles &__slide {
+    display: block;
+    height: auto;
+    padding: 0;
+    overflow: visible;
+    background: none;
+    text-align: left;
+  }
+
+  // A photo tile is a fixed-height card; a product tile is sized by its own
+  // 320 x 370 ground, so the slide and the track must give way to it. The
+  // height is restated at every breakpoint for the photo style, so each one is
+  // released here too.
+  &--tiles &__slides.slick-initialized .slick-slide {
+    height: auto;
+  }
+
+  &__tile-link {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; // Figma 384:2215
+    color: #000;
+    text-decoration: none;
+  }
+
+  &__tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 320 / 370;
+    padding: 32px;
+    overflow: hidden;
+    background-color: rgba(35, 31, 32, 0.05);
+  }
+
+  &__tile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.4s ease;
+  }
+
+  &__tile-link:hover &__tile-img,
+  &__tile-link:focus-visible &__tile-img {
+    transform: scale(1.04);
+  }
+
+  &__tile-body {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 5px;
+  }
+
+  &__tile-title {
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 18px;
+    font-weight: $font-500;
+    line-height: normal;
+    color: #000;
+  }
+
+  &__tile-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 12px;
+    font-weight: $font-400;
+    line-height: normal;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  &__tile-dot {
+    flex: 0 0 auto;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: currentColor;
+  }
+
+  // On black the ground and the type invert with it.
+  &--dark#{&}--tiles &__tile {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+
+  &--dark#{&}--tiles &__tile-title {
+    color: color(white);
+  }
+
+  &--dark#{&}--tiles &__tile-meta {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
   &__controls {
     display: flex;
     align-items: center;
@@ -519,6 +649,19 @@ $cs-muted: rgba(0, 0, 0, 0.1);
     color: rgba(255, 255, 255, 0.75);
   }
 
+  // Figma 384:2678 — on black the primary button is white with black type,
+  // the reverse of the .btn-flat--dark it carries on a light ground.
+  .btn-flat {
+    background-color: color(white);
+    color: #000;
+
+    &:hover,
+    &:focus-visible {
+      background-color: rgba(255, 255, 255, 0.85);
+      color: #000;
+    }
+  }
+
   // The text link beside the button sits on black here.
   .b-content-slider__link {
     color: color(white);
@@ -529,11 +672,11 @@ $cs-muted: rgba(0, 0, 0, 0.1);
     }
   }
 
-  // Arrows invert: the muted one goes white-on-dark rather than grey-on-white.
+  // Figma 384:2698 — prev sits black on the black band with a white glyph,
+  // next is the solid white one. Disabled simply fades in place.
   .b-content-slider__arrows {
-    .slick-prev,
-    .slick-next {
-      background-color: rgba(255, 255, 255, 0.1);
+    .slick-prev {
+      background-color: #000;
       color: color(white);
     }
 
@@ -543,17 +686,19 @@ $cs-muted: rgba(0, 0, 0, 0.1);
     }
 
     .slick-prev:not(.slick-disabled):hover,
+    .slick-prev:not(.slick-disabled):focus-visible {
+      background-color: #393536;
+      color: color(white);
+    }
+
     .slick-next:not(.slick-disabled):hover,
-    .slick-prev:not(.slick-disabled):focus-visible,
     .slick-next:not(.slick-disabled):focus-visible {
-      background-color: color(white);
+      background-color: rgba(255, 255, 255, 0.85);
       color: #000;
     }
 
     .slick-prev.slick-disabled,
     .slick-next.slick-disabled {
-      background-color: color(white);
-      color: #000;
       opacity: 0.3;
     }
 
@@ -562,13 +707,23 @@ $cs-muted: rgba(0, 0, 0, 0.1);
     }
   }
 
+  // Figma 384:2699 — white at 10% for what is still to come, solid white for
+  // what has been seen, and the active bar fills white over the same 10% track.
   .b-content-slider__progress {
     .slick-dots li button {
-      background-color: rgba(255, 255, 255, 0.35);
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .slick-dots li.is-past button {
+      background-color: color(white);
     }
 
     .slick-dots li.slick-active button {
-      background-color: color(white);
+      background-color: rgba(255, 255, 255, 0.1); // the unfilled track
+
+      &::after {
+        background-color: color(white);
+      }
     }
   }
 }

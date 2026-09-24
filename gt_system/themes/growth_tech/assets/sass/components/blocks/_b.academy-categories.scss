@@ -1,0 +1,228 @@
+// ---------------------------------------------------------------------------
+// Block: Academy Categories — Figma 384:2120 (Frame 90)
+//
+// Grey band, 60/75 inset. Copy 542 wide on the left, the category list 642 on
+// the right, each row divided by a hairline 20 either side.
+// ---------------------------------------------------------------------------
+
+.b-academy-cats {
+  background-color: #f4f4f4;
+
+  &__inner {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 106px;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 60px 75px;
+  }
+
+  &__copy {
+    display: flex;
+    flex: 0 1 542px;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 542px;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 60px;
+    font-weight: $font-700;
+    line-height: 65px;
+    letter-spacing: -1.2px;
+    color: #000;
+  }
+
+  &__text {
+    max-width: 470px;
+    margin: 0;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 15px;
+    font-weight: $font-400;
+    line-height: 25px;
+    color: rgba(0, 0, 0, 0.75);
+  }
+
+  &__list {
+    flex: 0 1 642px;
+    max-width: 642px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    margin: 0;
+
+    & + & {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    color: #000;
+    text-decoration: none;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  // items-end so the tagline sits on the category name's baseline.
+  &__head {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  &__name {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 35px;
+    font-weight: $font-700;
+    line-height: 42px;
+    letter-spacing: -0.7px;
+    color: #000;
+  }
+
+  &__tagline {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 20px;
+    font-weight: $font-700;
+    line-height: 33px;
+    letter-spacing: -0.4px;
+    color: rgba(0, 0, 0, 0.25);
+    transition: color 0.2s ease;
+  }
+
+  &__desc {
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 12px;
+    font-weight: $font-300;
+    line-height: 24px;
+    color: rgba(0, 0, 0, 0.75);
+  }
+
+  &__cta {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 15px;
+    color: #000;
+  }
+
+  &__count {
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 12px;
+    font-weight: $font-400;
+    line-height: normal;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  &__cta svg {
+    display: block;
+    flex: 0 0 auto;
+    width: 14px;
+    height: 11px;
+    transition: transform 0.3s ease;
+  }
+
+  &__link:hover &__cta svg,
+  &__link:focus-visible &__cta svg {
+    transform: translateX(4px);
+  }
+
+  &__link:hover &__tagline,
+  &__link:focus-visible &__tagline {
+    color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+@media (max-width: $xl - 1px) {
+  .b-academy-cats {
+    &__inner {
+      gap: 60px;
+      padding: 50px;
+    }
+
+    &__title {
+      font-size: 48px;
+      line-height: 54px;
+      letter-spacing: -1px;
+    }
+
+    &__name {
+      font-size: 30px;
+      line-height: 36px;
+    }
+  }
+}
+
+// -- the two columns stack ---------------------------------------------------
+
+@media (max-width: $md - 1px) {
+  .b-academy-cats {
+    &__inner {
+      flex-direction: column;
+      gap: 40px;
+      padding: 50px 25px;
+    }
+
+    &__copy,
+    &__list {
+      flex: 0 0 auto;
+      max-width: none;
+      width: 100%;
+    }
+
+    &__title {
+      font-size: 44px;
+      line-height: 48px;
+      letter-spacing: -0.9px;
+    }
+  }
+}
+
+@media (max-width: $sm - 1px) {
+  .b-academy-cats {
+    &__inner {
+      padding: 40px 25px;
+    }
+
+    &__title {
+      font-size: 34px;
+      line-height: 38px;
+      letter-spacing: -0.7px;
+    }
+
+    &__link {
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    &__name {
+      font-size: 26px;
+      line-height: 32px;
+    }
+
+    &__tagline {
+      font-size: 17px;
+      line-height: 26px;
+    }
+  }
+}

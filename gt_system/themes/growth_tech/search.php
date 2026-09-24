@@ -14,7 +14,10 @@ $results = gt_search_results( $term );
 $groups  = $results['groups'];
 $tab     = $results['tab'];
 $total   = (int) $results['total'];
-$shown   = 'all' === $tab ? $groups : array_intersect_key( $groups, array( $tab => true ) );
+// Not $paged / $pages: those are WordPress globals, and the_post() inside the
+// group loop below would overwrite them before the pagination is rendered.
+$search_paged = (int) $results['paged'];
+$search_pages = (int) $results['pages'];
 ?>
 
 <main class="page-wrapper search-results">
@@ -26,15 +29,30 @@ $shown   = 'all' === $tab ? $groups : array_intersect_key( $groups, array( $tab 
 		<?php get_template_part( 'template-parts/search/tabs', null, array( 'term' => $term, 'tab' => $tab, 'groups' => $groups, 'total' => $total ) ); ?>
 
 		<?php
+		// gt_search_results() has already decided which groups have rows on
+		// this page, so anything without a query simply falls outside it.
 		$rendered = 0;
-		foreach ( $shown as $group ) {
-			if ( ! $group['count'] || ! $group['query'] instanceof WP_Query ) {
+		foreach ( $groups as $group ) {
+			if ( ! $group['query'] instanceof WP_Query ) {
 				continue;
 			}
 			get_template_part( 'template-parts/search/group', null, array( 'group' => $group ) );
 			$rendered++;
 		}
 		?>
+
+		<?php if ( $rendered ) : ?>
+			<?php
+			get_template_part( 'template-parts/pagination', null, array(
+				'paged' => $search_paged,
+				'pages' => $search_pages,
+				'label' => __( 'Result pages', 'gt' ),
+				'link'  => function ( $page ) use ( $tab, $term ) {
+					return gt_search_page_url( $tab, $term, $page );
+				},
+			) );
+			?>
+		<?php endif; ?>
 
 		<?php if ( ! $rendered ) : ?>
 			<div class="search-results__empty">

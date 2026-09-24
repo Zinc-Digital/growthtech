@@ -1,0 +1,301 @@
+{
+    "key": "group_gt_block_hotspots",
+    "title": "Block: Guide Hotspots",
+    "fields": [
+        {
+            "key": "field_gt_hs_heading",
+            "label": "Default heading",
+            "name": "heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Used by any slide that sets no heading of its own.",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placeholder": "Explore propagation guides.",
+            "default_value": "",
+            "maxlength": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_gt_hs_text",
+            "label": "Default text",
+            "name": "text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Used by any slide that sets no text of its own.",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 3,
+            "new_lines": "br",
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_gt_hs_photos",
+            "label": "Slides",
+            "name": "photos",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "One photo per slide. Add a second and the band becomes a slider with the progress bar and arrows the design shows.",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "row",
+            "button_label": "Add slide",
+            "min": 1,
+            "max": 0,
+            "rows_per_page": 20,
+            "collapsed": "",
+            "sub_fields": [
+                {
+                    "key": "field_gt_hs_slide_heading",
+                    "label": "Heading",
+                    "name": "heading",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "This slide's own heading. Leave empty to use the default above.",
+                    "required": false,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "placeholder": "Explore propagation guides.",
+                    "default_value": "",
+                    "maxlength": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_gt_hs_photos"
+                },
+                {
+                    "key": "field_gt_hs_slide_text",
+                    "label": "Text",
+                    "name": "text",
+                    "aria-label": "",
+                    "type": "textarea",
+                    "instructions": "This slide's own line of copy. Leave empty to use the default above.",
+                    "required": false,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "rows": 2,
+                    "new_lines": "br",
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "parent_repeater": "field_gt_hs_photos"
+                },
+                {
+                    "key": "field_gt_hs_image",
+                    "label": "Photo",
+                    "name": "image",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "Wide crop — 1340 x 560 in the design.",
+                    "required": false,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "id",
+                    "preview_size": "medium",
+                    "library": "all",
+                    "min_width": 0,
+                    "min_height": 0,
+                    "min_size": 0,
+                    "max_width": 0,
+                    "max_height": 0,
+                    "max_size": 0,
+                    "mime_types": "",
+                    "parent_repeater": "field_gt_hs_photos"
+                },
+                {
+                    "key": "field_gt_hs_pins",
+                    "label": "Guides pinned on this slide",
+                    "name": "pins",
+                    "aria-label": "",
+                    "type": "repeater",
+                    "instructions": "Drag each chip onto the photo above to place it. The Across \/ Down values stay editable if you would rather type them.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "layout": "row",
+                    "min": 0,
+                    "max": 0,
+                    "collapsed": "",
+                    "button_label": "Add guide",
+                    "rows_per_page": 20,
+                    "sub_fields": [
+                        {
+                            "key": "field_gt_hs_pin_guide",
+                            "label": "Guide",
+                            "name": "guide",
+                            "aria-label": "",
+                            "type": "post_object",
+                            "instructions": "",
+                            "required": false,
+                            "conditional_logic": false,
+                            "wrapper": {
+                                "width": "40",
+                                "class": "",
+                                "id": ""
+                            },
+                            "post_type": [
+                                "guide"
+                            ],
+                            "return_format": "id",
+                            "allow_null": 1,
+                            "ui": 1,
+                            "taxonomy": [],
+                            "multiple": 0,
+                            "bidirectional_target": [],
+                            "parent_repeater": "field_gt_hs_pins"
+                        },
+                        {
+                            "key": "field_gt_hs_pin_label",
+                            "label": "Label",
+                            "name": "label",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "Defaults to the guide's title.",
+                            "required": false,
+                            "conditional_logic": false,
+                            "wrapper": {
+                                "width": "40",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "parent_repeater": "field_gt_hs_pins"
+                        },
+                        {
+                            "key": "field_gt_hs_pin_icon",
+                            "label": "Icon",
+                            "name": "icon",
+                            "aria-label": "",
+                            "type": "image",
+                            "instructions": "",
+                            "required": false,
+                            "conditional_logic": false,
+                            "wrapper": {
+                                "width": "20",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "id",
+                            "preview_size": "thumbnail",
+                            "mime_types": "svg,png",
+                            "library": "all",
+                            "min_width": 0,
+                            "min_height": 0,
+                            "min_size": 0,
+                            "max_width": 0,
+                            "max_height": 0,
+                            "max_size": 0,
+                            "parent_repeater": "field_gt_hs_pins"
+                        },
+                        {
+                            "key": "field_gt_hs_pin_x",
+                            "label": "Across (%)",
+                            "name": "x",
+                            "aria-label": "",
+                            "type": "number",
+                            "instructions": "",
+                            "required": false,
+                            "conditional_logic": false,
+                            "wrapper": {
+                                "width": "50",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": 50,
+                            "min": 0,
+                            "max": 100,
+                            "step": "0.1",
+                            "append": "%",
+                            "placeholder": "",
+                            "prepend": "",
+                            "parent_repeater": "field_gt_hs_pins"
+                        },
+                        {
+                            "key": "field_gt_hs_pin_y",
+                            "label": "Down (%)",
+                            "name": "y",
+                            "aria-label": "",
+                            "type": "number",
+                            "instructions": "",
+                            "required": false,
+                            "conditional_logic": false,
+                            "wrapper": {
+                                "width": "50",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": 50,
+                            "min": 0,
+                            "max": 100,
+                            "step": "0.1",
+                            "append": "%",
+                            "placeholder": "",
+                            "prepend": "",
+                            "parent_repeater": "field_gt_hs_pins"
+                        }
+                    ],
+                    "parent_repeater": "field_gt_hs_photos"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "acf\/guide-hotspots"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "display_title": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1790251961
+}

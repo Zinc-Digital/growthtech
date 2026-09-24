@@ -10,12 +10,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-/** Results per group on the "All" tab, where every group is stacked. */
-const GT_SEARCH_ALL_GRID = 8;
-const GT_SEARCH_ALL_LIST = 4;
-
-/** Results shown when a single group's tab is chosen. */
-const GT_SEARCH_GROUP_MAX = 48;
+/** Results to a page. Fewer than this and the pagination stays hidden. */
+const GT_SEARCH_PER_PAGE = 12;
 
 /**
  * The result groups, in the order the design stacks them.
@@ -36,6 +32,7 @@ function gt_search_groups() {
 			'singular'  => __( '%s product', 'gt' ),
 			'plural'    => __( '%s products', 'gt' ),
 			'cta'       => '',
+			'read_time' => false,
 		),
 		'academy'   => array(
 			'label'     => __( 'Plant Academy', 'gt' ),
@@ -45,6 +42,7 @@ function gt_search_groups() {
 			'singular'  => __( '%s guide', 'gt' ),
 			'plural'    => __( '%s guides', 'gt' ),
 			'cta'       => __( 'Read guide', 'gt' ),
+			'read_time' => true,
 		),
 		'news'      => array(
 			'label'     => __( 'News', 'gt' ),
@@ -54,6 +52,7 @@ function gt_search_groups() {
 			'singular'  => __( '%s story', 'gt' ),
 			'plural'    => __( '%s stories', 'gt' ),
 			'cta'       => __( 'Read story', 'gt' ),
+			'read_time' => true,
 		),
 		'documents' => array(
 			'label'     => __( 'Useful Documents', 'gt' ),
@@ -63,6 +62,17 @@ function gt_search_groups() {
 			'singular'  => __( '%s document', 'gt' ),
 			'plural'    => __( '%s documents', 'gt' ),
 			'cta'       => __( 'Open document', 'gt' ),
+			'read_time' => false,
+		),
+		'pages'     => array(
+			'label'     => __( 'Pages', 'gt' ),
+			'post_type' => 'page',
+			'layout'    => 'list',
+			/* translators: %s: number of results */
+			'singular'  => __( '%s page', 'gt' ),
+			'plural'    => __( '%s pages', 'gt' ),
+			'cta'       => __( 'View page', 'gt' ),
+			'read_time' => false,
 		),
 	);
 
@@ -103,18 +113,37 @@ function gt_search_tab_url( $tab, $term ) {
 	return add_query_arg( array_map( 'rawurlencode', $args ), home_url( '/' ) );
 }
 
+/** The page being viewed. */
+function gt_search_paged() {
+	$paged = (int) get_query_var( 'paged' );
+	if ( ! $paged ) {
+		$paged = (int) get_query_var( 'page' );
+	}
+
+	return max( 1, $paged );
+}
+
+/** A results URL for one tab and page. */
+function gt_search_page_url( $tab, $term, $page = 1 ) {
+	$url = gt_search_tab_url( $tab, $term );
+
+	return $page > 1 ? add_query_arg( 'paged', (int) $page, $url ) : $url;
+}
+
 /**
  * Run one group's search.
  *
- * Counts are always the true total; only the number returned is capped, so a
- * heading can read "24 products" while the All tab shows the first eight.
+ * Counts are always the group's true total; the limit and offset only choose
+ * the slice on this page, so a heading can read "24 products" while the page
+ * shows four of them.
  *
- * @param array  $group One entry from gt_search_groups().
- * @param string $term  The search term.
- * @param int    $limit How many posts to return.
+ * @param array  $group  One entry from gt_search_groups().
+ * @param string $term   The search term.
+ * @param int    $limit  How many posts to return.
+ * @param int    $offset How many to skip.
  * @return WP_Query
  */
-function gt_search_group_query( array $group, $term, $limit ) {
+function gt_search_group_query( array $group, $term, $limit, $offset = 0 ) {
 	if ( ! post_type_exists( $group['post_type'] ) || '' === trim( $term ) ) {
 		return new WP_Query( array( 'post__in' => array( 0 ), 'post_type' => 'post' ) );
 	}
@@ -125,6 +154,7 @@ function gt_search_group_query( array $group, $term, $limit ) {
 		'post_type'           => $group['post_type'],
 		'post_status'         => 'publish',
 		'posts_per_page'      => (int) $limit,
+		'offset'              => (int) $offset,
 		'ignore_sticky_posts' => true,
 		'no_found_rows'       => false,
 	);
@@ -156,39 +186,63 @@ function gt_search_group_query( array $group, $term, $limit ) {
 /**
  * Every group's results for this request, ready for the template.
  *
+ * Results are paged as one run of GT_SEARCH_PER_PAGE, in group order, so a
+ * page can end part-way through a group and the next one carries on where it
+ * left off. Group headings only appear when that group has rows on this page.
+ *
  * @param string $term The search term.
- * @return array{groups: array, total: int} Each group gains 'query', 'count'
- *                                          and 'slug'.
+ * @return array{groups: array, total: int, tab: string, paged: int, pages: int}
  */
 function gt_search_results( $term ) {
 	$tab    = gt_search_tab();
-	$groups = array();
+	$defs   = gt_search_groups();
+	$counts = array();
 	$total  = 0;
 
-	foreach ( gt_search_groups() as $slug => $group ) {
-		// On a single group's tab the others are not queried at all — but their
-		// counts are still needed for the tab row, so run a count-only query.
-		$wanted = 'all' === $tab || $tab === $slug;
-		if ( $wanted ) {
-			$limit = 'all' === $tab
-				? ( 'grid' === $group['layout'] ? GT_SEARCH_ALL_GRID : GT_SEARCH_ALL_LIST )
-				: GT_SEARCH_GROUP_MAX;
-		} else {
-			$limit = 1;
-		}
+	// Every group is counted, whichever tab is showing — the tab row needs them.
+	foreach ( $defs as $slug => $group ) {
+		$counts[ $slug ] = (int) gt_search_group_query( $group, $term, 1 )->found_posts;
+		$total          += $counts[ $slug ];
+	}
 
-		$query  = gt_search_group_query( $group, $term, $limit );
-		$count  = (int) $query->found_posts;
-		$total += $count;
+	$scope = 'all' === $tab ? $total : ( $counts[ $tab ] ?? 0 );
+	$pages = max( 1, (int) ceil( $scope / GT_SEARCH_PER_PAGE ) );
+	$paged = min( gt_search_paged(), $pages );
+
+	// Walk the groups, skipping whatever sits before this page's window.
+	$skip   = ( $paged - 1 ) * GT_SEARCH_PER_PAGE;
+	$room   = GT_SEARCH_PER_PAGE;
+	$groups = array();
+
+	foreach ( $defs as $slug => $group ) {
+		$count = $counts[ $slug ];
+		$query = null;
+
+		if ( ( 'all' === $tab || $tab === $slug ) && $count > 0 && $room > 0 ) {
+			if ( $skip >= $count ) {
+				$skip -= $count;
+			} else {
+				$take  = min( $room, $count - $skip );
+				$query = gt_search_group_query( $group, $term, $take, $skip );
+				$skip  = 0;
+				$room -= $take;
+			}
+		}
 
 		$groups[ $slug ] = array_merge( $group, array(
 			'slug'  => $slug,
-			'query' => $wanted ? $query : null,
+			'query' => $query,
 			'count' => $count,
 		) );
 	}
 
-	return array( 'groups' => $groups, 'total' => $total, 'tab' => $tab );
+	return array(
+		'groups' => $groups,
+		'total'  => $total,
+		'tab'    => $tab,
+		'paged'  => $paged,
+		'pages'  => $pages,
+	);
 }
 
 /** "6 products" / "1 guide", using the group's own wording. */

@@ -3,14 +3,122 @@
     "title": "Block: Media Gallery",
     "fields": [
         {
-            "key": "field_gt_mdg_images", "label": "Images", "name": "images", "type": "repeater",
-            "instructions": "One image shows on its own; two or more become a slider with arrows. Every image can be opened full size.",
-            "layout": "table", "button_label": "Add image", "min": 1,
+            "key": "field_gt_mdg_images",
+            "label": "Images",
+            "name": "images",
+            "type": "repeater",
+            "instructions": "One item per slide. Each is an image, or a video that plays in the lightbox behind its still.",
+            "layout": "table",
+            "button_label": "Add image",
+            "min": 1,
             "sub_fields": [
-                { "key": "field_gt_mdg_image", "label": "Image", "name": "image", "type": "image", "return_format": "id", "library": "all", "preview_size": "medium" }
+                {
+                    "key": "field_gt_mdg_type",
+                    "label": "Media",
+                    "name": "media",
+                    "type": "button_group",
+                    "instructions": "A video item shows the image with a play control, and plays in the lightbox.",
+                    "choices": {
+                        "image": "Image",
+                        "file": "Upload",
+                        "youtube": "YouTube",
+                        "vimeo": "Vimeo"
+                    },
+                    "default_value": "image",
+                    "return_format": "value",
+                    "allow_null": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    }
+                },
+                {
+                    "key": "field_gt_mdg_image",
+                    "label": "Image",
+                    "name": "image",
+                    "type": "image",
+                    "return_format": "id",
+                    "library": "all",
+                    "preview_size": "medium",
+                    "instructions": "The slide itself. On a video item this is the still it shows before playing.",
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    }
+                },
+                {
+                    "key": "field_gt_mdg_vfile",
+                    "label": "Video file",
+                    "name": "video_file",
+                    "type": "file",
+                    "instructions": "MP4 works everywhere; keep it small enough to stream.",
+                    "return_format": "id",
+                    "library": "all",
+                    "mime_types": "mp4,m4v,webm",
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_gt_mdg_type",
+                                "operator": "==",
+                                "value": "file"
+                            }
+                        ]
+                    ]
+                },
+                {
+                    "key": "field_gt_mdg_vurl",
+                    "label": "Video link",
+                    "name": "video_url",
+                    "type": "url",
+                    "instructions": "Paste the page link \u2014 youtu.be/\u2026, youtube.com/watch?v=\u2026 or vimeo.com/\u2026 \u2014 and the embed is worked out for you.",
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_gt_mdg_type",
+                                "operator": "==",
+                                "value": "youtube"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_gt_mdg_type",
+                                "operator": "==",
+                                "value": "vimeo"
+                            }
+                        ]
+                    ]
+                }
             ]
         }
     ],
-    "location": [ [ { "param": "block", "operator": "==", "value": "acf/media-gallery" } ] ],
-    "menu_order": 0, "position": "normal", "style": "default", "label_placement": "top", "instruction_placement": "label", "hide_on_screen": "", "active": true, "description": "", "show_in_rest": 0
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "acf/media-gallery"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0
 }

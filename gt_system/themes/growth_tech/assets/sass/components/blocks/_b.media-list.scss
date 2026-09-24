@@ -134,6 +134,8 @@ $ml-font: "DM Sans", #{$primary_font};
   }
 }
 
+// A play control is the same badge as the zoom, carrying the play glyph
+// instead — `.media-zoom--play` stays as a hook, with nothing to override.
 .b-media-list__zoom {
   left: 10px;
   bottom: 10px;

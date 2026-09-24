@@ -1,0 +1,20 @@
+{
+    "key": "group_gt_block_academy_cats",
+    "title": "Block: Academy Categories",
+    "fields": [
+        { "key": "field_gt_ac_heading", "label": "Heading", "name": "heading", "type": "text", "instructions": "Renders as a level 2 heading.", "placeholder": "Learn the science. Master the grow." },
+        { "key": "field_gt_ac_text", "label": "Text", "name": "text", "type": "textarea", "rows": 4, "new_lines": "br" },
+        {
+            "key": "field_gt_ac_terms", "label": "Categories", "name": "categories", "type": "taxonomy",
+            "instructions": "Leave empty to list every Plant Academy category, in name order.",
+            "taxonomy": "academy_cat", "field_type": "multi_select", "add_term": 0, "save_terms": 0, "load_terms": 0, "return_format": "object", "multiple": 1, "allow_null": 1
+        },
+        {
+            "key": "field_gt_ac_exclude", "label": "Hide the category being read", "name": "exclude_current", "type": "true_false",
+            "instructions": "On a category archive, leave that category out of the list — as the design draws it.",
+            "default_value": 1, "ui": 1
+        }
+    ],
+    "location": [ [ { "param": "block", "operator": "==", "value": "acf/academy-categories" } ] ],
+    "menu_order": 0, "position": "normal", "style": "default", "label_placement": "top", "instruction_placement": "label", "hide_on_screen": "", "active": true, "description": "", "show_in_rest": 0
+}

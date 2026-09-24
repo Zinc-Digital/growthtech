@@ -1,0 +1,440 @@
+// ---------------------------------------------------------------------------
+// Plant Academy — Figma 384:2243 (category) and 384:2407 (guide)
+//
+// Both pages sit on the standard 50px gutter (1340 content). The category page
+// is a banner over the shared .guide-row list; the guide is a centred head and
+// hero over a two-column body with a sticky sidebar.
+// ---------------------------------------------------------------------------
+
+.academy-crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  font-family: "DM Sans", #{$primary_font};
+  font-size: 12px;
+  line-height: 15.6px;
+
+  // The base rule still hands spans a 22px leading; the row is one size.
+  &__crumb,
+  &__sep {
+    line-height: inherit;
+  }
+
+  &__crumb {
+    color: rgba(0, 0, 0, 0.5);
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      color: #000;
+      text-decoration: underline;
+    }
+
+    &.is-current {
+      font-weight: $font-500;
+      color: #000;
+    }
+  }
+
+  &__sep {
+    color: rgba(0, 0, 0, 0.5); // Figma 384:2244 — the same grey as the links
+  }
+}
+
+// -- category archive --------------------------------------------------------
+
+.academy-cat {
+  padding: 30px 0 70px;
+
+  &__inner {
+    width: 100%;
+    max-width: 1440px; // 1340 content + 2 x 50 gutter
+    margin: 0 auto;
+    padding: 0 50px;
+  }
+
+  &__hero {
+    margin: 36px 0 0;
+    overflow: hidden;
+  }
+
+  &__hero-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1340 / 325;
+    object-fit: cover;
+  }
+
+  &__empty {
+    margin: 40px 0 0;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 15px;
+    font-weight: $font-300;
+    line-height: 25px;
+    color: rgba(0, 0, 0, 0.75);
+  }
+}
+
+// The sort control is the News archive's, pushed to the right of the row.
+.academy-sort {
+  justify-content: flex-end;
+  margin-top: 54px;
+}
+
+// -- single guide ------------------------------------------------------------
+
+.guide {
+  padding: 30px 0 0;
+
+  &__inner {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 50px;
+  }
+
+  &__head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 900px;
+    margin: 45px auto 0;
+    text-align: center;
+  }
+
+  &__kicker {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    margin: 0 0 20px;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 12px;
+    font-weight: $font-400;
+    line-height: normal;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  &__title {
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 60px;
+    font-weight: $font-700;
+    line-height: 65px;
+    letter-spacing: -1.2px;
+    color: #000;
+  }
+
+  &__standfirst {
+    margin: 20px 0 0;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 15px;
+    font-weight: $font-300;
+    line-height: 25px;
+    color: rgba(0, 0, 0, 0.75);
+  }
+
+  // The hairline in the design sits between the standfirst and the byline.
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
+    margin: 30px 0 0;
+    padding-top: 30px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 12px;
+    font-weight: $font-400;
+    line-height: normal;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  &__hero {
+    margin: 45px 0 0;
+    overflow: hidden;
+  }
+
+  &__hero-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1096 / 330;
+    object-fit: cover;
+  }
+
+  &__layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 100px;
+    margin-top: 60px;
+    padding-bottom: 80px;
+  }
+
+  &__body {
+    flex: 1 1 auto;
+    min-width: 0;
+
+    // The body is a stack of blocks, none of which carries an outer margin of
+    // its own, so the rhythm between them belongs here.
+    > * + * {
+      margin-top: 45px;
+    }
+  }
+}
+
+// -- the guide's sidebar -----------------------------------------------------
+
+.guide-aside {
+  flex: 0 0 300px;
+  width: 300px;
+
+  &__sticky {
+    position: sticky;
+    top: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  &__panel {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  &__label {
+    margin: 0 0 5px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 12px;
+    font-weight: $font-400;
+    line-height: normal;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  &__toc,
+  &__products,
+  &__related {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__toc-item,
+  &__product,
+  &__related-item {
+    margin: 0;
+  }
+
+  &__toc-link {
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 13px;
+    font-weight: $font-400;
+    line-height: 20px;
+    color: rgba(0, 0, 0, 0.75);
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      color: #000;
+      text-decoration: underline;
+    }
+  }
+
+  &__product-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #000;
+    text-decoration: none;
+  }
+
+  &__product-media {
+    display: flex;
+    flex: 0 0 56px;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    padding: 6px;
+    background-color: rgba(35, 31, 32, 0.05);
+  }
+
+  &__product-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  &__product-body {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  &__product-name {
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 13px;
+    font-weight: $font-500;
+    line-height: 18px;
+  }
+
+  &__product-meta {
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 11px;
+    font-weight: $font-400;
+    line-height: normal;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  &__related-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__related-kicker {
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 10px;
+    font-weight: $font-400;
+    line-height: normal;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  &__related-link {
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 13px;
+    font-weight: $font-500;
+    line-height: 19px;
+    color: #000;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      text-decoration: underline;
+    }
+  }
+}
+
+// -- tablet ------------------------------------------------------------------
+
+@media (max-width: $xl - 1px) {
+  .guide {
+    &__layout {
+      gap: 60px;
+    }
+
+    &__title {
+      font-size: 50px;
+      line-height: 56px;
+      letter-spacing: -1px;
+    }
+  }
+
+  .guide-aside {
+    flex-basis: 260px;
+    width: 260px;
+  }
+}
+
+// The sidebar drops under the body rather than squeezing it.
+
+@media (max-width: $md - 1px) {
+  .academy-cat {
+    padding: 25px 0 50px;
+
+    &__inner {
+      padding: 0 25px;
+    }
+
+    &__hero {
+      margin-top: 25px;
+    }
+
+    // 1340 x 325 is a sliver at phone width, so the banner deepens.
+    &__hero-img {
+      aspect-ratio: 16 / 9;
+    }
+  }
+
+  .academy-sort {
+    margin-top: 35px;
+  }
+
+  .guide {
+    &__inner {
+      padding: 0 25px;
+    }
+
+    &__head {
+      margin-top: 35px;
+    }
+
+    &__title {
+      font-size: 44px;
+      line-height: 48px;
+      letter-spacing: -0.9px;
+    }
+
+    &__hero {
+      margin-top: 35px;
+    }
+
+    &__hero-img {
+      aspect-ratio: 16 / 9;
+    }
+
+    &__layout {
+      flex-direction: column;
+      gap: 50px;
+      margin-top: 45px;
+      padding-bottom: 60px;
+    }
+  }
+
+  .guide-aside {
+    flex: 0 0 auto;
+    width: 100%;
+
+    &__sticky {
+      position: static;
+      gap: 35px;
+    }
+  }
+}
+
+@media (max-width: $sm - 1px) {
+  .guide {
+    &__kicker {
+      gap: 15px;
+    }
+
+    &__title {
+      font-size: 34px;
+      line-height: 38px;
+      letter-spacing: -0.7px;
+    }
+
+    &__meta {
+      gap: 15px;
+    }
+  }
+}

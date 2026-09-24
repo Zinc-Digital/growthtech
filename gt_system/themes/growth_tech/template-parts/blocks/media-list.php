@@ -1,14 +1,18 @@
 <?php
 /**
  * Media List block — Figma 387:5948 (Frame 174). An optional serif heading
- * over rows of thumbnail + eyebrow + title + copy. Each thumbnail opens in
- * the shared lightbox.
+ * over rows of thumbnail + eyebrow + title + copy.
+ *
+ * A row is either an image, which opens full size in the shared lightbox, or a
+ * video — uploaded, YouTube or Vimeo — which plays there instead. Either way
+ * the row shows the same still; only the control on it changes.
  */
 
 $heading = (string) get_field( 'heading' );
 $rows    = get_field( 'rows' );
 $rows    = is_array( $rows ) ? array_values( array_filter( $rows, function ( $row ) {
-	return ! empty( $row['image'] ) || ! empty( $row['title'] ) || ! empty( $row['text'] );
+	return ! empty( $row['image'] ) || ! empty( $row['title'] ) || ! empty( $row['text'] )
+		|| ! empty( $row['video_file'] ) || ! empty( $row['video_url'] );
 } ) ) : array();
 
 if ( ! $rows ) {
@@ -39,6 +43,9 @@ wp_enqueue_script( 'gt-media-lightbox' );
 			$image_id = ! empty( $row['image'] ) ? (int) $row['image'] : 0;
 			$full     = $image_id ? wp_get_attachment_image_url( $image_id, 'full' ) : '';
 			$caption  = ! empty( $row['title'] ) ? $row['title'] : '';
+			$video    = gt_media_row_video( $row );
+			// Nothing to open if the row is an image with no full size behind it.
+			$openable = $video || $full;
 			?>
 			<li class="b-media-list__row">
 				<?php if ( $image_id ) : ?>
@@ -51,11 +58,16 @@ wp_enqueue_script( 'gt-media-lightbox' );
 							'loading' => 'lazy',
 						) );
 						?>
-						<?php if ( $full ) : ?>
-							<button type="button" class="b-media-list__zoom media-zoom" data-media-zoom
-								data-src="<?php echo esc_url( $full ); ?>" data-title="<?php echo esc_attr( $caption ); ?>"
-								aria-label="<?php echo esc_attr( $caption ? sprintf( /* translators: %s: row title */ __( 'Enlarge: %s', 'gt' ), $caption ) : __( 'Enlarge image', 'gt' ) ); ?>">
-								<?php gt_icon_svg( 'zoom' ); ?>
+						<?php if ( $openable ) : ?>
+							<?php
+							$label = $video
+								? ( $caption ? sprintf( /* translators: %s: row title */ __( 'Play: %s', 'gt' ), $caption ) : __( 'Play video', 'gt' ) )
+								: ( $caption ? sprintf( /* translators: %s: row title */ __( 'Enlarge: %s', 'gt' ), $caption ) : __( 'Enlarge image', 'gt' ) );
+							?>
+							<button type="button" class="b-media-list__zoom media-zoom<?php echo $video ? ' media-zoom--play' : ''; ?>"
+								<?php echo gt_lightbox_attrs( $video, $full, $caption ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the helper. ?>
+								aria-label="<?php echo esc_attr( $label ); ?>">
+								<?php gt_icon_svg( $video ? 'play' : 'zoom' ); ?>
 							</button>
 						<?php endif; ?>
 					</div>

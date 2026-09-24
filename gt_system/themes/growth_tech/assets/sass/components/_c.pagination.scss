@@ -1,0 +1,83 @@
+// ---------------------------------------------------------------------------
+// Pagination — Figma 384:4631 (Frame 236)
+//
+// Page numbers left, the arrow pair right. Shared by the search results and
+// the Plant Academy category archive; the News archive keeps its own copy
+// under .news-pagination.
+// ---------------------------------------------------------------------------
+
+.gt-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  margin-top: 70px;
+
+  &__pages {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__page {
+    margin: 0;
+    padding: 0;
+  }
+
+  &__num {
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 15px;
+    font-weight: $font-400;
+    line-height: 25px;
+    color: rgba(0, 0, 0, 0.5);
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      color: #000;
+    }
+
+    &.is-current {
+      font-weight: $font-700;
+      color: #000;
+    }
+  }
+
+  // The arrow pair is the shop's, but these are links carrying the theme's
+  // btn-flat arrow rather than the slider's, so size and flip it here.
+  &__arrows {
+    flex: 0 0 auto;
+
+    .slick-prev,
+    .slick-next {
+      text-decoration: none;
+    }
+
+    .btn-flat__arrow {
+      display: block;
+      width: 18px;
+      height: 15px;
+    }
+
+    .slick-prev .btn-flat__arrow {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+@media (max-width: $md - 1px) {
+  .gt-pagination {
+    margin-top: 50px;
+  }
+}
+
+@media (max-width: $sm - 1px) {
+  .gt-pagination {
+    gap: 20px;
+    margin-top: 35px;
+  }
+}

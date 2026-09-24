@@ -1,0 +1,51 @@
+{
+    "key": "group_gt_academy_cat",
+    "title": "Category details",
+    "fields": [
+        {
+            "key": "field_gt_acat_tagline",
+            "label": "Tagline",
+            "name": "tagline",
+            "type": "text",
+            "instructions": "The greyed line beside the name \u2014 \"Starts with a cut\".",
+            "placeholder": "Starts with a cut"
+        },
+        {
+            "key": "field_gt_acat_order",
+            "label": "Order",
+            "name": "order",
+            "type": "number",
+            "instructions": "Lowest first. The design runs Propagation, Growing Methods, Environment, Nutrient Management, Plant care \u2014 a teaching order, not alphabetical.",
+            "default_value": 10,
+            "min": 0,
+            "step": 1
+        },
+        {
+            "key": "field_gt_acat_hero",
+            "label": "Hero image",
+            "name": "hero",
+            "type": "image",
+            "return_format": "id",
+            "preview_size": "medium",
+            "instructions": "The banner across the top of this category's page. Wide crop \u2014 1340 x 325 in the design."
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "taxonomy",
+                "operator": "==",
+                "value": "academy_cat"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0
+}

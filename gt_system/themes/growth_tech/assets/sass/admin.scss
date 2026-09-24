@@ -76,6 +76,12 @@
 
 
 // Placeholder shown in the editor when a block has nothing to render yet.
+// The Guide Hotspots map reuses this frame but gives its chips their own class,
+// so the Feature Band's drag script cannot fire on chips it did not build.
+.gt-hotspot-map__chip {
+  @extend .gt-tag-map__chip;
+}
+
 .block-empty {
   margin: 0;
   padding: 20px;

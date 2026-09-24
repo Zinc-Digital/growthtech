@@ -552,20 +552,53 @@ $news-line: rgba(0, 0, 0, 0.1);
     display: none;
   }
 
+  // A definite size, not shrink-to-fit: an image brings its own dimensions but
+  // an iframe has none, so a percentage child of a content-sized stage would
+  // resolve against nothing and collapse to zero.
   &__stage {
     display: flex;
     align-items: center;
     justify-content: center;
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
   }
 
   &__img {
     display: block;
     max-width: 100%;
-    max-height: 90vh;
+    max-height: 100%;
     width: auto;
     height: auto;
+    object-fit: contain;
+  }
+
+  // An uploaded file sizes itself; an embed has no intrinsic ratio, so the
+  // wrapper holds 16:9 and the iframe fills it.
+  // Sized like the embed rather than left at its intrinsic size, so a small
+  // source file fills the stage instead of sitting tiny in the middle. Height
+  // follows the file's own ratio and is capped by the stage.
+  &__video {
+    display: block;
+    width: min(100%, 1280px);
+    height: auto;
+    max-height: 100%;
+    background-color: #000;
+  }
+
+  &__player {
+    position: relative;
+    // Whichever runs out first — the width available or the height — so the
+    // 16:9 box always fits inside the dialog's 50px padding.
+    width: min(100%, 1280px, calc((100vh - 100px) * 16 / 9));
+    aspect-ratio: 16 / 9;
+
+    iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
   }
 
   &__close {

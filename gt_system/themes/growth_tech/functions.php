@@ -89,9 +89,21 @@ function gt_theme_support() {
 	add_image_size( 'gt-knowledge', 2680, 600, true );
 	add_image_size( 'gt-knowledge-sm', 1340, 300, true );
 
-	// Search result row thumbnail: 284 x 190, cropped, plus 2x.
+	// Search / guide row thumbnail: 284 x 190, cropped, plus 2x.
 	add_image_size( 'gt-search-thumb', 568, 380, true );
 	add_image_size( 'gt-search-thumb-sm', 284, 190, true );
+
+	// Plant Academy category hero: 1340 x 325, cropped, plus 2x.
+	add_image_size( 'gt-academy-hero', 2680, 650, true );
+	add_image_size( 'gt-academy-hero-sm', 1340, 325, true );
+
+	// Plant Academy guide hero: 1096 x 330, cropped, plus 2x.
+	add_image_size( 'gt-guide-hero', 2192, 660, true );
+	add_image_size( 'gt-guide-hero-sm', 1096, 330, true );
+
+	// Clickable photo band on the landing page: 1340 x 560, plus 2x.
+	add_image_size( 'gt-academy-photo', 2680, 1120, true );
+	add_image_size( 'gt-academy-photo-sm', 1340, 560, true );
 }
 add_action('after_setup_theme', 'gt_theme_support');
 
@@ -223,3 +235,5 @@ include_once __DIR__ . '/inc/stockists.php';
 include_once __DIR__ . '/inc/contact.php';
 include_once __DIR__ . '/inc/stockists-import-export.php';
 include_once __DIR__ . '/inc/search.php';
+include_once __DIR__ . '/inc/plant-academy.php';
+include_once __DIR__ . '/inc/media.php';

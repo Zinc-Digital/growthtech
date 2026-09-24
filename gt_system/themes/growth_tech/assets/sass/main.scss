@@ -20,6 +20,8 @@
 @import 'components/c.forms';
 @import 'components/c.footer';
 @import 'components/c.buttons';
+@import 'components/c.guide-row';
+@import 'components/c.pagination';
 
 
 
@@ -41,6 +43,8 @@
 @import "components/blocks/b.fact-list";
 @import "components/blocks/b.timeline";
 @import "components/blocks/b.page-content";
+@import "components/blocks/b.academy-categories";
+@import "components/blocks/b.guide-hotspots";
 
 
 //Shop
@@ -68,3 +72,4 @@
 @import "pages/p.contact";
 @import "pages/p.news";
 @import "pages/p.search";
+@import "pages/p.academy";

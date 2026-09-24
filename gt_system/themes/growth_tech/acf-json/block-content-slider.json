@@ -2,18 +2,47 @@
     "key": "group_gt_block_content_slider",
     "title": "Block: Content Slider",
     "fields": [
-        { "key": "field_gt_cs_theme", "label": "Theme", "name": "theme", "type": "button_group", "instructions": "Dark puts the section on black, as on About Us.", "choices": { "light": "Light", "dark": "Dark" }, "default_value": "light", "return_format": "value" },
-
+        {
+            "key": "field_gt_cs_theme",
+            "label": "Theme",
+            "name": "theme",
+            "type": "button_group",
+            "instructions": "Dark puts the section on black, as on About Us.",
+            "choices": {
+                "light": "Light",
+                "dark": "Dark"
+            },
+            "default_value": "light",
+            "return_format": "value"
+        },
+        {
+            "key": "field_gt_cs_slide_style",
+            "label": "Slide style",
+            "name": "slide_style",
+            "type": "button_group",
+            "instructions": "Photo tile fills the card with the background image. Product tile puts the image on a solid ground with the name beneath, as the Plant Academy design draws it.",
+            "choices": {
+                "photo": "Photo tile",
+                "tile": "Product tile"
+            },
+            "default_value": "photo",
+            "return_format": "value",
+            "allow_null": 0
+        },
         {
             "key": "field_gt_cs_heading",
-            "label": "Heading",
+            "label": "Default heading",
             "name": "heading",
             "aria-label": "",
             "type": "text",
-            "instructions": "Renders as a level 2 heading.",
+            "instructions": "Used by any slide that sets no heading of its own.",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "", "class": "", "id": "" },
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
             "default_value": "",
             "maxlength": "",
             "placeholder": "Formulated by Growth Technology",
@@ -22,14 +51,18 @@
         },
         {
             "key": "field_gt_cs_text",
-            "label": "Text",
+            "label": "Default text",
             "name": "text",
             "aria-label": "",
             "type": "textarea",
-            "instructions": "",
+            "instructions": "Used by any slide that sets no text of its own.",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "", "class": "", "id": "" },
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
             "default_value": "",
             "maxlength": "",
             "rows": 4,
@@ -38,14 +71,18 @@
         },
         {
             "key": "field_gt_cs_btn1_title",
-            "label": "Button 1 title",
+            "label": "Default button 1 title",
             "name": "button_one_title",
             "aria-label": "",
             "type": "text",
-            "instructions": "The solid black button. Leave empty to hide it.",
+            "instructions": "Used by any slide that sets none of its own.",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "50", "class": "", "id": "" },
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
             "default_value": "",
             "maxlength": "",
             "placeholder": "View all products",
@@ -54,26 +91,34 @@
         },
         {
             "key": "field_gt_cs_btn1_link",
-            "label": "Button 1 link",
+            "label": "Default button 1 link",
             "name": "button_one_link",
             "aria-label": "",
             "type": "link",
-            "instructions": "The title above is used, not the link's own title.",
+            "instructions": "Used by any slide that sets none of its own.",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "50", "class": "", "id": "" },
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
             "return_format": "array"
         },
         {
             "key": "field_gt_cs_btn2_title",
-            "label": "Button 2 title",
+            "label": "Default button 2 title",
             "name": "button_two_title",
             "aria-label": "",
             "type": "text",
-            "instructions": "The underlined text link beside it. Leave empty to hide it.",
+            "instructions": "Used by any slide that sets none of its own.",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "50", "class": "", "id": "" },
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
             "default_value": "",
             "maxlength": "",
             "placeholder": "Find your local stockist",
@@ -82,14 +127,18 @@
         },
         {
             "key": "field_gt_cs_btn2_link",
-            "label": "Button 2 link",
+            "label": "Default button 2 link",
             "name": "button_two_link",
             "aria-label": "",
             "type": "link",
-            "instructions": "The title above is used, not the link's own title.",
+            "instructions": "Used by any slide that sets none of its own.",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "50", "class": "", "id": "" },
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
             "return_format": "array"
         },
         {
@@ -101,7 +150,11 @@
             "instructions": "Two show at a time on desktop, one on mobile.",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "", "class": "", "id": "" },
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
             "layout": "block",
             "pagination": 0,
             "min": 0,
@@ -111,15 +164,76 @@
             "rows_per_page": 20,
             "sub_fields": [
                 {
+                    "key": "field_gt_cs_slide_heading",
+                    "label": "Heading",
+                    "name": "heading",
+                    "type": "text",
+                    "instructions": "This slide's own heading, shown in the copy column while the slide is up. Leave empty to use the default above.",
+                    "placeholder": "Essential products for every stage of growth."
+                },
+                {
+                    "key": "field_gt_cs_slide_text",
+                    "label": "Text",
+                    "name": "text",
+                    "type": "textarea",
+                    "rows": 4,
+                    "instructions": "This slide's own copy. Leave empty to use the default above.",
+                    "new_lines": "br"
+                },
+                {
+                    "key": "field_gt_cs_slide_btn1_title",
+                    "label": "Button one",
+                    "name": "button_one_title",
+                    "type": "text",
+                    "instructions": "This slide's own button. Leave empty to use the default above.",
+                    "wrapper": {
+                        "width": "50"
+                    }
+                },
+                {
+                    "key": "field_gt_cs_slide_btn1_link",
+                    "label": "Button one link",
+                    "name": "button_one_link",
+                    "type": "link",
+                    "return_format": "array",
+                    "wrapper": {
+                        "width": "50"
+                    }
+                },
+                {
+                    "key": "field_gt_cs_slide_btn2_title",
+                    "label": "Button two",
+                    "name": "button_two_title",
+                    "type": "text",
+                    "instructions": "The plain text link beside it.",
+                    "wrapper": {
+                        "width": "50"
+                    }
+                },
+                {
+                    "key": "field_gt_cs_slide_btn2_link",
+                    "label": "Button two link",
+                    "name": "button_two_link",
+                    "type": "link",
+                    "return_format": "array",
+                    "wrapper": {
+                        "width": "50"
+                    }
+                },
+                {
                     "key": "field_gt_cs_slide_bg",
                     "label": "Background image",
                     "name": "background",
                     "aria-label": "",
                     "type": "image",
-                    "instructions": "The photo behind the slide. Darkened towards the bottom so the text stays readable.",
+                    "instructions": "Photo tile only \u2014 fills the card behind the logo and title.",
                     "required": 0,
                     "conditional_logic": 0,
-                    "wrapper": { "width": "50", "class": "", "id": "" },
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
                     "return_format": "id",
                     "library": "all",
                     "preview_size": "medium",
@@ -131,10 +245,14 @@
                     "name": "image",
                     "aria-label": "",
                     "type": "image",
-                    "instructions": "The brand logo shown over the photo. A white SVG or PNG works best.",
+                    "instructions": "The logo on a photo tile; the product shot on a product tile.",
                     "required": 0,
                     "conditional_logic": 0,
-                    "wrapper": { "width": "50", "class": "", "id": "" },
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
                     "return_format": "id",
                     "library": "all",
                     "preview_size": "thumbnail",
@@ -149,13 +267,25 @@
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
-                    "wrapper": { "width": "", "class": "", "id": "" },
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
                     "default_value": "",
                     "maxlength": "",
                     "placeholder": "The original rooting gel",
                     "prepend": "",
                     "append": "",
                     "parent_repeater": "field_gt_cs_slides"
+                },
+                {
+                    "key": "field_gt_cs_slide_meta",
+                    "label": "Meta line",
+                    "name": "meta",
+                    "type": "text",
+                    "instructions": "Product tile only. Separate the parts with a vertical bar and they are divided by a dot \u2014 \"Propagation | 100ml/300ml/750ml\".",
+                    "placeholder": "Propagation | 100ml/300ml/750ml"
                 },
                 {
                     "key": "field_gt_cs_slide_link",
@@ -166,7 +296,11 @@
                     "instructions": "The link title is used as the label, e.g. \"Explore the Clonex Range\".",
                     "required": 0,
                     "conditional_logic": 0,
-                    "wrapper": { "width": "", "class": "", "id": "" },
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
                     "return_format": "array",
                     "parent_repeater": "field_gt_cs_slides"
                 }
@@ -181,7 +315,11 @@
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "", "class": "", "id": "" },
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
             "placement": "top",
             "endpoint": 0
         },
@@ -194,7 +332,11 @@
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "33", "class": "", "id": "" },
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
             "default_value": 2,
             "min": 1,
             "max": 6,
@@ -212,7 +354,11 @@
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "33", "class": "", "id": "" },
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
             "default_value": 2,
             "min": 1,
             "max": 6,
@@ -230,7 +376,11 @@
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "34", "class": "", "id": "" },
+            "wrapper": {
+                "width": "34",
+                "class": "",
+                "id": ""
+            },
             "default_value": 1,
             "min": 1,
             "max": 3,
@@ -248,7 +398,11 @@
             "instructions": "Off by default. When on, the progress bar fills in time with each slide.",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "50", "class": "", "id": "" },
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
             "message": "",
             "default_value": 0,
             "ui": 1,
@@ -264,9 +418,19 @@
             "instructions": "",
             "required": 0,
             "conditional_logic": [
-                [ { "field": "field_gt_cs_autoplay", "operator": "==", "value": "1" } ]
+                [
+                    {
+                        "field": "field_gt_cs_autoplay",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
             ],
-            "wrapper": { "width": "50", "class": "", "id": "" },
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
             "default_value": 6,
             "min": 1,
             "max": 60,
@@ -277,7 +441,13 @@
         }
     ],
     "location": [
-        [ { "param": "block", "operator": "==", "value": "acf/content-slider" } ]
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "acf/content-slider"
+            }
+        ]
     ],
     "menu_order": 0,
     "position": "normal",

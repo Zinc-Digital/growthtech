@@ -1,10 +1,16 @@
 /**
- * Shared enlarge-image lightbox.
+ * Shared enlarge-image and play-video lightbox.
  *
- * Any block can add a `[data-media-zoom]` button carrying `data-src` (and
- * optionally `data-title`); the first one on the page builds the dialog and
- * every button afterwards reuses it. The page is complete without this
- * script — the images are already on it — so this only adds the enlargement.
+ * Any block can add a `[data-media-zoom]` button; the first one on the page
+ * builds the dialog and every button afterwards reuses it.
+ *
+ *   image   data-src, optionally data-title
+ *   video   data-media-type="video", data-video-kind="file|youtube|vimeo"
+ *           and data-video-src — a ready embed URL, worked out in PHP so this
+ *           script never has to parse a pasted link.
+ *
+ * The page is complete without this script — the stills are already on it — so
+ * this only adds the enlargement and playback.
  */
 (function () {
 	'use strict';
@@ -39,21 +45,55 @@
 		document.body.appendChild(dialog);
 	}
 
+	/** An uploaded file plays natively; YouTube and Vimeo go in an iframe. */
+	function buildVideo(kind, src, title) {
+		if (kind === 'file') {
+			var video = document.createElement('video');
+			video.className = 'media-lightbox__video';
+			video.src = src;
+			video.controls = true;
+			video.autoplay = true;
+			video.playsInline = true;
+			return video;
+		}
+
+		var wrap = document.createElement('div');
+		wrap.className = 'media-lightbox__player';
+
+		var frame = document.createElement('iframe');
+		frame.src = src;
+		frame.title = title || 'Video';
+		frame.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
+		frame.allowFullscreen = true;
+		frame.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+
+		wrap.appendChild(frame);
+		return wrap;
+	}
+
 	function show(button) {
 		if (!dialog) { build(); }
 
-		var src = button.getAttribute('data-src');
-		if (!src) { return; }
 		var title = button.getAttribute('data-title') || '';
+		var isVideo = button.getAttribute('data-media-type') === 'video';
+		var node;
 
-		var img = document.createElement('img');
-		img.className = 'media-lightbox__img';
-		img.src = src;
-		img.alt = title;
+		if (isVideo) {
+			var videoSrc = button.getAttribute('data-video-src');
+			if (!videoSrc) { return; }
+			node = buildVideo(button.getAttribute('data-video-kind'), videoSrc, title);
+		} else {
+			var src = button.getAttribute('data-src');
+			if (!src) { return; }
+			node = document.createElement('img');
+			node.className = 'media-lightbox__img';
+			node.src = src;
+			node.alt = title;
+		}
 
 		stage.innerHTML = '';
-		stage.appendChild(img);
-		dialog.setAttribute('aria-label', title || 'Image');
+		stage.appendChild(node);
+		dialog.setAttribute('aria-label', title || (isVideo ? 'Video' : 'Image'));
 		dialog.hidden = false;
 		document.body.classList.add('has-media-lightbox');
 
@@ -64,7 +104,8 @@
 	function hide() {
 		if (!dialog || dialog.hidden) { return; }
 		dialog.hidden = true;
-		// Emptying the stage drops the full-size image from memory again.
+		// Emptying the stage drops the full-size image from memory again — and
+		// for a video it is what actually stops playback, iframe included.
 		stage.innerHTML = '';
 		document.body.classList.remove('has-media-lightbox');
 		if (lastFocus) { lastFocus.focus(); lastFocus = null; }

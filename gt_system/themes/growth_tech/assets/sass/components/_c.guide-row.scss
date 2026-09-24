@@ -1,0 +1,189 @@
+// ---------------------------------------------------------------------------
+// Guide row — Figma 384:2259 (Plant Academy category) and 384:3045 (search)
+//
+// A 284 x 190 thumbnail, the read time over a serif title and a standfirst,
+// and the call to action pinned right. Rows sit 35 apart either side of a
+// hairline. Shared by the Plant Academy category archive and the search page,
+// which draw the identical row.
+// ---------------------------------------------------------------------------
+
+.guide-list {
+  margin: 35px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.guide-row {
+  margin: 0;
+
+  & + & {
+    margin-top: 35px;
+    padding-top: 35px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+    color: #000;
+    text-decoration: none;
+  }
+
+  &__media {
+    display: block;
+    flex: 0 0 284px;
+    width: 284px;
+    height: 190px;
+    overflow: hidden;
+    background-color: rgba(35, 31, 32, 0.05);
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  &__link:hover &__img,
+  &__link:focus-visible &__img {
+    transform: scale(1.04);
+  }
+
+  &__body {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  &__kicker {
+    display: block;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 12px;
+    font-weight: $font-400;
+    line-height: normal;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  &__title {
+    display: block;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 35px;
+    font-weight: $font-700;
+    line-height: 42px;
+    letter-spacing: -0.7px;
+    color: #000;
+  }
+
+  &__text {
+    display: block;
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 12px;
+    font-weight: $font-300;
+    line-height: 24px;
+    color: rgba(0, 0, 0, 0.75);
+  }
+
+  &__cta {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 15px;
+    color: #000;
+  }
+
+  &__cta-label {
+    font-family: "DM Sans", #{$primary_font};
+    font-size: 12px;
+    font-weight: $font-400;
+    line-height: normal;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  &__cta svg {
+    display: block;
+    flex: 0 0 auto;
+    width: 14px;
+    height: 11px;
+    transition: transform 0.3s ease;
+  }
+
+  &__link:hover &__cta svg,
+  &__link:focus-visible &__cta svg {
+    transform: translateX(4px);
+  }
+}
+
+@media (max-width: $xl - 1px) {
+  .guide-row {
+    &__link {
+      gap: 35px;
+    }
+
+    &__title {
+      font-size: 30px;
+      line-height: 36px;
+    }
+  }
+}
+
+@media (max-width: $md - 1px) {
+  .guide-row {
+    &__media {
+      flex-basis: 220px;
+      width: 220px;
+      height: 147px;
+    }
+
+    &__title {
+      font-size: 26px;
+      line-height: 32px;
+    }
+  }
+}
+
+// -- mobile: the row stacks and the CTA drops under the copy ----------------
+
+@media (max-width: $sm - 1px) {
+  .guide-list {
+    margin-top: 25px;
+  }
+
+  .guide-row {
+    & + & {
+      margin-top: 25px;
+      padding-top: 25px;
+    }
+
+    &__link {
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    &__media {
+      flex: 0 0 100%;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 284 / 190;
+    }
+
+    &__body {
+      flex: 0 0 100%;
+    }
+
+    &__title {
+      font-size: 24px;
+      line-height: 30px;
+      letter-spacing: -0.5px;
+    }
+  }
+}

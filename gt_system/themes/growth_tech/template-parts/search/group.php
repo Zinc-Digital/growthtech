@@ -34,11 +34,11 @@ $id     = 'search-group-' . sanitize_html_class( $group['slug'] );
 			?>
 		</ul>
 	<?php else : ?>
-		<ul class="search-list">
+		<ul class="guide-list">
 			<?php
 			while ( $query->have_posts() ) {
 				$query->the_post();
-				get_template_part( 'template-parts/search/row', null, array( 'post' => get_post(), 'cta' => $group['cta'] ) );
+				get_template_part( 'template-parts/guide-row', null, array( 'post' => get_post(), 'cta' => $group['cta'], 'read_time' => ! empty( $group['read_time'] ) ) );
 			}
 			wp_reset_postdata();
 			?>

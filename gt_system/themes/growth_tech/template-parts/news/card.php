@@ -4,7 +4,7 @@
  * panel inset at the bottom: "<strong>Title:</strong> standfirst" and a
  * "Read story" link. Shared by the archive grid and the news carousel.
  *
- * @param array $args ['post' => WP_Post|int, 'eager' => bool]
+ * @param array $args ['post' => WP_Post|int, 'eager' => bool, 'cta' => string]
  */
 
 $post_obj = isset( $args['post'] ) ? get_post( $args['post'] ) : get_post();
@@ -15,6 +15,10 @@ $post_id    = $post_obj->ID;
 $standfirst = gt_news_standfirst( $post_id );
 $image_id   = get_post_thumbnail_id( $post_id );
 $eager      = ! empty( $args['eager'] );
+// Guides read "Read the Guide"; a story reads "Read story".
+$cta        = isset( $args['cta'] ) && '' !== trim( (string) $args['cta'] )
+	? (string) $args['cta']
+	: __( 'Read story', 'gt' );
 ?>
 <article class="news-card">
 	<a class="news-card__link" href="<?php echo esc_url( get_permalink( $post_id ) ); ?>">
@@ -33,7 +37,7 @@ $eager      = ! empty( $args['eager'] );
 				<strong><?php echo esc_html( get_the_title( $post_id ) ); ?>:</strong>
 				<?php echo esc_html( $standfirst ); ?>
 			</span>
-			<span class="news-card__cta"><?php esc_html_e( 'Read story', 'gt' ); ?></span>
+			<span class="news-card__cta"><?php echo esc_html( $cta ); ?></span>
 		</span>
 	</a>
 </article>

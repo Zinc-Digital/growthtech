@@ -1,0 +1,14 @@
+{
+    "key": "group_gt_guide",
+    "title": "Guide details",
+    "fields": [
+        { "key": "field_gt_gd_standfirst", "label": "Standfirst", "name": "standfirst", "type": "textarea", "rows": 2, "instructions": "The line under the title, and the summary in listings. Falls back to the excerpt.", "new_lines": "" },
+        { "key": "field_gt_gd_read", "label": "Reading time", "name": "read_time", "type": "number", "instructions": "Minutes. Leave empty and it is counted from the guide's own words.", "min": 0, "append": "min", "wrapper": { "width": "33" } },
+        { "key": "field_gt_gd_byline", "label": "Written by", "name": "byline", "type": "text", "instructions": "Falls back to the default in Theme Settings.", "placeholder": "The Growth Technology lab team", "wrapper": { "width": "33" } },
+        { "key": "field_gt_gd_updated", "label": "Last updated", "name": "updated", "type": "date_picker", "display_format": "F Y", "return_format": "F Y", "first_day": 1, "wrapper": { "width": "34" } },
+        { "key": "field_gt_gd_products", "label": "Products used", "name": "products", "type": "relationship", "instructions": "Shown in the guide's sidebar under \"In this guide we used\".", "post_type": ["product"], "filters": ["search"], "return_format": "id", "max": 4 },
+        { "key": "field_gt_gd_related", "label": "Keep learning", "name": "related", "type": "relationship", "instructions": "Guides to read next. Leave empty and others from the same category are used.", "post_type": ["guide"], "filters": ["search"], "return_format": "id", "max": 3 }
+    ],
+    "location": [ [ { "param": "post_type", "operator": "==", "value": "guide" } ] ],
+    "menu_order": 0, "position": "normal", "style": "default", "label_placement": "top", "instruction_placement": "label", "hide_on_screen": "", "active": true, "description": "", "show_in_rest": 0
+}
